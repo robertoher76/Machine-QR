@@ -135,7 +135,7 @@ return [
     */
 
     'providers' => [
-
+        Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
         /*
          * Laravel Framework Service Providers...
          */
@@ -190,6 +190,9 @@ return [
     */
 
     'aliases' => [
+
+        'JWTAuth' => Tymon\JWTAuth\Facades\JWTAuth::class, 
+        'JWTFactory' => Tymon\JWTAuth\Facades\JWTFactory::class,
 
         'QrCode' => SimpleSoftwareIO\QrCode\Facades\QrCode::class,
         'App' => Illuminate\Support\Facades\App::class,
