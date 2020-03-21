@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateMaquinaRequest;
 use Illuminate\Http\Request;
 use App\Maquina;
 use App\Tutoriale;
@@ -41,7 +42,7 @@ class MaquinaController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateMaquinaRequest $request)
     {
         $maquina = new Maquina;
 
