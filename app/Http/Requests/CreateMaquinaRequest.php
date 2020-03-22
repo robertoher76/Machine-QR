@@ -25,17 +25,21 @@ class CreateMaquinaRequest extends FormRequest
     {
         return [
             'nombre_maquina' => 'required|max:50',
-            'descripcion' => 'required|max:600'            
+            'descripcion' => 'required|max:600',
+            'foto_up' => 'required|mimes:jpg,jpeg,png|max:2500',            
         ];
     }
 
     public function messages()
     {
         return [
-            'nombre_maquina.required' => 'El nombre de la máquina es requirido',
-            'descripcion.required' => 'La descripción de la máquina es requirida',
-            'nombre_maquina.max' => 'El nombre de la máquina no puede superar los 50 caracteres',
-            'descripcion.max' => 'La descripción no puede superar los 600 caracteres'
+            'nombre_maquina.required' => 'El nombre de la máquina es requirido.',
+            'descripcion.required' => 'La descripción de la máquina es requirido.',
+            'nombre_maquina.max' => 'El nombre de la máquina no puede superar los 50 caracteres.',
+            'descripcion.max' => 'La descripción no puede superar los 600 caracteres.',
+            'foto_up.required' => 'La imagen de la máquina es requerido.',
+            'foto_up.mimes' => 'La imagen debe ser un tipo de archivo: jpg, jpeg, png.',
+            'foto_up.max' => 'La imagen no debe ser mayor a 2500 kilobytes.',
         ];
     }
 }

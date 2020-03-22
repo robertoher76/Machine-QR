@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateMaquinaRequest;
 use Illuminate\Http\Request;
-use App\Maquina;
-use App\Tutoriale;
 use App\Maquina_imagene;
+use App\Tutoriale;
+use App\Maquina;
 
 class MaquinaController extends Controller
 {
@@ -43,14 +43,17 @@ class MaquinaController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(CreateMaquinaRequest $request)
-    {
-        $maquina = new Maquina;
+    {        
+        if($imagenName = Maquina::setImagenMaquina($request->foto_up)){
+            $request->request->add(['imagen' => $imagenName]);
 
-        $maquina->nombre = $request->nombre;
-        $maquina->descripcion = $request->descripcion;
-        $maquina->codigo_qr = "codigos/codigo_maquina1.png";
+            if($qrName = Maquina::setQRMaquina())
+                $request->request->add(['codigo_qr' => $qrName]);
 
-        $maquina->save();
+            Maquina::create($request->all());
+
+            return redirect('/maquinas');
+        }
 
     }
 

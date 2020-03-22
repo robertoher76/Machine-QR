@@ -14,13 +14,13 @@ use App\Componente;
 */
 
 Route::get('/', function () {
-    return view('maquinas.create');
+    return view('welcome');
 });
 
 Route::get('qrcode', function () {
 
     $image = \QrCode::format('png')                
-                 ->size(200)->errorCorrection('H')
+                 ->size(1000)->errorCorrection('H')
                  ->generate('A simple example of QR code!');
     $output_file = '/imagenes/QR/img-' . time() . '.png';
     Storage::disk('local')->put($output_file, $image); //storage/app/public/img/qr-code/img-1557309130.png

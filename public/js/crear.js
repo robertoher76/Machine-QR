@@ -11,5 +11,5 @@ $(document).ready(function () {
         
         maxFileCount: 1,
         theme: 'fas', 
-    });
+    });   
 });

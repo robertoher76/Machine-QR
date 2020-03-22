@@ -28,7 +28,7 @@
                         </div>
                         <div class="modal-body">
                             <div class="text-center">
-                                <img src="{{ asset('imagenes/maquinas/'. $maquina->imagen) }}" width="auto" height="300rem" alt="Responsive image">                
+                                <img src="{{ asset('storage/imagenes/maquinas/'. $maquina->imagen) }}" width="auto" height="300rem" alt="Responsive image">                
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -43,7 +43,7 @@
             </div>
             <div class="col-4 mt-2 pr-0">
                 <div class="text-center">
-                    <img src="{{ asset('imagenes/QR/img-1583253329.png') }}" width="auto" height="175rem" alt="Responsive image">                
+                    <img src="{{ asset('storage/imagenes/QR/' . $maquina->codigo_qr) }}" width="auto" height="175rem" alt="Responsive image">                
                     
                     
                 </div>
@@ -72,7 +72,7 @@
                 <div class="row mt-4">
                 @foreach ($componentes as $componente)
                     <div class="card mt-2 mr-1 ml-1" style="width: 18rem;">
-                        <img width="100%" height="215px" src="{{ asset('imagenes/maquinas/'. $componente->imagen) }}" class="card-img-top" alt="...">
+                        <img width="100%" height="215px" src="{{ asset('storage/imagenes/maquinas/'. $componente->imagen) }}" class="card-img-top" alt="...">
                         <div class="card-body">
                             <h5 class="card-title">{{ $componente->nombre }}</h5>
                             <p class="card-text mb-5" style="text-align:justify;"> {{ $componente->descripcion }} </p>
@@ -125,7 +125,7 @@
                 <div class="col-sm-6 mt-3">
                     <div class="card">
                         <div class="card-body">
-                            <video  src="{{ asset('tutoriales/' . $tutorial->video) }}" controls>
+                            <video  src="{{ asset('storage/tutoriales/' . $tutorial->video) }}" controls>
                                 Tu navegador no implementa el elemento <code>video</code>.
                             </video>
                             <h5 class="card-title mt-2">{{ $tutorial->titulo }}</h5>

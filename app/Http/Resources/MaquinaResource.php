@@ -14,6 +14,12 @@ class MaquinaResource extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            'nombre' => $this->nombre_maquina,
+            'descripcion' => $this->descripcion,
+            'imagen' => $request->root() . '/storage/imagenes/maquinas/' . $this->imagen,
+            'updated_at' => $this->updated_at,
+        ];
     }
 }

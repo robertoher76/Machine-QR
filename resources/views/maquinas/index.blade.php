@@ -22,7 +22,7 @@
         <div class="col-md-4">
           <div class="card mb-4 shadow-sm">
                       
-              <img width="100%" height="225" src="{{ asset('imagenes/maquinas/'. $maquina->imagen) }}"/>
+              <img width="100%" height="225" src="{{ asset('storage/imagenes/maquinas/'. $maquina->imagen) }}"/>
 
             <div class="card-body">
               <h4 class="card-title">{{ $maquina->nombre_maquina }}</h4>
