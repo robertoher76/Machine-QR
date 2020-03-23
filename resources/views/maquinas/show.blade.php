@@ -1,54 +1,36 @@
 @extends('..layouts.plantilla')
 
+@push('css')
+<link rel="stylesheet" href = "{{ asset('css/carousel.css') }}" />
+    <link rel="stylesheet" href = "{{ asset('css/lightbox.min.css') }}" />
+@endpush
+
+@push('js')
+<script src="{{ asset('js/lightbox-plus-jquery.min.js') }}"></script>
+<script src="{{ asset('js/lightbox-config.js') }}"></script>
+@endpush
+
 @section('cabecera')
     <div class="container mt-5">
         <div class="row">
-            
-            <div class="col-8">
-                <h1>{{ $maquina->nombre_maquina }} &nbsp;<button type="button" class="btn btn-success btn-sm"><i class="far fa-edit"></i> Editar</button></h1>
-                <p class="lead">{{ $maquina->descripcion}}</p>
+            <div class="mb-2">   
+                <h1>{{ $maquina->nombre_maquina }} &nbsp;<a href="{{ Request::url() }}/edit" class="btn btn-success btn-sm"><i class="far fa-edit"></i> Editar</a></h1>
+            </div>
+            <div class="row">
+            <div class="col-8 mt-1">                
+                <p class="lead text-justify">{{ $maquina->descripcion}}</p>
                 
-                <br/>
-                <!-- Button trigger modal -->
-                <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#exampleModalCenter">
-                <i class="fas fa-image"></i> Imagen de perfil
-                </button>
-                <!--<a class="example-image-link" href="{{ asset('imagenes/maquinas/' . $maquina->imagen) }}" data-lightbox="example-1" data-title="Imagen de perfil"><button type="button" class="btn btn-secondary">Ver imagen de perfil</button></a>
-                -->
-
-                <!-- Modal -->
-                <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered" role="document">
-                        <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLongTitle">Imagen de perfil de {{ $maquina->nombre_maquina }}</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="text-center">
-                                <img src="{{ asset('storage/imagenes/maquinas/'. $maquina->imagen) }}" width="auto" height="300rem" alt="Responsive image">                
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                            <button type="button" class="btn btn-success">Cambiar</button>
-                        </div>
-                        </div>
-                    </div>
-                </div>
-
-
+                <br/>                
             </div>
-            <div class="col-4 mt-2 pr-0">
-                <div class="text-center">
-                    <img src="{{ asset('storage/imagenes/QR/' . $maquina->codigo_qr) }}" width="auto" height="175rem" alt="Responsive image">                
-                    
-                    
-                </div>
+            <div class="col-4 mt-0 text-center pr-0">                
+                <a class="example-image-link" data-title="QR Actual para {{ $maquina->nombre_maquina }}" href="{{ asset('storage/imagenes/QR/' . $maquina->codigo_qr) }}" data-lightbox="example-1"><img class="example-image ml-1 mr-1" style="border-radius: 2%;" widht="100%;" height="200px;" src="{{ asset('storage/imagenes/QR/' . $maquina->codigo_qr) }}"/></a>                                        
+                <small class="form-text text-muted">Click para expandir QR.</small>    
             </div>
-            
+            </div>
+            <div class="col-12 text-center">    
+                <a class="example-image-link" data-title="Imagen Actual para {{ $maquina->nombre_maquina }}" href="{{ asset('storage/imagenes/maquinas/' . $maquina->imagen) }}" data-lightbox="example-2"><img class="example-image mt-3 ml-1 mr-1" style="border-radius: 2%;" widht="100%;" height="300px;" src="{{ asset('storage/imagenes/maquinas/' . $maquina->imagen) }}"/></a>                                        
+                <small class="form-text text-muted">Click para expandir la imagen.</small>        
+            </div>
         </div>
     </div>
 @endsection
@@ -154,7 +136,7 @@
                 <div class="text-center">
                 @foreach ($galeria as $imagen)
                 
-                <a class="example-image-link" href="{{ asset('imagenes/maquinas/' . $imagen->imagen) }}" data-lightbox="example-set" data-title="{{ $imagen->descripcion }}"><img class="example-image mt-3 ml-1 mr-1" style="border-radius: 2%;" widht="100%;" height="200px;" src="{{ asset('imagenes/maquinas/' . $imagen->imagen) }}"/></a>
+                <a class="example-image-link" href="{{ asset('storage/imagenes/maquinas/' . $imagen->imagen) }}" data-lightbox="example-set" data-title="{{ $imagen->descripcion }}"><img class="example-image mt-3 ml-1 mr-1" style="border-radius: 2%;" widht="100%;" height="200px;" src="{{ asset('storage/imagenes/maquinas/' . $imagen->imagen) }}"/></a>
                 
                 @endforeach
 

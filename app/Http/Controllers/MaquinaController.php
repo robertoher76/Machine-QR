@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateMaquinaRequest;
+use App\Http\Requests\EditMaquinaRequest;
 use Illuminate\Http\Request;
 use App\Maquina_imagene;
 use App\Tutoriale;
@@ -17,13 +18,13 @@ class MaquinaController extends Controller
      */
     public function index()
     {
-        $maquinas = Maquina::all();
+        $maquinas = Maquina::paginate(15);
 
         foreach ($maquinas as $maquina) {
             $maquina->descripcion = substr($maquina->descripcion, 0, 80) . '...';
         }
 
-        return view('maquinas.index', ['num_maquina' => Maquina::count(), 'maquinas' => $maquinas]);
+        return view('maquinas.index', ['maquinas' => $maquinas]);
     }
 
     /**
@@ -89,9 +90,9 @@ class MaquinaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Maquina $maquina)
     {
-        //
+        return view('maquinas.edit', compact('maquina'));
     }
 
     /**
@@ -101,9 +102,42 @@ class MaquinaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(EditMaquinaRequest $request, $id)
     {
-        //
+        $maquina = Maquina::findOrFail($id);
+        if($request->cambiarImagen){
+            /*
+                Validación si el usuario desea modificar la imagen de la máquina
+            */
+            $request->validate([
+                'foto_up' => 'required|mimes:jpg,jpeg,png|max:2500',
+            ], [
+                'foto_up.required' => 'La imagen de la máquina es requerido',
+                'foto_up.mimes' => 'La imagen debe ser un tipo de archivo: jpg, jpeg, png.',
+                'foto_up.max' => 'La imagen no debe ser mayor a 2500 kilobytes.',
+            ]
+            
+            );
+
+                        
+            
+            if($imagenName = Maquina::setImagenMaquina($request->foto_up, $maquina->imagen)){
+                $request->request->add(['imagen' => $imagenName]);
+                $request->request->add(['codigo_qr' => $maquina->codigo_qr]);                    
+    
+                $maquina->update($request->all());
+    
+                return redirect('/maquinas');
+            }
+
+        }else{
+            $request->request->add(['imagen' => $maquina->imagen]);
+            $request->request->add(['codigo_qr' => $maquina->codigo_qr]); 
+
+            $maquina->update($request->all());
+    
+            return redirect('/maquinas');
+        }
     }
 
     /**

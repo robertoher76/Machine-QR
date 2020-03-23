@@ -4,11 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href = "{{ asset('css/bootstrap.min.css') }}" />
-    <link rel="stylesheet" href = "{{ asset('css/carousel.css') }}" />
-    <link rel="stylesheet" href = "{{ asset('css/lightbox.min.css') }}" />
+    
+    <link rel="stylesheet" href = "{{ asset('css/bootstrap.min.css') }}" />    
     <link href="{{ asset('css/all.css') }}" rel="stylesheet">
-    @stack('scripts')
+    @stack('css')
     <title>Machine QR</title>
 </head>
 <body style="padding-top: 0rem;">
@@ -79,10 +78,10 @@
 
     </main>
     
-    <script src="{{ asset('js/jquery-3.4.1.slim.min.js') }}"></script>
+    
+    <script src="{{ asset('js/jquery-3.4.1.min.js') }}"></script>
     <script src="{{ asset('js/bootstrap.min.js') }}"></script>
-    <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
-    <script src="{{ asset('js/lightbox-plus-jquery.min.js') }}"></script>
+    <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>    
     @stack('js')
 </body>
 </html>
