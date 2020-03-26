@@ -6,7 +6,7 @@ $(document).ready(function () {
     };
 
     // initialize plugin
-    initPlugin();
+    initPlugin();    
 
     $("#modificarIMG").val('falso');
 
@@ -14,7 +14,6 @@ $(document).ready(function () {
     $("#imagenActual").show();
 
     $("#modificarIMG").click(function() { 
-
         if($("#modificarIMG").is(':checked')) {  
             $("#imagenActual").hide("slow");
             $("#div_foto").show("slow");
@@ -27,5 +26,6 @@ $(document).ready(function () {
             $("#imagenActual").show("slow");
             
         }  
-    });   
+    });
+        
 });

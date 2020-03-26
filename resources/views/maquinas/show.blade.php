@@ -14,7 +14,9 @@
     <div class="container mt-5">
         <div class="row">
             <div class="mb-2">   
-                <h1>{{ $maquina->nombre_maquina }} &nbsp;<a href="{{ Request::url() }}/edit" class="btn btn-success btn-sm"><i class="far fa-edit"></i> Editar</a></h1>
+                <h1>{{ $maquina->nombre_maquina }} &nbsp;
+                <a href="{{ Request::url() }}/edit" class="btn btn-success btn-sm"><i class="far fa-edit"></i> Editar</a>                                                    
+                                                        
             </div>
             <div class="row">
             <div class="col-8 mt-1">                
@@ -23,13 +25,13 @@
                 <br/>                
             </div>
             <div class="col-4 mt-0 text-center pr-0">                
-                <a class="example-image-link" data-title="QR Actual para {{ $maquina->nombre_maquina }}" href="{{ asset('storage/imagenes/QR/' . $maquina->codigo_qr) }}" data-lightbox="example-1"><img class="example-image ml-1 mr-1" style="border-radius: 2%;" widht="100%;" height="200px;" src="{{ asset('storage/imagenes/QR/' . $maquina->codigo_qr) }}"/></a>                                        
-                <small class="form-text text-muted">Click para expandir QR.</small>    
+                <a class="example-image-link" data-title="QR Actual para {{ $maquina->nombre_maquina }}" href="{{ asset('storage/imagenes/QR/' . $maquina->codigo_qr . '.png') }}" data-lightbox="example-1"><img class="example-image ml-1 mr-1" style="border-radius: 2%;" widht="100%;" height="200px;" src="{{ asset('storage/imagenes/QR/' . $maquina->codigo_qr . '.png') }}"/></a>                                        
+                <small class="form-text text-muted">Click sobre el QR para ampliarla.</small>    
             </div>
             </div>
-            <div class="col-12 text-center">    
+            <div class="col-12 mt-5 text-center">    
                 <a class="example-image-link" data-title="Imagen Actual para {{ $maquina->nombre_maquina }}" href="{{ asset('storage/imagenes/maquinas/' . $maquina->imagen) }}" data-lightbox="example-2"><img class="example-image mt-3 ml-1 mr-1" style="border-radius: 2%;" widht="100%;" height="300px;" src="{{ asset('storage/imagenes/maquinas/' . $maquina->imagen) }}"/></a>                                        
-                <small class="form-text text-muted">Click para expandir la imagen.</small>        
+                <small class="form-text text-muted">Click sobre la imagen para ampliarla.</small>        
             </div>
         </div>
     </div>
@@ -49,23 +51,53 @@
         <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
             <div class="container">
                 <div class="mt-4">
-                    <h5>Lista de componentes de {{ $maquina->nombre_maquina }} &nbsp;&nbsp;<a href="{{ Request::root() }}/maquinas/componentes/create" class="btn btn-success btn-sm"><i class="fas fa-plus"></i> Nuevo Componente</a></h5>
+                    <h5>Lista de componentes de {{ $maquina->nombre_maquina }} &nbsp;&nbsp;<a href="{{ Request::root() }}/maquinas/{{ $maquina->id }}/componente/create" class="btn btn-success btn-sm"><i class="fas fa-plus"></i> Agregar Componente</a></h5>
                 </div>
                 <div class="row mt-4">
                 @foreach ($componentes as $componente)
                     <div class="card mt-2 mr-1 ml-1" style="width: 18rem;">
-                        <img width="100%" height="215px" src="{{ asset('storage/imagenes/maquinas/'. $componente->imagen) }}" class="card-img-top" alt="...">
+                        
+                        <a class="example-image-link" data-title="{{ $componente->nombre }}" href="{{ asset('storage/imagenes/componentes/' . $componente->imagen) }}" data-lightbox="componente-{{ $componente->id }}"><img class="example-image" width="100%" height="215px" src="{{ asset('storage/imagenes/componentes/' . $componente->imagen) }}"/></a>
                         <div class="card-body">
                             <h5 class="card-title">{{ $componente->nombre }}</h5>
                             <p class="card-text mb-5" style="text-align:justify;"> {{ $componente->descripcion }} </p>
                             <div class="btn-group mb-3" style="bottom:0;position:absolute;">
                                 <a href="{{ Request::root() }}/maquinas/componentes/{{ $componente->id }}" class="btn btn-sm btn-outline-secondary">Ver más</a>
-                                <button type="button" class="btn btn-sm btn-outline-secondary">Editar</button>
+                                <a href="{{ Request::url() }}/componente/{{ $componente->id }}/edit" class="btn btn-sm btn-outline-secondary">Editar</a>
                             </div>
                         </div>
                     </div>
-                @endforeach
+                @endforeach                
                 </div>
+                @if($componentes->lastPage() > 1)                 
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination justify-content-center">
+                        <li class="page-item {{ ($componentes->onFirstPage()) ? ' disabled' : '' }}">
+                            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Anterior</a>
+                        </li>
+
+                        @for ($i = 1; $i <= $componentes->lastPage(); $i++)
+                            <li class="page-item {{ ($componentes->currentPage() == $i) ? ' active' : '' }}">
+                            
+                            @if($componentes->currentPage() != $i)
+                                <a class="page-link" href="{{ $componentes->url($i) }}">
+                                {{ $i }}
+                                </a>
+                            @else
+                                <span class="page-link">
+                                {{ $i }}
+                                <span class="sr-only">(current)</span>
+                                </span>
+                            @endif
+                            </li>
+                        @endfor
+
+                        <li class="page-item {{ ($componentes->currentPage() == $componentes->lastPage()) ? ' disabled' : '' }}">
+                            <a class="page-link" href="#" aria-disabled="page-link">Siguiente</a>
+                        </li>          
+                        </ul>
+                    </nav>
+                @endif
             </div>
         </div>
         <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
@@ -100,9 +132,8 @@
                 <div class="mt-4">
                     <h5>Lista de Tutoriales de {{ $maquina->nombre_maquina }} &nbsp;<a href="{{ Request::root() }}/maquinas/tutoriales/create" class="btn btn-success btn-sm">Nuevo Tutorial</a></h5>
                 </div>
-            </div>
+            
             <div class="row">
-
                 @foreach ($tutoriales as $tutorial)
                 <div class="col-sm-6 mt-3">
                     <div class="card">
@@ -120,9 +151,37 @@
                     </div>
                 </div>
                 @endforeach
-
             </div>
+            @if($tutoriales->lastPage() > 1)                 
+                <nav class="mt-5" aria-label="Page navigation example">
+                    <ul class="pagination justify-content-center">
+                    <li class="page-item {{ ($tutoriales->onFirstPage()) ? ' disabled' : '' }}">
+                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Anterior</a>
+                    </li>
 
+                    @for ($i = 1; $i <= $tutoriales->lastPage(); $i++)
+                        <li class="page-item {{ ($tutoriales->currentPage() == $i) ? ' active' : '' }}">
+                            
+                        @if($tutoriales->currentPage() != $i)
+                            <a class="page-link" href="{{ $tutoriales->url($i) }}">
+                            {{ $i }}
+                            </a>
+                        @else
+                            <span class="page-link">
+                            {{ $i }}
+                            <span class="sr-only">(current)</span>
+                            </span>
+                        @endif
+                        </li>
+                    @endfor
+
+                    <li class="page-item {{ ($tutoriales->currentPage() == $tutoriales->lastPage()) ? ' disabled' : '' }}">
+                        <a class="page-link" href="#" aria-disabled="page-link">Siguiente</a>
+                    </li>          
+                    </ul>
+                </nav>
+            @endif
+            </div>
         </div>
         <div class="tab-pane fade" id="nav-video" role="tabpanel" aria-labelledby="nav-video-tab">
         

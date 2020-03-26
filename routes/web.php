@@ -40,4 +40,9 @@ Route::resource('/maquinas/instrucciones/tipo','InstruccionTipoController');
 
 Route::resource('/maquinas/componentes','ComponenteController');
 
+Route::get('/maquinas/{maquina}/componente/{componente}/edit','ComponenteController@edit');
+Route::put('/maquinas/{maquina}/componente/{componente}', 'ComponenteController@update');
+Route::get('/maquinas/{maquina}/componente/create','ComponenteController@create');
+Route::post('/maquinas/{maquina}/componente','ComponenteController@store');
+
 Route::resource('/maquinas/procedimientos', 'ProcedimientoController');

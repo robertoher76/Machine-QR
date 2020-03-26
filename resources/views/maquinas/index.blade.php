@@ -15,8 +15,15 @@
 
 <div class="album mt-4">
     <div class="container">
-
-      <div class="row">
+    <!--
+    <form class="form-inline justify-content-end">
+      <div class="form-group mx-sm-3 mb-2">        
+        <input type="password" class="form-control form-control-sm" id="inputPassword2" placeholder="Buscar Máquina">
+      </div>
+      <button type="submit" class="btn btn-primary mb-2 btn-sm">Confirm identity</button>
+    </form>
+    -->
+      <div class="row mt-4">
 
         @foreach ($maquinas as $maquina)
         <div class="col-md-4">
@@ -30,9 +37,9 @@
               <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">
                   <a href="maquinas/{{ $maquina->id }}" class="btn btn-sm btn-outline-secondary">Ver más</a>
-                  <a href="maquinas/{{ $maquina->id }}/edit" class="btn btn-sm btn-outline-secondary">Editar</a>
+                  <a href="maquinas/{{ $maquina->id }}/edit" class="btn btn-sm btn-outline-secondary">Modificar</a>
                 </div>
-                <small class="text-muted">Editado {{ $maquina->updated_at->format('d-m-Y') }}</small>
+                <small class="text-muted">Modificado {{ $maquina->updated_at->format('d-m-Y') }}</small>
               </div>
             </div>
           </div>

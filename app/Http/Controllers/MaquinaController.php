@@ -6,6 +6,7 @@ use App\Http\Requests\CreateMaquinaRequest;
 use App\Http\Requests\EditMaquinaRequest;
 use Illuminate\Http\Request;
 use App\Maquina_imagene;
+use App\Componente;
 use App\Tutoriale;
 use App\Maquina;
 
@@ -19,10 +20,7 @@ class MaquinaController extends Controller
     public function index()
     {
         $maquinas = Maquina::paginate(15);
-
-        foreach ($maquinas as $maquina) {
-            $maquina->descripcion = substr($maquina->descripcion, 0, 80) . '...';
-        }
+        $maquinas = Maquina::cortarParrafos($maquinas,80);
 
         return view('maquinas.index', ['maquinas' => $maquinas]);
     }
@@ -46,16 +44,16 @@ class MaquinaController extends Controller
     public function store(CreateMaquinaRequest $request)
     {        
         if($imagenName = Maquina::setImagenMaquina($request->foto_up)){
-            $request->request->add(['imagen' => $imagenName]);
 
             if($qrName = Maquina::setQRMaquina())
-                $request->request->add(['codigo_qr' => $qrName]);
+                $request->request->add(['imagen' => $imagenName, 'codigo_qr' => $qrName]);
 
             Maquina::create($request->all());
 
             return redirect('/maquinas');
         }
-
+        $messageBag = new MessageBag;
+        return back()->withErrors($messageBag->add('imagen', 'Error al subir la imagen a la base de datos, intente de nuevo'))->withInput();
     }
 
     /**
@@ -64,24 +62,20 @@ class MaquinaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {   
+    public function show(Maquina $maquina)
+    {           
+        $componentes =  Componente::where("maquina_id","=",$maquina->id)->paginate(10);    
+        $componentes = Maquina::cortarParrafos($componentes,97);  
         
-        $componentes = Maquina::find($id)->componentes;
-
-        foreach ($componentes as $componente) {
-            
-            $componente->descripcion = substr($componente->descripcion, 0, 97) . '...';
-
-        }
+        $tutoriales = Tutoriale::where('maquina_id','=',$maquina->id)->paginate(2,['*'], 'tutorial');
 
         $instrucciones = Maquina::join('instrucciones', 'instrucciones.maquina_id', '=', 'maquinas.id')
                                 ->join('instrucciones_tipos','instrucciones_tipos.id','=','instrucciones.instrucciones_tipo_id')
                                 ->select('instrucciones_tipos.nombre','instrucciones.*')
-                                ->where('maquinas.id','=',$id)                                
+                                ->where('maquinas.id','=',$maquina->id)                                
                                 ->get();                              
 
-        return view('maquinas.show', ['maquina' => Maquina::findOrFail($id), 'componentes' =>  $componentes, 'instrucciones' => $instrucciones, 'tutoriales' => Tutoriale::where('maquina_id','=',$id)->get(), 'galeria' => Maquina_imagene::where('maquina_id','=',$id)->get()]);
+        return view('maquinas.show', ['maquina' => $maquina, 'componentes' =>  $componentes, 'instrucciones' => $instrucciones, 'tutoriales' => $tutoriales, 'galeria' => Maquina_imagene::where('maquina_id','=',$maquina->id)->get()]);
     }
 
     /**
@@ -102,9 +96,8 @@ class MaquinaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(EditMaquinaRequest $request, $id)
-    {
-        $maquina = Maquina::findOrFail($id);
+    public function update(EditMaquinaRequest $request, Maquina $maquina)
+    {       
         if($request->cambiarImagen){
             /*
                 Validación si el usuario desea modificar la imagen de la máquina
@@ -115,24 +108,20 @@ class MaquinaController extends Controller
                 'foto_up.required' => 'La imagen de la máquina es requerido',
                 'foto_up.mimes' => 'La imagen debe ser un tipo de archivo: jpg, jpeg, png.',
                 'foto_up.max' => 'La imagen no debe ser mayor a 2500 kilobytes.',
-            ]
+            ]);                        
             
-            );
-
-                        
-            
-            if($imagenName = Maquina::setImagenMaquina($request->foto_up, $maquina->imagen)){
-                $request->request->add(['imagen' => $imagenName]);
-                $request->request->add(['codigo_qr' => $maquina->codigo_qr]);                    
+            if($imagenName = Maquina::setImagenMaquina($request->foto_up, $maquina->imagen)){                
+                $request->request->add(['imagen' => $imagenName, 'codigo_qr' => $maquina->codigo_qr]);                    
     
                 $maquina->update($request->all());
     
                 return redirect('/maquinas');
             }
+            $messageBag = new MessageBag;
+            return back()->withErrors($messageBag->add('imagen', 'Error al subir la imagen a la base de datos, intente de nuevo'))->withInput();
 
-        }else{
-            $request->request->add(['imagen' => $maquina->imagen]);
-            $request->request->add(['codigo_qr' => $maquina->codigo_qr]); 
+        }else{            
+            $request->request->add(['imagen' => $maquina->imagen, 'codigo_qr' => $maquina->codigo_qr]); 
 
             $maquina->update($request->all());
     

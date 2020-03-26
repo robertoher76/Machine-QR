@@ -15,11 +15,13 @@
     <script src="{{ asset('js/bootstrap-fileinput/js/locales/es.js') }}"></script>        
     <script src="{{ asset('js/crear.js') }}"></script>
     <script src="{{ asset('js/editar.js') }}"></script>
-    
+    @if((old('cambiarImagen') != null))
+    <script src="{{ asset('js/checked.js') }}"></script>
+    @endif
 @endpush
 
 @section('cabecera')
-<div class="container mt-5">
+<div class="container mt-4">
   <h1 style="color: black;" class="text-justify">Modificar {{ $maquina->nombre_maquina }} <small style="font-size:18px;" class="text-muted">&nbsp; Última modificación {{ $maquina->updated_at->format('d-m-Y') }}.</small></h1>
   <p class="lead">Ingrese los siguientes datos para modificar la máquina.</p>
 </div>
@@ -27,27 +29,26 @@
 
 @section('contenido')
 
-    <div class="container mt-4">    
-
-      @if(count($errors)>0)
-        <div class="alert alert-warning" role="alert">
-            @foreach ($errors->all() as $error)
-              {{ $error }} <br/>
-            @endforeach
-        </div>
-      @endif
-      
+    <div class="container mt-5">    
+            
       <form autocomplete="off" id="form-general" method="POST" action="{{url('/maquinas/'.$maquina->id)}}" enctype="multipart/form-data">
         @method('PUT')
         @csrf
         <div class="form-group">
-          <label for="nombre">Nombre de la Máquina:</label>
-          <input type="text" autocomplete="off" class="form-control" id="nombre" name="nombre_maquina" value="{{ $maquina->nombre_maquina }}">    
+          <label for="nombre" class="ml-1 {{ ($errors->has('nombre_maquina')) ? 'text-danger' : '' }}">Nombre de la Máquina:</label>
+          <input type="text" autocomplete="off" class="form-control {{ ($errors->has('nombre_maquina')) ? 'border border-danger' : '' }}" id="nombre" name="nombre_maquina" value="{{ (old('nombre_maquina') != null) ? old('nombre_maquina') : $maquina->nombre_maquina }}">    
+          @if($errors->has('nombre_maquina'))
+            <small class="text-danger ml-2" style="font-size:14px;"><i class="fas fa-exclamation-circle" style="font-size:12px !important;"></i> {{ $errors->first('nombre_maquina') }}</small>
+          @endif
         </div>
         <div class="form-group">
-          <label for="descripcion">Descripción del funcionamiento de la máquina:</label>
-          <textarea class="form-control" id="descripcion" name="descripcion" rows="3">{{ $maquina->descripcion }}</textarea>
-          <small for="descripcion" class="form-text text-muted">Descripción completa del funcionamiento de la máquina. Límite de caracteres: 600.</small>
+          <label for="descripcion" class="ml-1 {{ ($errors->has('descripcion')) ? 'text-danger' : '' }}">Descripción del funcionamiento de la máquina:</label>
+          <textarea class="form-control {{ ($errors->has('descripcion')) ? 'border border-danger' : '' }}" id="descripcion" name="descripcion" rows="3">{{ (old('descripcion') != null) ? old('descripcion') : $maquina->descripcion }}</textarea>
+          @if($errors->has('descripcion'))
+            <small class="text-danger ml-2" style="font-size:14px;"><i class="fas fa-exclamation-circle" style="font-size:12px !important;"></i> {{ $errors->first('descripcion') }}</small>
+          @else
+          <small for="descripcion" class="form-text text-muted">Descripción completa del funcionamiento de la máquina. Límite de caracteres: 1500.</small>
+          @endif  
         </div>
         <div class="form-group form-check">
             <input type="checkbox" class="form-check-input" id="modificarIMG" name="cambiarImagen" value="falso">
@@ -59,9 +60,13 @@
           <p class="form-text text-muted">Imagen Actual Para {{ $maquina->nombre_maquina }}</p>
         </div> 
         <div class="form-group" id="div_foto">
-          <label for="foto">Imagen de la máquina</label>          
+          <label for="foto" class="ml-1 {{ ($errors->has('foto_up')) ? 'text-danger' : '' }}">Imagen de la máquina</label>          
           <input id="foto" name="foto_up" type="file">
-          <small class="form-text text-muted">Ingrese un archivo con formato: jpg, jpeg o png y que no sobrepase los 2500 kilobytes.</small>        
+          @if($errors->has('foto_up'))
+            <small class="text-danger ml-2" style="font-size:14px;"><i class="fas fa-exclamation-circle" style="font-size:12px !important;"></i> {{ $errors->first('foto_up') }}</small>
+          @else
+          <small for="foto" class="form-text text-muted">Ingrese un archivo con formato: jpg, jpeg o png y que no sobrepase los 2500 kilobytes.</small>        
+          @endif
         </div>
         <br/><br/>
         <div class="text-center">

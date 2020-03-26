@@ -55,13 +55,20 @@ class Maquina extends Model
             Storage::disk('public')->delete("imagenes/QR/$actual");
         }
 
-        $qrName = Str::random(20) . '.png';
+        $qrName = Str::random(20);
         $image = \QrCode::format('png')                
                 ->size(1000)->errorCorrection('H')
                 ->generate($qrName);
-        Storage::disk('public')->put("imagenes/QR/$qrName", $image);
+        Storage::disk('public')->put("imagenes/QR/$qrName.png", $image);
 
         return $qrName;             
+    }
+
+    public static function cortarParrafos($maquinas, $fin){
+        foreach ($maquinas as $maquina) {
+            $maquina->descripcion = substr($maquina->descripcion, 0, $fin) . '...';
+        }
+        return $maquinas;
     }
 
 }

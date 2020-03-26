@@ -34,8 +34,8 @@ class EditMaquinaRequest extends FormRequest
     public function messages()
     {
         return [
-            'nombre_maquina.required' => 'El nombre de la máquina es requirido.',
-            'descripcion.required' => 'La descripción de la máquina es requirido.',
+            'nombre_maquina.required' => 'Ingrese el nombre de la máquina.',
+            'descripcion.required' => 'Ingrese la descripción de la máquina.',
             'nombre_maquina.max' => 'El nombre de la máquina no puede superar los 50 caracteres.',
             'descripcion.max' => 'La descripción no puede superar los 1500 caracteres.',            
             'foto_up.mimes' => 'La imagen debe ser un tipo de archivo: jpg, jpeg, png.',

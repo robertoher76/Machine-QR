@@ -17,7 +17,7 @@
 
 @section('cabecera')
 <div class="container mt-5">
-  <h1 style="color: black;">Agregar Máquina</h1>
+  <h1>Agregar Máquina</h1>
   <p class="lead">Ingrese los siguientes datos para registrar una nueva máquina a la aplicación.</p>
 </div>
 @endsection
@@ -25,34 +25,38 @@
 @section('contenido')
 
     <div class="container mt-3">    
-
-      @if(count($errors)>0)
-        <div class="alert alert-warning" role="alert">
-            @foreach ($errors->all() as $error)
-              {{ $error }} <br/>
-            @endforeach
-        </div>
-      @endif
-      
       <form autocomplete="off" id="form-general" method="POST" action="{{url('/maquinas')}}" enctype="multipart/form-data">
         @csrf
         <div class="form-group">
-          <label for="nombre">Nombre de la Máquina</label>
-          <input type="text" autocomplete="off" class="form-control" id="nombre" name="nombre_maquina">    
+          <label for="nombre" class="ml-1 {{ ($errors->has('nombre_maquina')) ? 'text-danger' : '' }}">Nombre de la Máquina</label>
+          <input type="text" autocomplete="off" class="form-control {{ ($errors->has('nombre_maquina')) ? 'border border-danger' : '' }}" id="nombre" name="nombre_maquina" value="{{ old('nombre_maquina') }}">
+          @if($errors->has('nombre_maquina'))
+            <small class="text-danger ml-2" style="font-size:14px;"><i class="fas fa-exclamation-circle" style="font-size:12px !important;"></i> {{ $errors->first('nombre_maquina') }}</small>
+          @endif    
         </div>
         <div class="form-group">
-          <label for="descripcion">Funcionamiento de la Máquina</label>
-          <textarea class="form-control" id="descripcion" name="descripcion" rows="3"></textarea>
-          <small for="descripcion" class="form-text text-muted">Descripción completa del funcionamiento de la máquina. Límite de caracteres: 600.</small>
+          <label for="descripcion" class="ml-1 {{ ($errors->has('descripcion')) ? 'text-danger' : '' }}">Funcionamiento de la Máquina</label>
+          <textarea class="form-control {{ ($errors->has('descripcion')) ? 'border border-danger' : '' }}" id="descripcion" name="descripcion" rows="3">{{ old('descripcion') }}</textarea>
+          @if($errors->has('descripcion'))
+            <small class="text-danger ml-2" style="font-size:14px;"><i class="fas fa-exclamation-circle" style="font-size:12px !important;"></i> {{ $errors->first('descripcion') }}</small>
+          @else
+          <small for="descripcion" class="form-text text-muted">Descripción completa del funcionamiento de la máquina. Límite de caracteres: 1500.</small>
+          @endif
+          
         </div> 
         <div class="form-group">
-          <label for="foto">Imagen de la máquina</label>          
-          <input id="foto" name="foto_up" type="file">
+          <label for="foto" class="ml-1 {{ ($errors->has('foto_up')) ? 'text-danger' : '' }}">Imagen de la máquina</label>          
+          <input id="foto" name="foto_up" type="file" class="{{ ($errors->has('foto_up')) ? 'border border-danger' : '' }}">
+          
+          @if($errors->has('foto_up'))
+            <small class="text-danger ml-2" style="font-size:14px;"><i class="fas fa-exclamation-circle" style="font-size:12px !important;"></i> {{ $errors->first('foto_up') }}</small>
+          @else
           <small for="foto" class="form-text text-muted">Ingrese un archivo con formato: jpg, jpeg o png y que no sobrepase los 2500 kilobytes.</small>        
+          @endif
         </div>
         <br/><br/>
         <div class="text-center">
-        <button type="submit" class="btn btn-primary">Ingresar</button>
+        <button type="submit" class="btn btn-primary">Agregar</button>
         </div>
       </form>
     </div>
