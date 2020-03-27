@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateComponenteRequest;
+use App\Http\Requests\EditComponenteRequest;
 use Illuminate\Support\MessageBag;
 use Illuminate\Http\Request;
 use App\Componente;
@@ -15,9 +16,12 @@ class ComponenteController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Maquina $maquina)
     {
-        //
+        $componentes = Componente::where('maquina_id','=',$maquina->id)->paginate(15);
+        $componentes = Maquina::cortarParrafos($componentes, 100); 
+
+        return view('componentes.index', compact('maquina'), ['componentes' => $componentes]);
     }
 
     /**
@@ -62,11 +66,10 @@ class ComponenteController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
-        if(Componente::findOrFail($id)){
-            $dan = Maquina::join('componentes', 'componentes.maquina_id', '=', 'maquinas.id')->select('maquinas.nombre_maquina', 'componentes.*')->where('componentes.id','=',$id)->get();
-            return view('componentes.show', ['componente' => $dan]);
+    public function show(Maquina $maquina, Componente $componente)
+    {        
+        if($componente->maquina_id == $maquina->id){
+            return view('componentes.show', compact('maquina'), compact('componente'));
         }
     }
 
@@ -88,7 +91,7 @@ class ComponenteController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Maquina $maquina, Componente $componente)
+    public function update(EditComponenteRequest $request, Maquina $maquina, Componente $componente)
     {
         if($request->maquina_id == $maquina->id){              
             if($request->cambiarImagen){
@@ -96,7 +99,7 @@ class ComponenteController extends Controller
                 $request->validate([
                     'foto_up' => 'required|mimes:jpg,jpeg,png|max:2500',
                 ], [
-                    'foto_up.required' => 'La imagen de la máquina es requerido',
+                    'foto_up.required' => 'La imagen del componente es requerido.',
                     'foto_up.mimes' => 'La imagen debe ser un tipo de archivo: jpg, jpeg, png.',
                     'foto_up.max' => 'La imagen no debe ser mayor a 2500 kilobytes.',
                 ]);    

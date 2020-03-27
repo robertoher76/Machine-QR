@@ -14,6 +14,9 @@
     <script src="{{ asset('js/bootstrap-fileinput/js/locales/es.js') }}"></script>        
     <script src="{{ asset('js/crear.js') }}"></script>
     <script src="{{ asset('js/editar.js') }}"></script>
+    @if((old('cambiarImagen') != null))
+        <script src="{{ asset('js/checked.js') }}"></script>
+    @endif
 @endpush
 
 @section('cabecera')
@@ -28,28 +31,27 @@
 
 @section('contenido')
     
-    <div class="container mt-4">    
-
-    @if(count($errors)>0)
-        <div class="alert alert-warning" role="alert">
-            @foreach ($errors->all() as $error)
-                {{ $error }} <br/>
-            @endforeach
-        </div>  
-    @endif
+<div class="container mt-4">    
 
     <form autocomplete="off" id="form-general" method="POST" action="{{url('/maquinas/' . $maquina->id . '/componente/'. $componente->id)}}" enctype="multipart/form-data">
         @method('PUT')
         @csrf
         <input type="hidden" name="maquina_id" value="{{ $maquina->id }}">        
         <div class="form-group">
-            <label for="nombre">Nombre del Componente</label>
-            <input type="text" autocomplete="off" class="form-control" id="nombre" name="nombre" value="{{ $componente->nombre }}">    
+            <label for="nombre" class="{{ ($errors->has('nombre')) ? 'text-danger' : '' }}">Nombre del Componente</label>
+            <input type="text" autocomplete="off" class="form-control {{ ($errors->has('nombre')) ? 'border border-danger' : '' }}" id="nombre" name="nombre" value="{{ (old('nombre') != null) ? old('nombre') : $componente->nombre }}">
+            @if($errors->has('nombre'))
+                <small class="text-danger ml-2" style="font-size:14px;"><i class="fas fa-exclamation-circle" style="font-size:12px !important;"></i> {{ $errors->first('nombre') }}</small>
+            @endif    
         </div>
         <div class="form-group">
-            <label for="descripcion">Descripción del Componente</label>
-            <textarea class="form-control" id="descripcion" name="descripcion" rows="3">{{ $componente->descripcion }}</textarea>
-            <small for="descripcion" class="form-text text-muted">Descripción completa del funcionamiento del componente. Límite de caracteres: 1500.</small>
+            <label for="descripcion" class="ml-1 {{ ($errors->has('descripcion')) ? 'text-danger' : '' }}">Descripción del Componente</label>
+            <textarea class="form-control {{ ($errors->has('descripcion')) ? 'border border-danger' : '' }}" id="descripcion" name="descripcion" rows="3">{{ (old('descripcion') != null) ? old('descripcion') : $componente->descripcion }}</textarea>
+            @if($errors->has('descripcion'))
+                <small class="text-danger ml-2" style="font-size:14px;"><i class="fas fa-exclamation-circle" style="font-size:12px !important;"></i> {{ $errors->first('descripcion') }}</small>
+            @else
+                <small for="descripcion" class="form-text text-muted">Descripción completa del funcionamiento del componente. Límite de caracteres: 1500.</small>
+            @endif 
         </div> 
 
         <div class="form-group form-check">
@@ -62,9 +64,13 @@
             <p class="form-text text-muted">Imagen Actual Para {{ $maquina->nombre_maquina }}</p>
         </div> 
         <div class="form-group" id="div_foto">
-            <label for="foto">Imagen del Componente</label>          
+            <label for="foto" class="ml-1 {{ ($errors->has('foto_up')) ? 'text-danger' : '' }}">Imagen del Componente</label>          
             <input id="foto" name="foto_up" type="file">
-            <small class="form-text text-muted">Ingrese un archivo con formato: jpg, jpeg o png y que no sobrepase los 2500 kilobytes.</small>        
+            @if($errors->has('foto_up'))
+                <small class="text-danger ml-2" style="font-size:14px;"><i class="fas fa-exclamation-circle" style="font-size:12px !important;"></i> {{ $errors->first('foto_up') }}</small>
+            @else
+            <small for="foto" class="form-text text-muted">Ingrese un archivo con formato: jpg, jpeg o png y que no sobrepase los 2500 kilobytes.</small>        
+            @endif
         </div>
         <br/>
         <div class="text-center">

@@ -2,7 +2,7 @@
     box-sizing: border-box;
 }
 
-nav {
+#varn {
     padding: 8px;
     height: 75px;
 }
@@ -10,7 +10,7 @@ nav {
 .logo {
     float: left;
     padding: 8px;
-    margin-left: 16px;
+    margin-left: 10px;
     margin-top: 12px;
 }
 
@@ -23,24 +23,24 @@ nav {
     text-decoration: none;
 }
 
-nav ul {
+#varn ul {
     float: right;
     
 }
 
-nav ul li {
+#varn ul li {
     display: inline-block;    
 }
 
-nav ul li:not(:first-child) {
-    margin-left: 48px;
+#varn ul li:not(:first-child) {
+    margin-left: 30px;
 }
 
-nav ul li:last-child {
-    margin-right: 24px;
+#varn ul li:last-child {
+    margin-right: 15px;
 }
 
-nav ul li a {
+#varn ul li a {
     display: inline-block;
     outline: none;
     color: #000;
@@ -49,6 +49,11 @@ nav ul li a {
     font-size: 14px;
     letter-spacing: 1.2px;
     font-weight: 600;
+}
+
+#varn ul li a:hover{
+    color: royalblue;
+    text-decoration: underline;
 }
 
 @media screen and (max-width: 864px) {
@@ -76,11 +81,16 @@ nav ul li a {
     }
 
     .nav-wrapper ul li {
+        
           display: block;
           float: none;
           width: 100%;
           text-align: right;
           margin-bottom: 10px;
+    }
+
+    #varn ul li:not(:first-child) {
+        margin-left: 0px;
     }
 
     .nav-wrapper ul li:nth-child(1) a {

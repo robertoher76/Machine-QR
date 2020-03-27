@@ -17,7 +17,7 @@
 
 @section('cabecera')
 <div class="container mt-5">
-  <h1>Agregar Máquina</h1>
+  <h2>Agregar Máquina</h2>
   <p class="lead">Ingrese los siguientes datos para registrar una nueva máquina a la aplicación.</p>
 </div>
 @endsection

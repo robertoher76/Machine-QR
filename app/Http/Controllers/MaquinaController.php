@@ -20,7 +20,7 @@ class MaquinaController extends Controller
     public function index()
     {
         $maquinas = Maquina::paginate(15);
-        $maquinas = Maquina::cortarParrafos($maquinas,80);
+        $maquinas = Maquina::cortarParrafos($maquinas,100);
 
         return view('maquinas.index', ['maquinas' => $maquinas]);
     }
@@ -64,18 +64,21 @@ class MaquinaController extends Controller
      */
     public function show(Maquina $maquina)
     {           
-        $componentes =  Componente::where("maquina_id","=",$maquina->id)->paginate(10);    
-        $componentes = Maquina::cortarParrafos($componentes,97);  
+        $componentes =  Componente::where("maquina_id","=",$maquina->id)->paginate(6);    
+        $componentes = Maquina::cortarParrafos($componentes,110);  
         
-        $tutoriales = Tutoriale::where('maquina_id','=',$maquina->id)->paginate(2,['*'], 'tutorial');
+        $tutoriales = Tutoriale::where('maquina_id','=',$maquina->id)->paginate(4);
+        $tutoriales = Maquina::cortarParrafos($tutoriales,100);
 
         $instrucciones = Maquina::join('instrucciones', 'instrucciones.maquina_id', '=', 'maquinas.id')
                                 ->join('instrucciones_tipos','instrucciones_tipos.id','=','instrucciones.instrucciones_tipo_id')
                                 ->select('instrucciones_tipos.nombre','instrucciones.*')
                                 ->where('maquinas.id','=',$maquina->id)                                
-                                ->get();                              
-
-        return view('maquinas.show', ['maquina' => $maquina, 'componentes' =>  $componentes, 'instrucciones' => $instrucciones, 'tutoriales' => $tutoriales, 'galeria' => Maquina_imagene::where('maquina_id','=',$maquina->id)->get()]);
+                                ->paginate(6);                              
+        
+        $galerias = Maquina_imagene::where('maquina_id','=',$maquina->id)->paginate(15);
+                                
+        return view('maquinas.show', ['maquina' => $maquina, 'componentes' =>  $componentes, 'instrucciones' => $instrucciones, 'tutoriales' => $tutoriales, 'galerias' => $galerias]);
     }
 
     /**
