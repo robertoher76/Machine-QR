@@ -36,7 +36,7 @@ Route::resource('/maquinas/tutoriales','TutorialController');
 
 Route::resource('/maquinas/instrucciones','InstruccionController');
 
-Route::resource('/maquinas/instrucciones/tipo','InstruccionTipoController');
+Route::resource('/instrucciones/tipo','InstruccionTipoController');
 
 Route::get('/maquinas/{maquina}/componente/create','ComponenteController@create');
 Route::get('/maquinas/{maquina}/componente','ComponenteController@index');

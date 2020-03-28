@@ -51,10 +51,10 @@ class InstruccionController extends Controller
     {
 
         $instrucciones = Maquina::join('instrucciones', 'instrucciones.maquina_id', '=', 'maquinas.id')
-                                        ->join('instrucciones_tipos','instrucciones_tipos.id','=','instrucciones.instrucciones_tipo_id')
-                                        ->select('instrucciones_tipos.nombre','instrucciones.*','maquinas.nombre_maquina','maquinas.id')
-                                        ->where('instrucciones.id','=',$id)                                
-                                        ->get();     
+                                ->join('instrucciones_tipos','instrucciones_tipos.id','=','instrucciones.instrucciones_tipo_id')
+                                ->select('instrucciones_tipos.nombre','instrucciones.*','maquinas.nombre_maquina','maquinas.id')
+                                ->where('instrucciones.id','=',$id)                                
+                                ->get();     
 
         $procedimientos = Procedimiento::where('procedimientos.instruccione_id','=',$id)
                                         ->get();

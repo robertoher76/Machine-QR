@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateTipoInstruccionRequest;
 use Illuminate\Http\Request;
+use App\Instrucciones_tipo;
+use App\Maquina;
 
 class InstruccionTipoController extends Controller
 {
@@ -13,7 +16,9 @@ class InstruccionTipoController extends Controller
      */
     public function index()
     {
-        //
+        $instruccionesTipo = Instrucciones_tipo::paginate(15);        
+
+        return view('instrucciones.tipoInstrucciones.index', ['instruccionesTipo' => $instruccionesTipo]);
     }
 
     /**
@@ -23,18 +28,20 @@ class InstruccionTipoController extends Controller
      */
     public function create()
     {
-        //
+        return view('instrucciones.tipoInstrucciones.create');
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\CreateTipoInstruccionRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateTipoInstruccionRequest $request)
     {
-        //
+        Instrucciones_tipo::create($request->all());
+
+        return redirect('/maquinas/instrucciones/tipo');
     }
 
     /**
@@ -43,9 +50,9 @@ class InstruccionTipoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Instrucciones_tipo $tipo)
     {
-        //
+        return view('instrucciones.tipoInstrucciones.show', compact('tipo'));
     }
 
     /**
@@ -54,9 +61,9 @@ class InstruccionTipoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Instrucciones_tipo $tipo)
     {
-        //
+        return view('instrucciones.tipoInstrucciones.edit', compact('tipo'));
     }
 
     /**
@@ -66,9 +73,11 @@ class InstruccionTipoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(CreateTipoInstruccionRequest $request, Instrucciones_tipo $tipo)
     {
-        //
+        $tipo->update($request->all());
+
+        return redirect('instrucciones/tipo');
     }
 
     /**
