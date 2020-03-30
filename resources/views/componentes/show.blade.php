@@ -13,7 +13,7 @@
     <div class="container mt-5">
         <div class="row">
             <div class="col-sm-12 col-md-12 col-lg-8 col-xl-8">
-                <h1>{{ $componente->nombre }} &nbsp;<a href="{{ Request::url() }}/edit" class="btn btn-outline-success btn-sm"><i class="far fa-edit"></i> Editar</a></h1>
+                <h1>{{ $componente->nombre }} &nbsp;<a href="{{ Request::url() }}/edit" class="btn btn-outline-success btn-sm"><i class="far fa-edit"></i> Modificar</a></h1>
                 <small class="form-text text-muted">Componente de {{ $maquina->nombre_maquina }} | Modificado {{ $componente->updated_at->format('d-m-Y') }}</small>
                 <br/>
                 <p class="lead">{{ $componente->descripcion}}</p>

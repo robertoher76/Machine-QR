@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateMaquinaRequest;
 use App\Http\Requests\EditMaquinaRequest;
+use Illuminate\Support\MessageBag;
 use Illuminate\Http\Request;
 use App\Maquina_imagene;
 use App\Componente;

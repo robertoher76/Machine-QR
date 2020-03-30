@@ -33,7 +33,6 @@
             <div class="card-body">
               <h4 class="card-title">{{ $maquina->nombre_maquina }}</h4>
               <p class="card-text">{{ $maquina->descripcion }}</p>
-              
             </div>
             <div class="card-footer" style="background: white !important;border-top: 0 !important;"> 
               <div class="d-flex justify-content-between align-items-center">

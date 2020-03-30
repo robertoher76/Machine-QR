@@ -32,17 +32,12 @@ Route::resource('/maquinas','MaquinaController');
 
 Route::resource('/maquinas/imagenes','ImagenController');
 
-Route::resource('/maquinas/tutoriales','TutorialController');
+Route::resource('/maquinas/{maquina}/tutoriales','TutorialController');
 
 Route::resource('/maquinas/instrucciones','InstruccionController');
 
 Route::resource('/instrucciones/tipo','InstruccionTipoController');
 
-Route::get('/maquinas/{maquina}/componente/create','ComponenteController@create');
-Route::get('/maquinas/{maquina}/componente','ComponenteController@index');
-Route::get('/maquinas/{maquina}/componente/{componente}','ComponenteController@show');
-Route::get('/maquinas/{maquina}/componente/{componente}/edit','ComponenteController@edit');
-Route::put('/maquinas/{maquina}/componente/{componente}', 'ComponenteController@update');
-Route::post('/maquinas/{maquina}/componente','ComponenteController@store');
+Route::resource('/maquinas/{maquina}/componente', 'ComponenteController');
 
 Route::resource('/maquinas/procedimientos', 'ProcedimientoController');

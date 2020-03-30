@@ -203,7 +203,7 @@
         </div>
         
         <div class="tab-pane fade" id="nav-perfil" role="tabpanel" aria-labelledby="nav-perfil-tab">        
-            <div class="container">
+            <div class="container mt-4">
                 <div class="text-center">
                     <h5>Imagen de {{ $maquina->nombre_maquina }} &nbsp;<a href="{{ Request::root() }}/maquinas/instrucciones/create" class="btn btn-outline-success btn-sm">Cambiar Imagen</a></h5>
                 </div>
