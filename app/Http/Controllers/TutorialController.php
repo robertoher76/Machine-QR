@@ -54,7 +54,7 @@ class TutorialController extends Controller
             return redirect('/maquinas/'.$maquina->id.'/tutoriales');
         }
         $messageBag = new MessageBag;
-        return back()->withErrors($messageBag->add('video', 'Error al subir el video a la base de datos, intente de nuevo'))->withInput();
+        return back()->withErrors($messageBag->add('video_up', 'Error al subir el video a la base de datos, intente de nuevo'))->withInput();
     }
 
     /**

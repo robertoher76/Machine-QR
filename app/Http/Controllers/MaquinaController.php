@@ -54,7 +54,7 @@ class MaquinaController extends Controller
             return redirect('/maquinas');
         }
         $messageBag = new MessageBag;
-        return back()->withErrors($messageBag->add('imagen', 'Error al subir la imagen a la base de datos, intente de nuevo'))->withInput();
+        return back()->withErrors($messageBag->add('foto_up', 'Error al subir la imagen a la base de datos, intente de nuevo'))->withInput();
     }
 
     /**
@@ -74,7 +74,8 @@ class MaquinaController extends Controller
         $instrucciones = Maquina::join('instrucciones', 'instrucciones.maquina_id', '=', 'maquinas.id')
                                 ->join('instrucciones_tipos','instrucciones_tipos.id','=','instrucciones.instrucciones_tipo_id')
                                 ->select('instrucciones_tipos.nombre','instrucciones.*')
-                                ->where('maquinas.id','=',$maquina->id)                                
+                                ->where('maquinas.id','=',$maquina->id)
+                                ->orderBy('instrucciones.id')                                
                                 ->paginate(6);                              
         
         $galerias = Maquina_imagene::where('maquina_id','=',$maquina->id)->paginate(15);
@@ -122,7 +123,7 @@ class MaquinaController extends Controller
                 return redirect('/maquinas');
             }
             $messageBag = new MessageBag;
-            return back()->withErrors($messageBag->add('imagen', 'Error al subir la imagen a la base de datos, intente de nuevo'))->withInput();
+            return back()->withErrors($messageBag->add('foto_up', 'Error al subir la imagen a la base de datos, intente de nuevo'))->withInput();
 
         }else{            
             $request->request->add(['imagen' => $maquina->imagen, 'codigo_qr' => $maquina->codigo_qr]); 

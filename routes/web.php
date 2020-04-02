@@ -40,4 +40,4 @@ Route::resource('/instrucciones/tipo','InstruccionTipoController');
 
 Route::resource('/maquinas/{maquina}/componente', 'ComponenteController');
 
-Route::resource('/maquinas/procedimientos', 'ProcedimientoController');
+Route::resource('/maquinas/instrucciones/{instruccione}/procedimientos', 'ProcedimientoController');

@@ -57,6 +57,7 @@ class InstruccionController extends Controller
                                 ->get();     
 
         $procedimientos = Procedimiento::where('procedimientos.instruccione_id','=',$id)
+                                        ->orderBy('numero_orden')
                                         ->get();
 
         return view('instrucciones.show', ['instruccion' => $instrucciones, 'procedimientos' => $procedimientos]);

@@ -54,7 +54,7 @@ class ComponenteController extends Controller
                 return redirect('/maquinas/'.$maquina->id);
             }
             $messageBag = new MessageBag;
-            return back()->withErrors($messageBag->add('imagen', 'Error al subir la imagen a la base de datos, intente de nuevo'))->withInput();
+            return back()->withErrors($messageBag->add('foto_up', 'Error al subir la imagen a la base de datos, intente de nuevo'))->withInput();
         }
         $messageBag = new MessageBag;
         return back()->withErrors($messageBag->add('error', 'No modifique la ruta o los inputs ocultos pedazo de gonorrea culio'))->withInput();
@@ -112,7 +112,7 @@ class ComponenteController extends Controller
                     return redirect('/maquinas/'.$maquina->id);
                 }
                 $messageBag = new MessageBag;
-                return back()->withErrors($messageBag->add('imagen', 'Error al subir la imagen a la base de datos, intente de nuevo'))->withInput();
+                return back()->withErrors($messageBag->add('foto_up', 'Error al subir la imagen a la base de datos, intente de nuevo'))->withInput();
             }     
             
             $request->request->add(['imagen' => $componente->imagen]);

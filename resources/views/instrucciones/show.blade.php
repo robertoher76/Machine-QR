@@ -35,6 +35,7 @@
           @foreach($procedimientos as $procedimiento)
             <a class="list-group-item list-group-item-action {{ ($procedimiento->numero_orden == 1) ? 'active' : '' }}" id="list-{{ $procedimiento->numero_orden }}-list" data-toggle="list" href="#list-{{ $procedimiento->numero_orden }}" role="tab" aria-controls="{{ $procedimiento->numero_orden }}">Procedimiento #{{ $procedimiento->numero_orden }}</a>            
           @endforeach
+          <a class="list-group-item list-group-item-action" href="{{ Request::url() }}/procedimientos/create"><i class="fas fa-plus"></i> Agregar Procedimiento</a>            
         </div>        
       </div>
       <div class="col-8">
