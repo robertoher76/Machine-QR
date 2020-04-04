@@ -9,11 +9,11 @@ use Illuminate\Support\Str;
 
 class Maquina extends Model
 {
-    
+
     protected $fillable = ['nombre_maquina','descripcion','codigo_qr','imagen'];
 
     public function maquina_imagenes(){
-        
+
         return $this->hasMany('App\Maquina_imagene');
     }
 
@@ -33,6 +33,19 @@ class Maquina extends Model
 
         return $this->hasMany('App\Tutoriale');
 
+    }
+
+    public static function getComponentes($maquina_id){
+        try {
+            return Maquina::join('instrucciones', 'instrucciones.maquina_id', '=', 'maquinas.id')
+                            ->join('instrucciones_tipos','instrucciones_tipos.id','=','instrucciones.instrucciones_tipo_id')
+                            ->select('instrucciones_tipos.nombre','instrucciones.*')
+                            ->where('maquinas.id','=',$maquina_id)
+                            ->orderBy('instrucciones.numero_orden')
+                            ->paginate(6);
+        } catch (QueryException $ex) {
+            return null;
+        }
     }
 
     public static function setImagenMaquina($foto, $actual = false){
@@ -56,12 +69,12 @@ class Maquina extends Model
         }
 
         $qrName = Str::random(20);
-        $image = \QrCode::format('png')                
+        $image = \QrCode::format('png')
                 ->size(1000)->errorCorrection('H')
                 ->generate($qrName);
         Storage::disk('public')->put("imagenes/QR/$qrName.png", $image);
 
-        return $qrName;             
+        return $qrName;
     }
 
     public static function cortarParrafos($maquinas, $fin){

@@ -13,4 +13,5 @@ class Instrucciones_tipo extends Model
         return $this->hasMany('App\Instruccione');
 
     }
+
 }
