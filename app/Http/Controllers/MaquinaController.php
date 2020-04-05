@@ -70,6 +70,7 @@ class MaquinaController extends Controller
         $tutoriales = Maquina::cortarParrafos($tutoriales,100);
 
         $instrucciones = Maquina::getComponentes($maquina->id);
+        $instrucciones = Maquina::cortarParrafos($instrucciones,200);
 
         $galerias = Maquina_imagene::where('maquina_id','=',$maquina->id)->paginate(15);
 

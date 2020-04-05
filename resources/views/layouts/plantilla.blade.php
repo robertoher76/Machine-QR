@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    
-    <link rel="stylesheet" href = "{{ asset('css/bootstrap.min.css') }}" />  
+
+    <link rel="stylesheet" href = "{{ asset('css/bootstrap.min.css') }}" />
     <link href="{{ asset('css/all.css') }}" rel="stylesheet">
     <link href="{{ asset('css/master.css') }}" rel="stylesheet">
     @stack('css')
@@ -13,7 +13,7 @@
 </head>
 <body style="padding-top: 0rem;">
     <header >
-        
+
     @include('..layouts.menu')
 
     </header>
@@ -29,18 +29,19 @@
 
         <div class="pie mt-5">
             <footer class="text-muted">
-                <div class="container">                
-                    <p>&copy; 2020 Machine QR | Todos los derechos reservados.</p>        
+                <div class="container">
+                    <p>&copy; 2020 Machine QR | Todos los derechos reservados.</p>
                 </div>
-            </footer>        
+            </footer>
         </div>
 
     </main>
-    
-    
+
+
     <script src="{{ asset('js/jquery-3.4.1.min.js') }}"></script>
     <script src="{{ asset('js/bootstrap.min.js') }}"></script>
-    <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>    
+    <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('js/toasts.js') }}"></script>
     @stack('js')
 </body>
 </html>

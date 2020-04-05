@@ -40,20 +40,18 @@ class ProcedimientoController extends Controller
      */
     public function store(CreateProcedimientoRequest $request, Instruccione $instruccione)
     {
-        if($request->instruccione_id == $instruccione->id){
-            if($imagenName = Procedimiento::setImagenProcedimiento($request->foto_up)){
-                if(Procedimiento::setNumero_Orden($request->numero_orden, $instruccione->id)){
-                    $request->request->add(['imagen' => $imagenName]);
-
-                    Procedimiento::create($request->all());
-                    return redirect('maquinas/instrucciones/'.$instruccione->id);
-                }
-                Procedimiento::setDeleteImagenProcedimiento($imagenName);
-                $messageBag = new MessageBag;
-                return back()->withErrors($messageBag->add('error', 'Error al guardar el procedimiento en la base de datos.'))->withInput();
-            }
-        }
         $messageBag = new MessageBag;
+        if($imagenName = Procedimiento::setImagenProcedimiento($request->foto_up)){
+            if(Procedimiento::setNumeroOrdenCreate($instruccione->id, $request->numero_orden)){
+                $request->request->add(['imagen' => $imagenName]);
+                $request->instruccione_id = $instruccione->id;
+                Procedimiento::create($request->all());
+                return redirect('maquinas/'.$instruccione->maquina_id.'/instrucciones/'.$instruccione->id)
+                     ->withErrors($messageBag->add('success', 'El Procedimiento ha sido registado en la aplicación con éxito'));
+            }
+            Procedimiento::setDeleteImagenProcedimiento($imagenName);
+            return back()->withErrors($messageBag->add('error', 'Error al guardar el procedimiento en la base de datos.'))->withInput();
+        }
         return back()->withErrors($messageBag->add('foto_up', 'Error al subir la imagen a la base de datos, intente de nuevo'))->withInput();
     }
 
@@ -90,11 +88,12 @@ class ProcedimientoController extends Controller
      */
     public function update(EditProcedimientoRequest $request, Instruccione $instruccione, Procedimiento $procedimiento)
     {
+        $messageBag = new MessageBag;
         if($procedimiento->instruccione_id == $instruccione->id){
             if($request->cambiarImagen){
                 $request->validate([
-                    'foto_up' => 'required|mimes:jpg,jpeg,png|max:2500',
-                ], [
+                    'foto_up' => 'required|mimes:jpg,jpeg,png|max:2500'],
+                [
                     'foto_up.required' => 'La imagen del componente es requerido.',
                     'foto_up.mimes' => 'La imagen debe ser un tipo de archivo: jpg, jpeg, png.',
                     'foto_up.max' => 'La imagen no debe ser mayor a 2500 kilobytes.',
@@ -102,16 +101,16 @@ class ProcedimientoController extends Controller
                 if($imagenName = Procedimiento::setImagenProcedimiento($request->foto_up, $procedimiento->imagen)){
                     $request->request->add(['imagen' => $imagenName]);
                 }else{
-                    $messageBag = new MessageBag;
                     return back()->withErrors($messageBag->add('foto_up', 'Error al subir la imagen a la base de datos, intente de nuevo'))->withInput();
                 }
             }
-            if(Procedimiento::getUpdateOrdenEdit($instruccione->id, $procedimiento->id, $procedimiento->numero_orden, $request->numero_orden)){
+            if(Procedimiento::setNumeroOrdenEdit($instruccione->id, $request->numero_orden, $procedimiento->numero_orden)){
+                $procedimiento->instruccione_id = $instruccione->id;
                 $procedimiento->update($request->all());
-                return redirect('maquinas/instrucciones/'.$instruccione->id);
+                return redirect('maquinas/'.$instruccione->maquina_id.'/instrucciones/'.$instruccione->id)
+                        ->withErrors($messageBag->add('success', 'El procedimiento ha sido modificado exitosamente.'))->withInput();
             }
         }
-        $messageBag = new MessageBag;
         return back()->withErrors($messageBag->add('error', 'Error al modificar el procedimiento en la base de datos.'))->withInput();
     }
 
@@ -124,15 +123,16 @@ class ProcedimientoController extends Controller
     public function destroy(Instruccione $instruccione, Procedimiento $procedimiento)
     {
         try{
+            $messageBag = new MessageBag;
             if($instruccione->id == $procedimiento->instruccione_id){
-                if(Procedimiento::setNumero_OrdenDelete($procedimiento->numero_orden, $instruccione->id)){
+                if(Procedimiento::updateOrdenDecrease($instruccione->id,false,$procedimiento->numero_orden)){
                     $procedimiento->delete();
-                    return redirect('maquinas/instrucciones/'.$instruccione->id);
+                    return redirect('maquinas/'.$instruccione->maquina_id.'/instrucciones/'.$instruccione->id)
+                            ->withErrors($messageBag->add('success', 'El procedimiento ha sido eliminado exitosamente de la base de datos.'))->withInput();
                 }
             }
-        }catch(Exception $ex){
-            $messageBag = new MessageBag;
-            return back()->withErrors($messageBag->add('error', 'Error, no se puede eliminar este procedimiento de la base de datos.'))->withInput();
+        }catch(\Exception $ex){
+            return back()->withErrors($messageBag->add('error', 'No se puede eliminar este procedimiento de la base de datos.'))->withInput();
         }
     }
 }

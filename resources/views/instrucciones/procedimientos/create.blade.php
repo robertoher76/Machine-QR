@@ -43,10 +43,10 @@
                 <label for="orden" class="ml-1 {{ ($errors->has('numero_orden')) ? 'text-danger' : '' }}">Posición del Procedimiento</label>
                 <select class="form-control {{ ($errors->has('numero_orden')) ? 'border border-danger' : '' }}" id="orden" name="numero_orden">
                     @foreach($lists as $list)
-                        <option value="{{ $list->numero_orden }}">Antes de Procedimiento #{{ $list->numero_orden }}</option>
-                        @if($loop->last)
-                            <option value="{{ $list->numero_orden + 1 }}" selected>Después de Procedimiento #{{ $list->numero_orden }}</option>
+                        @if($loop->first)
+                            <option value="{{ $list->numero_orden }}" selected>El primer procedimiento</option>
                         @endif
+                        <option value="{{ $list->numero_orden + 1 }}">Después del procedimiento #{{ $list->numero_orden }}</option>
                     @endforeach
                 </select>
                 @if($errors->has('numero_orden'))

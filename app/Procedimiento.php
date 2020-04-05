@@ -33,79 +33,28 @@ class Procedimiento extends Model
         }
     }
 
-    public static function getNumero_Orden($procedimiento_id){
-        try {
-            return Procedimiento::where('id','=',$procedimiento_id)->value('numero_orden');
-        } catch (QueryException $ex) {
-            return 0;
-        }
-    }
-
-    public static function setNumero_Orden($numero,$id)
-    {
-        if(self::getIsEmptyProcedimiento($numero,$id)){
-            if(self::getLastProcedimiento($id) == 0 && $numero == 1){
-                return true;
-            }elseif (($numero - self::getLastProcedimiento($id)) == 1 ) {
-                return true;
-            }
-        }else{
-            if(self::getUpdateOrden($numero, $id))
-                return true;
-        }
-        return false;
-    }
-
-    public static function getUpdateOrden($numero, $id){
+    public static function setNumeroOrdenCreate($instruccione_id, $posicion){
         try{
-            $i = self::getLastProcedimiento($id);
-            for($i; $i >= $numero; $i--){
-                Procedimiento::where('instruccione_id','=',$id)
-                            ->where('numero_orden',"=",$i)
-                            ->update(['numero_orden' => $i+1]);
+            if(self::getLastProcedimiento($instruccione_id)+1 == $posicion){
+                return true;
+            }else{
+                if(self::updateOrdenIncrease($instruccione_id, $posicion))
+                    return true;
             }
-            return true;
+            return false;
         }catch(QueryException $ex){
             return false;
         }
     }
 
-    public static function getUpdateOrdenDelete($numero, $id){
+    public static function setNumeroOrdenEdit($instruccione_id, $posicion, $posicionActual){
         try{
-            $i = $numero + 1;
-            for($i; $i <= self::getLastProcedimiento($id); $i++){
-                Procedimiento::where('instruccione_id','=',$id)
-                            ->where('numero_orden',"=",$i)
-                            ->update(['numero_orden' => $i-1]);
-            }
-            return true;
-        }catch(QueryException $ex){
-            return false;
-        }
-    }
-
-    public static function getUpdateOrdenEdit($instruccione_id, $procedimiento_id, $posicionActual, $posicion){
-        try {
             if($posicionActual > $posicion){
-                $i = self::getLastProcedimiento($instruccione_id);
-                for($i; $i >= $posicion; $i--){
-                    if($posicionActual == $i)
-                        continue;
-                    Procedimiento::where('instruccione_id','=',$instruccione_id)
-                                ->where('numero_orden',"=",$i)
-                                ->update(['numero_orden' => $i+1]);
-                }
-                return true;
+                if(self::updateOrdenIncrease($instruccione_id, $posicion, $posicionActual))
+                    return true;
             }elseif($posicionActual < $posicion){
-                $i = $posicionActual;
-                for($i; $i <= $posicion; $i++){
-                    if($posicionActual == $i)
-                        continue;
-                    Procedimiento::where('instruccione_id','=',$instruccione_id)
-                                 ->where('numero_orden',"=",$i)
-                                 ->update(['numero_orden' => $i-1]);
-                }
-                return true;
+                if(self::updateOrdenDecrease($instruccione_id, $posicion, $posicionActual))
+                    return true;
             }
             return true;
         }catch(QueryException $ex){
@@ -113,27 +62,59 @@ class Procedimiento extends Model
         }
     }
 
-    public static function setNumero_OrdenDelete($numero, $id){
-        if(self::getLastProcedimiento($id) == $numero){
+    public static function updateOrdenIncrease($instruccione_id, $posicion, $posicionActual = false){
+        try{
+            if($posicionActual == false){
+                $i = self::getLastProcedimiento($instruccione_id);
+                for($i;$i >= $posicion; $i--){
+                    Procedimiento::where('instruccione_id','=',$instruccione_id)
+                                 ->where('numero_orden','=',$i)
+                                 ->update(['numero_orden' => $i+1]);
+                }
+            }else{
+                $i = $posicionActual-1;
+                for($i;$i >= $posicion; $i--){
+                    Procedimiento::where('instruccione_id','=',$instruccione_id)
+                                 ->where('numero_orden','=',$i)
+                                 ->update(['numero_orden' => $i+1]);
+                }
+            }
             return true;
-        }else{
-            if(self::getUpdateOrdenDelete($numero, $id))
-                return true;
+        }catch(QueryException $ex){
+            return false;
         }
-        return false;
     }
 
-    public static function getLastProcedimiento($id){
-        $count = Procedimiento::where('instruccione_id','=',$id)
-                            ->count();
-        return $count;
+    public static function updateOrdenDecrease($instruccione_id, $posicion = false, $posicionActual){
+        try{
+            if($posicion){
+                $i = $posicionActual+1;
+                for($i;$i <= $posicion; $i++){
+                    Procedimiento::where('instruccione_id','=',$instruccione_id)
+                                ->where('numero_orden','=',$i)
+                                ->update(['numero_orden' => $i-1]);
+                }
+            }else{
+                $i=$posicionActual+1;
+                for($i;$i <= self::getLastProcedimiento($instruccione_id); $i++){
+                    Procedimiento::where('instruccione_id','=',$instruccione_id)
+                                ->where('numero_orden','=',$i)
+                                ->update(['numero_orden' => $i-1]);
+                }
+            }
+            return true;
+        }catch(QueryException $ex){
+            return false;
+        }
     }
 
-    public static function getIsEmptyProcedimiento($numero,$id){
-        $dan = Procedimiento::where('instruccione_id','=',$id)
-                            ->where('numero_orden',"=",$numero)
-                            ->value('id');
-        return ($dan) ? false : true;
+    public static function getLastProcedimiento($instruccione_id){
+        try{
+            return Procedimiento::where('instruccione_id','=',$instruccione_id)
+                                ->count();
+        }catch(QueryException $ex){
+            return null;
+        }
     }
 
     public static function getListProcedimiento($instruccione_id){

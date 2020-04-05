@@ -33,8 +33,7 @@ class InstruccionController extends Controller
     public function create(Maquina $maquina)
     {
         $lists = Instruccione::getListIntrucciones($maquina->id);
-        $instrucciones_tipo = Instrucciones_tipo::all();
-        return view('instrucciones.create', ['maquina' => $maquina, 'instrucciones_tipo' => $instrucciones_tipo, 'lists' => $lists]);
+        return view('instrucciones.create', ['maquina' => $maquina, 'instrucciones_tipo' => Instrucciones_tipo::all(), 'lists' => $lists]);
     }
 
     /**
@@ -45,12 +44,14 @@ class InstruccionController extends Controller
      */
     public function store(CreateInstruccionRequest $request, Maquina $maquina)
     {
-        if(Instrucciones_tipo::findOrFail($request->instrucciones_tipo_id)){
-            if(Instruccione::setNumeroOrdenCreate($maquina->id, $request->numero_orden))
-                $instruccione = Instruccione::create($request->all());
-            return redirect('maquinas/'.$maquina->id.'/instrucciones/'.$instruccione->id);
-        }
         $messageBag = new MessageBag;
+        if(Instrucciones_tipo::findOrFail($request->instrucciones_tipo_id)){
+            if(Instruccione::setNumeroOrdenCreate($maquina->id, $request->numero_orden)){
+                $instruccione = Instruccione::create($request->all());
+                return redirect('maquinas/'.$maquina->id.'/instrucciones/'.$instruccione->id)
+                        ->withErrors($messageBag->add('success', 'La Instrucción ha sido registada en la aplicación con éxito'));
+            }
+        }
         return back()->withErrors($messageBag->add('error', 'Error al guardar la instrucción en la base de datos.'))->withInput();
     }
 
@@ -78,8 +79,7 @@ class InstruccionController extends Controller
     public function edit(Maquina $maquina, Instruccione $instruccione)
     {
         $lists = Instruccione::getListIntrucciones($maquina->id);
-        $instrucciones_tipo = Instrucciones_tipo::all();
-        return view('instrucciones.edit', ['maquina' => $maquina, 'instruccion' => $instruccione, 'instrucciones_tipo' => $instrucciones_tipo, 'lists' => $lists]);
+        return view('instrucciones.edit', ['maquina' => $maquina, 'instruccion' => $instruccione, 'instrucciones_tipo' => Instrucciones_tipo::all(), 'lists' => $lists]);
     }
 
     /**
@@ -91,12 +91,14 @@ class InstruccionController extends Controller
      */
     public function update(EditInstruccionRequest $request, Maquina $maquina, Instruccione $instruccione)
     {
+        $messageBag = new MessageBag;
         if(Instrucciones_tipo::findOrFail($request->instrucciones_tipo_id)){
             if(Instruccione::setNumeroOrdenEdit($maquina->id, $request->numero_orden, $instruccione->numero_orden))
                 $instruccione->update($request->all());
-            return redirect('maquinas/'.$maquina->id.'/instrucciones/'.$instruccione->id);
+            return redirect('maquinas/'.$maquina->id.'/instrucciones/'.$instruccione->id)
+                    ->withErrors($messageBag->add('success', 'La Instrucción fue modificada exitosamente'))
+                    ->withInput();
         }
-        $messageBag = new MessageBag;
         return back()->withErrors($messageBag->add('error', 'Error al modificar la instrucción en la base de datos.'))->withInput();
     }
 
@@ -106,8 +108,19 @@ class InstruccionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Maquina $maquina, Instruccione $instruccione)
     {
-        //
+        $messageBag = new MessageBag;
+        if($instruccione->maquina_id == $maquina->id){
+            if(count(Procedimiento::getListProcedimiento($instruccione->id)) == 0){
+                if(Instruccione::updateOrdenDecrease($maquina->id,false,$instruccione->numero_orden)){
+                    $instruccione->delete();
+                    return redirect('maquinas/'.$maquina->id)
+                            ->withErrors($messageBag->add('success', 'La Instrucción fue eliminada exitosamente de la aplicación.'))
+                            ->withInput();
+                }
+            }
+            return back()->withErrors($messageBag->add('error', 'No se puede eliminar la Instrucción debido a que posee procedimientos asociados.'))->withInput();
+        }
     }
 }

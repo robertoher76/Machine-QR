@@ -2,6 +2,11 @@
 
 @section('cabecera')
     <div class="container mt-5">
+        @if($errors->has('error'))
+            @include('..layouts.toastDanger', ['title' => 'Advertencia', 'error' => $errors->first('error')])
+        @elseif($errors->has('success'))
+            @include('..layouts.toastSuccess', ['title' => 'Exitosamente', 'success' => $errors->first('success')])
+        @endif
         <h2 style="color: black;">Modificar Instrucción</h2>
         <p class="lead">Ingrese los siguientes datos para modificar {{ $instruccion->titulo }}.</p>
     </div>

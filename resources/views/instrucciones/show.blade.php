@@ -7,10 +7,16 @@
 @push('js')
 <script src="{{ asset('js/lightbox-plus-jquery.min.js') }}"></script>
 <script src="{{ asset('js/lightbox-config.js') }}"></script>
+
 @endpush
 
 @section('cabecera')
     <div class="container mt-5">
+        @if($errors->has('error'))
+            @include('..layouts.toastDanger', ['title' => 'Advertencia', 'error' => $errors->first('error')])
+        @elseif($errors->has('success'))
+            @include('..layouts.toastSuccess', ['title' => 'Exitosamente', 'success' => $errors->first('success')])
+        @endif
         <div class="row">
             <div class="col-12">
                 <h1>{{ $instruccion->titulo }}
@@ -19,7 +25,7 @@
                             <a href="{{ Request::url() }}/edit" class="btn btn-outline-success btn-sm"><i class="far fa-edit"></i> Modificar</a>
                             @method('DELETE')
                             @csrf
-                            <button class="btn btn-outline-danger btn-sm" type="submit"><i class="far fa-trash-alt"></i>Eliminar</button>
+                            <button class="btn btn-outline-danger btn-sm" type="submit"><i class="far fa-trash-alt"></i> Eliminar</button>
                         </form>
                     </td>
                 </h1>
@@ -40,7 +46,7 @@
           @foreach($procedimientos as $procedimiento)
             <a class="list-group-item list-group-item-action {{ ($procedimiento->numero_orden == 1) ? 'active' : '' }}" id="list-{{ $procedimiento->numero_orden }}-list" data-toggle="list" href="#list-{{ $procedimiento->numero_orden }}" role="tab" aria-controls="{{ $procedimiento->numero_orden }}">Procedimiento #{{ $procedimiento->numero_orden }}</a>
           @endforeach
-          <a class="list-group-item list-group-item-action " href="{{ Request::url() }}/procedimientos/create"><i class="fas fa-plus text-success"></i> Agregar Procedimiento</a>
+        <a class="list-group-item list-group-item-action " href="{{ Request::root() }}/maquinas/instrucciones/{{ $instruccion->id }}/procedimientos/create"><i class="fas fa-plus text-success"></i> Agregar Procedimiento</a>
         </div>
       </div>
       <div class="col-8">
@@ -52,11 +58,11 @@
                   <h4>{{ $procedimiento->descripcion }}</h4>
                   <p>Modificado {{ $procedimiento->updated_at->format('d-m-Y') }}</p>
                   <td>
-                      <form method="POST" action="{{url('/maquinas/instrucciones/'. $procedimiento->instruccione_id .'/procedimientos/'.$procedimiento->id )}}">
-                        <a href="{{ Request::root() }}/maquinas/instrucciones/{{ $procedimiento->instruccione_id }}/procedimientos/{{ $procedimiento->id }}/edit" class="btn btn-outline-success btn-sm"><i class="far fa-edit"></i> Modificar</a>
+                      <form method="POST" action="{{url('/maquinas/instrucciones/'. $instruccion->id .'/procedimientos/'.$procedimiento->id )}}">
+                        <a href="{{ Request::root() }}/maquinas/instrucciones/{{ $instruccion->id }}/procedimientos/{{ $procedimiento->id }}/edit" class="btn btn-outline-success btn-sm"><i class="far fa-edit"></i> Modificar</a>
                         @method('DELETE')
                         @csrf
-                        <button class="btn btn-outline-danger btn-sm" type="submit"><i class="far fa-trash-alt"></i>Eliminar</button>
+                        <button class="btn btn-outline-danger btn-sm" type="submit"><i class="far fa-trash-alt"></i> Eliminar</button>
                       </form>
                   </td>
                 </div>

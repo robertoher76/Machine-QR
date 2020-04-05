@@ -42,10 +42,10 @@ class Instruccione extends Model
     public static function setNumeroOrdenEdit($maquina_id, $posicion, $posicionActual){
         try{
             if($posicionActual > $posicion){
-                if(self::updateOrdenIncrease($maquina_id, $posicion))
+                if(self::updateOrdenIncrease($maquina_id, $posicion, $posicionActual))
                     return true;
             }elseif($posicionActual < $posicion){
-                if(self::updateOrdenDecrease($maquina_id, $posicion))
+                if(self::updateOrdenDecrease($maquina_id, $posicion, $posicionActual))
                     return true;
             }
             return true;
@@ -63,13 +63,22 @@ class Instruccione extends Model
         }
     }
 
-    public static function updateOrdenIncrease($maquina_id, $posicion){
+    public static function updateOrdenIncrease($maquina_id, $posicion, $posicionActual = false){
         try{
-            $i = self::getLastInstruccion($maquina_id);
-            for($i;$i >= $posicion; $i--){
-                Instruccione::where('maquina_id','=',$maquina_id)
-                            ->where('numero_orden','=',$i)
-                            ->update(['numero_orden' => $i+1]);
+            if($posicionActual == false){
+                $i = self::getLastInstruccion($maquina_id);
+                for($i;$i >= $posicion; $i--){
+                    Instruccione::where('maquina_id','=',$maquina_id)
+                                ->where('numero_orden','=',$i)
+                                ->update(['numero_orden' => $i+1]);
+                }
+            }else{
+                $i = $posicionActual-1;
+                for($i;$i >= $posicion; $i--){
+                    Instruccione::where('maquina_id','=',$maquina_id)
+                                ->where('numero_orden','=',$i)
+                                ->update(['numero_orden' => $i+1]);
+                }
             }
             return true;
         }catch(QueryException $ex){
@@ -77,13 +86,22 @@ class Instruccione extends Model
         }
     }
 
-    public static function updateOrdenDecrease($maquina_id, $posicion){
+    public static function updateOrdenDecrease($maquina_id, $posicion = false, $posicionActual){
         try{
-            $i = $posicion;
-            for($i;$i <= self::getLastInstruccion($maquina_id); $i++){
-                Instruccione::where('maquina_id','=',$maquina_id)
-                            ->where('numero_orden','=',$i)
-                            ->update(['numero_orden' => $i-1]);
+            if($posicion){
+                $i = $posicionActual+1;
+                for($i;$i <= $posicion; $i++){
+                    Instruccione::where('maquina_id','=',$maquina_id)
+                                ->where('numero_orden','=',$i)
+                                ->update(['numero_orden' => $i-1]);
+                }
+            }else{
+                $i=$posicionActual+1;
+                for($i;$i <= self::getLastInstruccion($maquina_id); $i++){
+                    Instruccione::where('maquina_id','=',$maquina_id)
+                                ->where('numero_orden','=',$i)
+                                ->update(['numero_orden' => $i-1]);
+                }
             }
             return true;
         }catch(QueryException $ex){

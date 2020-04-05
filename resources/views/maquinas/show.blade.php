@@ -13,6 +13,11 @@
 
 @section('cabecera')
     <div class="container mt-sm-0 mt-md-3 mt-lg-5 mt-xl-5">
+        @if($errors->has('error'))
+            @include('..layouts.toastDanger', ['title' => 'Advertencia', 'error' => $errors->first('error')])
+        @elseif($errors->has('success'))
+            @include('..layouts.toastSuccess', ['title' => 'Exitosamente', 'success' => $errors->first('success')])
+        @endif
         <div class="row">
             <div class="col-sm-12 col-md-12 col-lg-8 col-xl-8">
                 <div class="mb-2" style="width:100% !important;">

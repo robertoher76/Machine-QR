@@ -45,24 +45,19 @@
                 <small for="descripcion" class="form-text text-muted">Descripción completa del procedimiento a realizar. Límite de caracteres: 1500.</small>
             @endif
         </div>
-        @if(count($lists) > 1)
+        @if(count($lists) > 0)
             <div class="form-group">
-            <label for="orden" class="ml-1 {{ ($errors->has('numero_orden')) ? 'text-danger' : '' }}">Posición del Procedimiento</label>
+                <label for="orden" class="ml-1 {{ ($errors->has('numero_orden')) ? 'text-danger' : '' }}">Posición del Procedimiento</label>
                 <select class="form-control {{ ($errors->has('numero_orden')) ? 'border border-danger' : '' }}" id="orden" name="numero_orden">
                     @foreach($lists as $list)
-                        @if($list->numero_orden == (App\Procedimiento::getNumero_Orden($procedimiento->id)))
-
-                            <option value="{{ $list->numero_orden }}" selected>Mantener posición</option>
-
-                        @elseif($list->numero_orden > (App\Procedimiento::getNumero_Orden($procedimiento->id)) &&  $list->numero_orden != (App\Procedimiento::getNumero_Orden($procedimiento->id) + 1))
-                            <option value="{{ $list->numero_orden - 1 }}">Antes de Procedimiento #{{ $list->numero_orden }}</option>
-                        @elseif($list->numero_orden < (App\Procedimiento::getNumero_Orden($procedimiento->id)))
-
-                            <option value="{{ $list->numero_orden }}">Antes de Procedimiento #{{ $list->numero_orden }}</option>
-
+                        @if($procedimiento->numero_orden != 1 && $loop->first)
+                            <option value="{{ $list->numero_orden }}">El primer procedimiento</option>
                         @endif
-                        @if($loop->last)
-                            <option value="{{ $list->numero_orden }}">Después de Procedimiento #{{ $list->numero_orden }}</option>
+                        @if($procedimiento->numero_orden == $list->numero_orden)
+                            <option value="{{ $list->numero_orden }}" selected>Mantener Posición</option>
+                        @elseif($procedimiento->numero_orden-1 == $list->numero_orden)
+                        @else
+                            <option value="{{ $list->numero_orden }}">Después del procedimiento #{{ $list->numero_orden }}</option>
                         @endif
                     @endforeach
                 </select>
