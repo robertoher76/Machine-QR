@@ -18,10 +18,7 @@ class ComponenteController extends Controller
      */
     public function index(Maquina $maquina)
     {
-        $componentes = Componente::where('maquina_id','=',$maquina->id)->paginate(15);
-        $componentes = Maquina::cortarParrafos($componentes, 100); 
-
-        return view('componentes.index', compact('maquina'), ['componentes' => $componentes]);
+        return view('componentes.index', compact('maquina'), ['componentes' => Componente::getComponentesPaginate($maquina->id, 100)]);
     }
 
     /**
@@ -30,7 +27,7 @@ class ComponenteController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create(Maquina $maquina)
-    {                
+    {
         return view('componentes.create', compact('maquina'));
     }
 
@@ -42,9 +39,9 @@ class ComponenteController extends Controller
      */
     public function store(CreateComponenteRequest $request, Maquina $maquina)
     {
-        if($request->maquina_id == $maquina->id){            
+        if($request->maquina_id == $maquina->id){
             if($imagenName = Componente::setImagenComponente($request->foto_up)){
-                $ultimoComponente = Componente::where('maquina_id','=',$maquina->id)                                            
+                $ultimoComponente = Componente::where('maquina_id','=',$maquina->id)
                                             ->orderBy('numero_orden','desc')
                                             ->value('numero_orden');
 
@@ -67,7 +64,7 @@ class ComponenteController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show(Maquina $maquina, Componente $componente)
-    {        
+    {
         if($componente->maquina_id == $maquina->id){
             return view('componentes.show', compact('maquina'), compact('componente'));
         }
@@ -81,7 +78,9 @@ class ComponenteController extends Controller
      */
     public function edit(Maquina $maquina, Componente $componente)
     {
-        return view('componentes.edit', compact('maquina'), compact('componente'));
+        if($componente->maquina_id == $maquina->id){
+            return view('componentes.edit', compact('maquina'), compact('componente'));
+        }
     }
 
     /**
@@ -93,36 +92,32 @@ class ComponenteController extends Controller
      */
     public function update(EditComponenteRequest $request, Maquina $maquina, Componente $componente)
     {
-        if($request->maquina_id == $maquina->id){              
+        $messageBag = new MessageBag;
+        if($componente->maquina_id == $maquina->id){
+            $request->maquina_id = $maquina->id;
             if($request->cambiarImagen){
-
                 $request->validate([
                     'foto_up' => 'required|mimes:jpg,jpeg,png|max:2500',
                 ], [
                     'foto_up.required' => 'La imagen del componente es requerido.',
                     'foto_up.mimes' => 'La imagen debe ser un tipo de archivo: jpg, jpeg, png.',
                     'foto_up.max' => 'La imagen no debe ser mayor a 2500 kilobytes.',
-                ]);    
+                ]);
 
                 if($imagenName = Componente::setImagenComponente($request->foto_up, $componente->imagen)){
                     $request->request->add(['imagen' => $imagenName]);
-
                     $componente->update($request->all());
 
-                    return redirect('/maquinas/'.$maquina->id);
+                    return redirect('/maquinas/'.$maquina->id .'/componente/'.$componente->id)
+                        ->withErrors($messageBag->add('success', 'El componente fue modificado exitosamente.'))->withInput();
                 }
-                $messageBag = new MessageBag;
                 return back()->withErrors($messageBag->add('foto_up', 'Error al subir la imagen a la base de datos, intente de nuevo'))->withInput();
-            }     
-            
+            }
             $request->request->add(['imagen' => $componente->imagen]);
-
             $componente->update($request->all());
 
-            return redirect('/maquinas/'.$maquina->id);
-
+            return redirect('/maquinas/'.$maquina->id .'/componente/'.$componente->id)->withErrors($messageBag->add('success', 'El componente fue modificado exitosamente'))->withInput();
         }
-        $messageBag = new MessageBag;
         return back()->withErrors($messageBag->add('error', 'No modifique la ruta o los inputs ocultos pedazo de gonorrea culio'))->withInput();
     }
 
@@ -132,8 +127,15 @@ class ComponenteController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Maquina $maquina, Componente $componente)
     {
-        //
+        $messageBag = new MessageBag;
+        if($maquina->id == $componente->maquina_id){
+            if(Componente::deleteImagenComponente($componente->imagen)){
+                $componente->delete();
+                return redirect('/maquinas/'.$maquina->id .'/componente')->withErrors($messageBag->add('success', 'El componente fue eliminado de la aplicación exitosamente'))->withInput();
+            }
+        }
+        return back()->withErrors($messageBag->add('error', 'No se puede eliminar este componente de la aplicación'))->withInput();
     }
 }

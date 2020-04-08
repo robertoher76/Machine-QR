@@ -82,7 +82,7 @@
 <div class="container mt-5">
     <div class="container mt-10 text-center">
         <p>
-            <a href="{{ Request::root() }}/maquinas/{{ $maquina->id }}">Ir a {{ $maquina->nombre_maquina }}</a>
+            <a href="{{ Request::root() }}/maquinas/{{ $maquina->id }}/instrucciones">Regresar listado de Instrucciones</a>
         </p>
     </div>
 

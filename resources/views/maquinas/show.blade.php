@@ -22,11 +22,18 @@
             <div class="col-sm-12 col-md-12 col-lg-8 col-xl-8">
                 <div class="mb-2" style="width:100% !important;">
                     <h1 style="color:black;">{{ $maquina->nombre_maquina }} &nbsp;
-                    <a href="{{ Request::url() }}/edit" class="btn btn-outline-success btn-sm"><i class="far fa-edit"></i> Editar</a>
-                    <a href="{{ Request::url() }}/edit" class="btn btn-outline-danger btn-sm"><i class="far fa-trash-alt"></i> Eliminar</a>
+                    <td style="border: 1px solid red;">
+                        <form method="POST" action="{{url('/maquinas/'.$maquina->id)}}">
+                            <a href="{{ Request::url() }}/edit" class="btn btn-outline-success btn-sm"><i class="far fa-edit"></i> Modificar</a>
+                            @method('DELETE')
+                            @csrf
+                            <button class="btn btn-outline-danger btn-sm" type="submit"><i class="far fa-trash-alt"></i> Eliminar</button>
+                        </form>
+                    </td>
+                    </h1>
                 </div>
                 <div style="width:100% !important;">
-                    <p class="lead text-justify mt-3">{{ $maquina->descripcion}}</p>
+                    <p style="font-size: 18px;" class="lead text-justify mt-3">{{ $maquina->descripcion}}</p>
                 </div>
                 <br/>
             </div>
@@ -131,8 +138,7 @@
             <div class="container">
                 <div class="container mt-4">
                     <h5 class="text-dark">Tutoriales de {{ $maquina->nombre_maquina }} &nbsp;
-                        <a href="{{ Request::root() }}/maquinas/tutoriales/create" class="btn btn-outline-success btn-sm"><i class="far fa-plus-square"></i> Agregar</a>
-                        <a href="{{ Request::url() }}/edit" class="btn btn-outline-primary btn-sm"><i class="far fa-edit"></i> Modificar</a>
+                        <a href="{{ Request::url() }}/tutoriales/create" class="btn btn-outline-success btn-sm"><i class="far fa-plus-square"></i> Agregar</a>
                     </h5>
                     @if($tutoriales->total() > 0)
                         <div class="row">
@@ -146,7 +152,7 @@
                                         <h5 class="card-title mt-2">{{ $tutorial->titulo }}</h5>
                                         <p class="card-text mb-5"> {{ $tutorial->descripcion }} </p>
                                         <div class="btn-group mb-3" style="bottom:0;position:absolute;">
-                                            <a href="{{ Request::root() }}/maquinas/tutoriales/{{ $tutorial->id }}" class="btn btn-sm btn-outline-secondary">Ver más</a>
+                                            <a href="{{ Request::url() }}/tutoriales/{{ $tutorial->id }}" class="btn btn-sm btn-outline-secondary">Ver más</a>
                                             <button type="button" class="btn btn-sm btn-outline-secondary">Editar</button>
                                         </div>
                                     </div>
@@ -209,11 +215,16 @@
 
         <div class="tab-pane fade" id="nav-perfil" role="tabpanel" aria-labelledby="nav-perfil-tab">
             <div class="container mt-4">
-                <div class="text-center">
-                    <h5>Imagen de {{ $maquina->nombre_maquina }} &nbsp;<a href="{{ Request::root() }}/maquinas/instrucciones/create" class="btn btn-outline-success btn-sm">Cambiar Imagen</a></h5>
+                <div class="">
+                    <h5>Imagen Actual de {{ $maquina->nombre_maquina }} &nbsp;
+                        <button type="button" class="btn btn-outline-success btn-sm" data-toggle="modal" data-target="#exampleModalCenter">
+                            Cambiar Imagen
+                        </button>
+                    </h5>
+                    @include('..layouts.modal', ['title' => 'Cambiar Imagen de '.$maquina->nombre_maquina, 'icon1' => 'fas fa-upload', 'icon2' => 'far fa-images', 'title2' => 'Subir Imagen', 'title3' => 'Escoger de Galería'])
                 </div>
-                <div class="col-12 mt-2 text-center">
-                    <a class="example-image-link" data-title="Imagen Actual para {{ $maquina->nombre_maquina }}" href="{{ asset('storage/imagenes/maquinas/' . $maquina->imagen) }}" data-lightbox="example-2"><img class="example-image mt-3 ml-1 mr-1" style="border-radius: 2%;" widht="100%;" height="300px;" src="{{ asset('storage/imagenes/maquinas/' . $maquina->imagen) }}"/></a>
+                <div class="col-12 mt-3 text-center">
+                    <a class="example-image-link" data-title="Imagen Actual para {{ $maquina->nombre_maquina }}" href="{{ asset('storage/imagenes/maquinas/' . $maquina->imagen) }}" data-lightbox="example-2"><img class="example-image mt-3 ml-1 mr-1" style="border-radius: 2%;" widht="100%;" height="275px;" src="{{ asset('storage/imagenes/maquinas/' . $maquina->imagen) }}"/></a>
                     <small class="form-text text-muted">Click sobre la imagen para ampliarla.</small>
                 </div>
             </div>
@@ -222,7 +233,7 @@
 
     </div>
     <br/>
-    <div class="container mt-5 text-center">
+    <div class="container mt-2 text-center">
         <p>
             <a href="{{ Request::root() }}/maquinas">Regresar al listado de máquinas</a>
         </p>

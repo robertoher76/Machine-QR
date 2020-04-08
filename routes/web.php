@@ -30,7 +30,7 @@ Route::get('qrcode', function () {
 
 Route::resource('/maquinas','MaquinaController');
 
-Route::resource('/maquinas/imagenes','ImagenController');
+Route::resource('/maquinas/{maquina}/imagenes','ImagenController');
 
 Route::resource('/maquinas/{maquina}/tutoriales','TutorialController');
 

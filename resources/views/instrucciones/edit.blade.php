@@ -54,14 +54,22 @@
                 <label for="orden" class="ml-1 {{ ($errors->has('numero_orden')) ? 'text-danger' : '' }}">Posición de la Introducción</label>
                 <select class="form-control {{ ($errors->has('numero_orden')) ? 'border border-danger' : '' }}" id="orden" name="numero_orden">
                     @foreach($lists as $list)
-                        @if($instruccion->numero_orden != 1 && $loop->first)
-                            <option value="{{ $list->numero_orden }}">La primera Instrucción</option>
-                        @endif
-                        @if($instruccion->numero_orden == $list->numero_orden)
-                            <option value="{{ $list->numero_orden }}" selected>Mantener Posición</option>
-                        @elseif($instruccion->numero_orden-1 == $list->numero_orden)
+                        @if($loop->iteration >= $instruccion->numero_orden)
+                            @if($instruccion->numero_orden != 1 && $loop->first)
+                                <option value="{{ $list->numero_orden }}">La primera Instrucción</option>
+                            @endif
+                            @if($instruccion->numero_orden == $list->numero_orden)
+                                <option value="{{ $list->numero_orden }}" selected>Mantener Posición</option>
+                            @elseif($instruccion->numero_orden-1 != $list->numero_orden)
+                                <option value="{{ $list->numero_orden }}">Después de {{ $list->titulo }}</option>
+                            @endif
                         @else
-                            <option value="{{ $list->numero_orden }}">Después de {{ $list->titulo }}</option>
+                            @if($instruccion->numero_orden != 1 && $loop->first)
+                                <option value="{{ $list->numero_orden }}">La primera Instrucción</option>
+                            @endif
+                            @if($instruccion->numero_orden-1 != $list->numero_orden)
+                                <option value="{{ $list->numero_orden + 1 }}">Después de {{ $list->titulo }}</option>
+                            @endif
                         @endif
                     @endforeach
                 </select>

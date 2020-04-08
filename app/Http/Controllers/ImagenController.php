@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Maquina;
 
 class ImagenController extends Controller
 {
@@ -11,9 +12,9 @@ class ImagenController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Maquina $maquina)
     {
-        //
+        return view('galerias.edit', compact('maquina'));
     }
 
     /**

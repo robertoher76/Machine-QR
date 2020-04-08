@@ -50,14 +50,22 @@
                 <label for="orden" class="ml-1 {{ ($errors->has('numero_orden')) ? 'text-danger' : '' }}">Posición del Procedimiento</label>
                 <select class="form-control {{ ($errors->has('numero_orden')) ? 'border border-danger' : '' }}" id="orden" name="numero_orden">
                     @foreach($lists as $list)
-                        @if($procedimiento->numero_orden != 1 && $loop->first)
-                            <option value="{{ $list->numero_orden }}">El primer procedimiento</option>
-                        @endif
-                        @if($procedimiento->numero_orden == $list->numero_orden)
-                            <option value="{{ $list->numero_orden }}" selected>Mantener Posición</option>
-                        @elseif($procedimiento->numero_orden-1 == $list->numero_orden)
+                        @if($loop->iteration >= $procedimiento->numero_orden)
+                            @if($procedimiento->numero_orden != 1 && $loop->first)
+                                <option value="{{ $list->numero_orden }}">El primer procedimiento</option>
+                            @endif
+                            @if($procedimiento->numero_orden == $list->numero_orden)
+                                <option value="{{ $list->numero_orden }}" selected>Mantener Posición</option>
+                            @elseif($procedimiento->numero_orden-1 != $list->numero_orden)
+                                <option value="{{ $list->numero_orden }}">Después del procedimiento #{{ $list->numero_orden }}</option>
+                            @endif
                         @else
-                            <option value="{{ $list->numero_orden }}">Después del procedimiento #{{ $list->numero_orden }}</option>
+                            @if($procedimiento->numero_orden != 1 && $loop->first)
+                                <option value="{{ $list->numero_orden }}">El primer procedimiento</option>
+                            @endif
+                            @if($procedimiento->numero_orden-1 != $list->numero_orden)
+                                <option value="{{ $list->numero_orden + 1 }}">Después del procedimiento #{{ $list->numero_orden }}</option>
+                            @endif
                         @endif
                     @endforeach
                 </select>

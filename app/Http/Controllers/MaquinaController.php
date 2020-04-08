@@ -20,10 +20,7 @@ class MaquinaController extends Controller
      */
     public function index()
     {
-        $maquinas = Maquina::paginate(15);
-        $maquinas = Maquina::cortarParrafos($maquinas,100);
-
-        return view('maquinas.index', ['maquinas' => $maquinas]);
+        return view('maquinas.index', ['maquinas' => Maquina::getMaquinas()]);
     }
 
     /**
@@ -44,14 +41,15 @@ class MaquinaController extends Controller
      */
     public function store(CreateMaquinaRequest $request)
     {
+        $messageBag = new MessageBag;
         if($imagenName = Maquina::setImagenMaquina($request->foto_up)){
             if($qrName = Maquina::setQRMaquina())
                 $request->request->add(['imagen' => $imagenName, 'codigo_qr' => $qrName]);
 
             $maquina = Maquina::create($request->all());
-            return redirect('/maquinas/'.$maquina->id);
+            return redirect('/maquinas/'.$maquina->id)
+                    ->withErrors($messageBag->add('success', 'La máquina ha sido registrada exitosamente en la aplicación'))->withInput();
         }
-        $messageBag = new MessageBag;
         return back()->withErrors($messageBag->add('foto_up', 'Error al subir la imagen a la base de datos, intente de nuevo'))->withInput();
     }
 
@@ -63,15 +61,9 @@ class MaquinaController extends Controller
      */
     public function show(Maquina $maquina)
     {
-        $componentes =  Componente::where("maquina_id","=",$maquina->id)->paginate(6);
-        $componentes = Maquina::cortarParrafos($componentes,110);
-
-        $tutoriales = Tutoriale::where('maquina_id','=',$maquina->id)->paginate(4);
-        $tutoriales = Maquina::cortarParrafos($tutoriales,100);
-
-        $instrucciones = Maquina::getComponentes($maquina->id);
-        $instrucciones = Maquina::cortarParrafos($instrucciones,200);
-
+        $componentes = Componente::getComponentesPaginate($maquina->id, 6);
+        $tutoriales = Tutoriale::getTutorialesPaginate($maquina->id, 4);
+        $instrucciones = Maquina::getInstruccionesPaginate($maquina->id, 6);
         $galerias = Maquina_imagene::where('maquina_id','=',$maquina->id)->paginate(15);
 
         return view('maquinas.show', ['maquina' => $maquina, 'componentes' =>  $componentes, 'instrucciones' => $instrucciones, 'tutoriales' => $tutoriales, 'galerias' => $galerias]);
@@ -97,6 +89,8 @@ class MaquinaController extends Controller
      */
     public function update(EditMaquinaRequest $request, Maquina $maquina)
     {
+        $messageBag = new MessageBag;
+        $request->maquina_id = $maquina->id;
         if($request->cambiarImagen){
             /*
                 Validación si el usuario desea modificar la imagen de la máquina
@@ -108,23 +102,18 @@ class MaquinaController extends Controller
                 'foto_up.mimes' => 'La imagen debe ser un tipo de archivo: jpg, jpeg, png.',
                 'foto_up.max' => 'La imagen no debe ser mayor a 2500 kilobytes.',
             ]);
-
             if($imagenName = Maquina::setImagenMaquina($request->foto_up, $maquina->imagen)){
                 $request->request->add(['imagen' => $imagenName, 'codigo_qr' => $maquina->codigo_qr]);
-
                 $maquina->update($request->all());
-
-                return redirect('/maquinas');
+                return redirect('/maquinas/'.$maquina->id)->withErrors($messageBag->add('success', $maquina->nombre_maquina.' ha sido modificado con exito'))->withInput();
             }
-            $messageBag = new MessageBag;
             return back()->withErrors($messageBag->add('foto_up', 'Error al subir la imagen a la base de datos, intente de nuevo'))->withInput();
 
         }else{
             $request->request->add(['imagen' => $maquina->imagen, 'codigo_qr' => $maquina->codigo_qr]);
-
             $maquina->update($request->all());
-
-            return redirect('/maquinas');
+            return redirect('/maquinas/'. $maquina->id)
+                    ->withErrors($messageBag->add('success', $maquina->nombre_maquina.' ha sido modificado con exito'))->withInput();
         }
     }
 
@@ -134,8 +123,12 @@ class MaquinaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Maquina $maquina)
     {
-        //
+        $messageBag = new MessageBag;
+
+        return redirect('maquinas')
+             ->withErrors($messageBag->add('success', 'La máquina fue eliminado de la aplicación con exito.'))
+             ->withInput();
     }
 }

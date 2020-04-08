@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\QueryException;
+use App\Maquina;
 
 class Instruccione extends Model
 {
@@ -15,11 +16,24 @@ class Instruccione extends Model
 
     }
 
-    public static function getListIntrucciones($maquina_id){
+    public static function getIntrucciones($maquina_id){
         try{
             return Instruccione::where('maquina_id','=',$maquina_id)
-                        ->orderBy('numero_orden')
-                        ->get();
+                               ->orderBy('numero_orden')
+                               ->get();
+        }catch(QueryException $ex){
+            return null;
+        }
+    }
+
+    public static function getIntruccionesPaginate($maquina_id){
+        try{
+            $instrucciones = Instruccione::where('maquina_id','=',$maquina_id)
+                               ->join('instrucciones_tipos', 'instrucciones.instrucciones_tipo_id', '=', 'instrucciones_tipos.id')
+                               ->select('instrucciones.*', 'instrucciones_tipos.nombre')
+                               ->orderBy('instrucciones.numero_orden')
+                               ->paginate(15);
+            return Maquina::cortarParrafos($instrucciones, 200);
         }catch(QueryException $ex){
             return null;
         }

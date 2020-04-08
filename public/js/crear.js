@@ -8,8 +8,8 @@ $(document).ready(function () {
         showClose: false,
         initialPreviewAsDate: true,
         dropZoneEnabled: true,
-        
+
         maxFileCount: 1,
-        theme: 'fas', 
-    });   
+        theme: 'fas',
+    });
 });

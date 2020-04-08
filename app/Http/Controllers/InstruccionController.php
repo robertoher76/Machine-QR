@@ -19,10 +19,9 @@ class InstruccionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Maquina $maquina)
     {
-        //
-
+        return view('instrucciones.index', ['instrucciones' => Instruccione::getIntruccionesPaginate($maquina->id), 'maquina' => $maquina]);
     }
 
     /**
@@ -32,7 +31,7 @@ class InstruccionController extends Controller
      */
     public function create(Maquina $maquina)
     {
-        $lists = Instruccione::getListIntrucciones($maquina->id);
+        $lists = Instruccione::getIntrucciones($maquina->id);
         return view('instrucciones.create', ['maquina' => $maquina, 'instrucciones_tipo' => Instrucciones_tipo::all(), 'lists' => $lists]);
     }
 
@@ -78,7 +77,7 @@ class InstruccionController extends Controller
      */
     public function edit(Maquina $maquina, Instruccione $instruccione)
     {
-        $lists = Instruccione::getListIntrucciones($maquina->id);
+        $lists = Instruccione::getIntrucciones($maquina->id);
         return view('instrucciones.edit', ['maquina' => $maquina, 'instruccion' => $instruccione, 'instrucciones_tipo' => Instrucciones_tipo::all(), 'lists' => $lists]);
     }
 
@@ -115,7 +114,7 @@ class InstruccionController extends Controller
             if(count(Procedimiento::getListProcedimiento($instruccione->id)) == 0){
                 if(Instruccione::updateOrdenDecrease($maquina->id,false,$instruccione->numero_orden)){
                     $instruccione->delete();
-                    return redirect('maquinas/'.$maquina->id)
+                    return redirect('maquinas/'.$maquina->id . '/instrucciones')
                             ->withErrors($messageBag->add('success', 'La Instrucción fue eliminada exitosamente de la aplicación.'))
                             ->withInput();
                 }
