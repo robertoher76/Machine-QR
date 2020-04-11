@@ -22,7 +22,7 @@
             <div class="col-sm-12 col-md-12 col-lg-8 col-xl-8">
                 <div class="mb-2" style="width:100% !important;">
                     <h1 style="color:black;">{{ $maquina->nombre_maquina }} &nbsp;
-                    <td style="border: 1px solid red;">
+                    <td>
                         <form method="POST" action="{{url('/maquinas/'.$maquina->id)}}">
                             <a href="{{ Request::url() }}/edit" class="btn btn-outline-success btn-sm"><i class="far fa-edit"></i> Modificar</a>
                             @method('DELETE')
@@ -60,9 +60,8 @@
     <div class="tab-content" id="nav-tabContent">
         <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
             <div class="container">
-                <div class="container mt-4">
+                <div class="mt-4">
                     <h5 class="text-dark">Componentes de {{ $maquina->nombre_maquina }} &nbsp;&nbsp;<a href="{{ Request::root() }}/maquinas/{{ $maquina->id }}/componente/create" class="btn btn-outline-success btn-sm"><i class="far fa-plus-square"></i> Agregar</a></h5>
-
                     @if($componentes->count() > 0)
                         <div class="row mt-4">
                             @foreach ($componentes as $componente)
@@ -101,8 +100,8 @@
         </div>
         <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
             <div class="container">
-                <div class="container mt-4">
-                <h5 class="text-dark">Instrucciones de {{ $maquina->nombre_maquina }} &nbsp;<a href="{{ Request::root() }}/maquinas/{{ $maquina->id }}/instrucciones/create" class="btn btn-outline-success btn-sm"><i class="far fa-plus-square"></i> Agregar</a></h5>
+                <div class="mt-4">
+                    <h5 class="text-dark">Instrucciones de {{ $maquina->nombre_maquina }} &nbsp;<a href="{{ Request::root() }}/maquinas/{{ $maquina->id }}/instrucciones/create" class="btn btn-outline-success btn-sm"><i class="far fa-plus-square"></i> Agregar</a></h5>
                     @if($instrucciones->total() > 0)
                         @foreach ($instrucciones as $instruccion)
                             <div class="card mt-4">
@@ -136,7 +135,7 @@
         </div>
         <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
             <div class="container">
-                <div class="container mt-4">
+                <div class="mt-4">
                     <h5 class="text-dark">Tutoriales de {{ $maquina->nombre_maquina }} &nbsp;
                         <a href="{{ Request::url() }}/tutoriales/create" class="btn btn-outline-success btn-sm"><i class="far fa-plus-square"></i> Agregar</a>
                     </h5>
@@ -178,19 +177,16 @@
                 </div>
             </div>
         </div>
-
         <div class="tab-pane fade" id="nav-video" role="tabpanel" aria-labelledby="nav-video-tab">
             <div class="container">
-                <div class="container mt-4">
+                <div class="mt-4">
                     <h5 class="text-dark">Galería de {{ $maquina->nombre_maquina }}
-
-                    &nbsp;
-                    <a href="{{ Request::url() }}/edit" class="btn btn-outline-success btn-sm"><i class="far fa-plus-square"></i> Agregar</a>
-                    <a href="{{ Request::url() }}/edit" class="btn btn-outline-primary btn-sm"><i class="far fa-edit"></i> Modificar</a>
+                        &nbsp;
+                        <a href="{{ Request::url() }}/edit" class="btn btn-outline-success btn-sm"><i class="far fa-plus-square"></i> Agregar</a>
                     </h5>
                 </div>
                 @if($galerias->total()>0)
-                    <div class="text-center">
+                    <div class="">
                         @foreach ($galerias as $imagen)
                             <a class="example-image-link" href="{{ asset('storage/imagenes/galeria/' . $imagen->imagen) }}" data-lightbox="example-set" data-title="{{ $imagen->descripcion }}"><img class="example-image mt-3 ml-1 mr-1" style="border-radius: 2%;" widht="100%;" height="200px;" src="{{ asset('storage/imagenes/galeria/' . $imagen->imagen) }}"/></a>
                         @endforeach
@@ -212,32 +208,26 @@
                 @endif
             </div>
         </div>
-
         <div class="tab-pane fade" id="nav-perfil" role="tabpanel" aria-labelledby="nav-perfil-tab">
             <div class="container mt-4">
                 <div class="">
-                    <h5>Imagen Actual de {{ $maquina->nombre_maquina }} &nbsp;
-                        <button type="button" class="btn btn-outline-success btn-sm" data-toggle="modal" data-target="#exampleModalCenter">
-                            Cambiar Imagen
+                    <h5>Imagen Actual para {{ $maquina->nombre_maquina }} &nbsp;
+                        <button type="button" class="btn btn-outline-success btn-sm" data-toggle="modal" data-target="#exampleModalCenter"><i class="far fa-edit"></i>
+                            Modificar Imagen
                         </button>
                     </h5>
                     @include('..layouts.modal', ['title' => 'Cambiar Imagen de '.$maquina->nombre_maquina, 'icon1' => 'fas fa-upload', 'icon2' => 'far fa-images', 'title2' => 'Subir Imagen', 'title3' => 'Escoger de Galería'])
                 </div>
                 <div class="col-12 mt-3 text-center">
-                    <a class="example-image-link" data-title="Imagen Actual para {{ $maquina->nombre_maquina }}" href="{{ asset('storage/imagenes/maquinas/' . $maquina->imagen) }}" data-lightbox="example-2"><img class="example-image mt-3 ml-1 mr-1" style="border-radius: 2%;" widht="100%;" height="275px;" src="{{ asset('storage/imagenes/maquinas/' . $maquina->imagen) }}"/></a>
+                    <a class="example-image-link" data-title="Imagen Actual para {{ $maquina->nombre_maquina }}" href="{{ asset('storage/imagenes/maquinas/' . $maquina->imagen) }}" data-lightbox="example-2"><img class="example-image mt-4 ml-1 mr-1" style="border-radius: 2%;" widht="100%;" height="250px;" src="{{ asset('storage/imagenes/maquinas/' . $maquina->imagen) }}"/></a>
                     <small class="form-text text-muted">Click sobre la imagen para ampliarla.</small>
                 </div>
             </div>
         </div>
-
-
     </div>
     <br/>
-    <div class="container mt-2 text-center">
-        <p>
-            <a href="{{ Request::root() }}/maquinas">Regresar al listado de máquinas</a>
-        </p>
+    <div class="container mt-4">
+        <a href="{{ Request::root() }}/maquinas"><i class="fas fa-chevron-left"></i>&nbsp; Regresar</a>
     </div>
-
 </div>
 @endsection

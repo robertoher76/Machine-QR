@@ -11,18 +11,17 @@
 
 @section('cabecera')
 <div class="container mt-5">
-    @if($errors->has('error'))
-        @include('..layouts.toastDanger', ['title' => 'Advertencia', 'error' => $errors->first('error')])
-    @elseif($errors->has('success'))
-        @include('..layouts.toastSuccess', ['title' => 'Exitosamente', 'success' => $errors->first('success')])
-    @endif
     <h2 style="color: black;">Lista de Máquinas &nbsp;<a href="{{ Request::url() }}/create" class="btn btn-outline-success btn-sm"><i class="fas fa-plus"></i> Agregar Máquina</a></h2>
     <p class="text-muted">Total Máquinas: <span class="font-weight-bold">{{ $maquinas->total() }}</span></p>
 </div>
 @endsection
 
 @section('contenido')
-
+@if($errors->has('error'))
+    @include('..layouts.toastDanger', ['title' => 'Advertencia', 'error' => $errors->first('error')])
+@elseif($errors->has('success'))
+    @include('..layouts.toastSuccess', ['title' => 'Exitosamente', 'success' => $errors->first('success')])
+@endif
 <div class="album">
     <div class="container">
       <div class="row">

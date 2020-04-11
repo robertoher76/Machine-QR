@@ -25,7 +25,7 @@
         <h2 style="color: black;">Modificar Procedimiento #{{ $procedimiento->numero_orden }}
             <small style="font-size:18px;" class="text-muted">&nbsp; Última modificación {{ $procedimiento->updated_at->format('d-m-Y') }}.</small>
     </h2>
-  <p class="lead">Ingrese los siguientes datos para modificar el procedimiento de la instrucción {{ $instruccione->titulo }}.</p>
+  <p class="lead">Modifique los siguientes campos para realizar cambios en el procedimiento de {{ $instruccione->titulo }}.</p>
 </div>
 @endsection
 
@@ -35,7 +35,6 @@
     <form autocomplete="off" id="form-general" method="POST" action="{{url('/maquinas/instrucciones/'.$instruccione->id.'/procedimientos/'.$procedimiento->id)}}" enctype="multipart/form-data">
         @method('PUT')
         @csrf
-        <input type="hidden" name="instruccione_id" value="{{ $instruccione->id }}">
         <div class="form-group">
             <label for="descripcion" class="ml-1 {{ ($errors->has('descripcion')) ? 'text-danger' : '' }}">Descripción del Procedimiento</label>
             <textarea class="form-control {{ ($errors->has('descripcion')) ? 'border border-danger' : '' }}" id="descripcion" name="descripcion" rows="3">{{ (old('descripcion') != null) ? old('descripcion') : $procedimiento->descripcion }}</textarea>
@@ -81,7 +80,7 @@
             <label class="form-check-label" for="modificarIMG">Cambiar imagen del Componente</label>
         </div>
         <div class="form-group text-center" id="imagenActual">
-            <a class="example-image-link" href="{{ asset('storage/imagenes/procedimientos/' . $procedimiento->imagen) }}" data-lightbox="example-set" data-title="Imagen actual para Procedimiento #{{ $procedimiento->numero_orden }}"><img class="example-image mt-3 ml-1 mr-1" style="border-radius: 2%;" widht="100%;" height="300px;" src="{{ asset('storage/imagenes/procedimientos/' . $procedimiento->imagen) }}"/></a>
+            <a class="example-image-link" href="{{ asset('storage/imagenes/procedimientos/' . $procedimiento->imagen) }}" data-lightbox="example-set" data-title="Imagen actual para Procedimiento #{{ $procedimiento->numero_orden }}"><img class="example-image mt-3 ml-1 mr-1" style="border-radius: 2%;" widht="100%;" height="250px;" src="{{ asset('storage/imagenes/procedimientos/' . $procedimiento->imagen) }}"/></a>
             <br/>
             <p class="form-text text-muted">Imagen Actual para Procedimiento #{{ $procedimiento->numero_orden  }}</p>
         </div>
@@ -91,7 +90,7 @@
             @if($errors->has('foto_up'))
                 <small class="text-danger ml-2" style="font-size:14px;"><i class="fas fa-exclamation-circle" style="font-size:12px !important;"></i> {{ $errors->first('foto_up') }}</small>
             @else
-                <small for="foto" class="form-text text-muted">Ingrese un archivo con formato: jpg, jpeg o png y que no sobrepase los 2500 kilobytes.</small>
+                <small for="foto" class="form-text text-muted">Ingrese un archivo con formato: jpg, jpeg o png y que no sobrepase los 4000 kilobytes.</small>
             @endif
         </div>
 
@@ -100,5 +99,8 @@
             <button type="submit" class="btn btn-primary">Modificar</button>
         </div>
     </form>
+    <div class="mt-4">
+        <a href="{{ Request::root() }}/maquinas/{{$instruccione->maquina_id}}/instrucciones/{{$instruccione->id}}"><i class="fas fa-chevron-left"></i>&nbsp; Regresar</a>
+    </div>
 </div>
 @endsection

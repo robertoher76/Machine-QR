@@ -1,4 +1,5 @@
 @extends('..layouts.plantilla')
+
 @push('css')
 <link href="{{ asset('js/bootstrap-fileinput/css/fileinput.min.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{ asset('css/style-file-input.css') }}" rel="stylesheet" type="text/css" />
@@ -21,22 +22,23 @@
 
 @section('cabecera')
 <div class="container mt-5">
-<h2 style="color: black;" class="text-justify">Modificar {{ $componente->nombre }}
-<small style="font-size:18px;" class="text-muted">&nbsp; Última modificación {{ $componente->updated_at->format('d-m-Y') }}.</small>
-</h2>
-
-<p class="lead">Ingrese los siguientes datos para modificar el componente que pertenece al {{ $maquina->nombre_maquina }}.</p>
+    <h2 style="color: black;" class="text-justify">Modificar {{ $componente->nombre }}
+        <small style="font-size:18px;" class="text-muted">&nbsp; Última modificación {{ $componente->updated_at->format('d-m-Y') }}.</small>
+    </h2>
+    <p class="lead">Ingrese los siguientes datos para modificar el componente que pertenece al {{ $maquina->nombre_maquina }}.</p>
 </div>
 @endsection
 
 @section('contenido')
-
 <div class="container mt-4">
-
+    @if($errors->has('error'))
+        @include('..layouts.toastDanger', ['title' => 'Advertencia', 'error' => $errors->first('error')])
+    @elseif($errors->has('success'))
+        @include('..layouts.toastSuccess', ['title' => 'Exitosamente', 'success' => $errors->first('success')])
+    @endif
     <form autocomplete="off" id="form-general" method="POST" action="{{url('/maquinas/' . $maquina->id . '/componente/'. $componente->id)}}" enctype="multipart/form-data">
         @method('PUT')
         @csrf
-        <input type="hidden" name="maquina_id" value="{{ $maquina->id }}">
         <div class="form-group">
             <label for="nombre" class="{{ ($errors->has('nombre')) ? 'text-danger' : '' }}">Nombre del Componente</label>
             <input type="text" autocomplete="off" class="form-control {{ ($errors->has('nombre')) ? 'border border-danger' : '' }}" id="nombre" name="nombre" value="{{ (old('nombre') != null) ? old('nombre') : $componente->nombre }}">
@@ -53,13 +55,43 @@
                 <small for="descripcion" class="form-text text-muted">Descripción completa del funcionamiento del componente. Límite de caracteres: 1500.</small>
             @endif
         </div>
-
+        @if(count($lists) > 0)
+            <div class="form-group">
+                <label for="orden" class="ml-1 {{ ($errors->has('numero_orden')) ? 'text-danger' : '' }}">Posición de la Introducción</label>
+                <select class="form-control {{ ($errors->has('numero_orden')) ? 'border border-danger' : '' }}" id="orden" name="numero_orden">
+                    @foreach($lists as $list)
+                        @if($loop->iteration >= $componente->numero_orden)
+                            @if($componente->numero_orden != 1 && $loop->first)
+                                <option value="{{ $list->numero_orden }}">El primer Componente</option>
+                            @endif
+                            @if($componente->numero_orden == $list->numero_orden)
+                                <option value="{{ $list->numero_orden }}" selected>Mantener Posición</option>
+                            @elseif($componente->numero_orden-1 != $list->numero_orden)
+                                <option value="{{ $list->numero_orden }}">Después de {{ $list->nombre }}</option>
+                            @endif
+                        @else
+                            @if($componente->numero_orden != 1 && $loop->first)
+                                <option value="{{ $list->numero_orden }}">El Primer Componente</option>
+                            @endif
+                            @if($componente->numero_orden-1 != $list->numero_orden)
+                                <option value="{{ $list->numero_orden + 1 }}">Después de {{ $list->nombre }}</option>
+                            @endif
+                        @endif
+                    @endforeach
+                </select>
+                @if($errors->has('numero_orden'))
+                    <small class="text-danger ml-2" style="font-size:14px;"><i class="fas fa-exclamation-circle" style="font-size:12px !important;"></i> {{ $errors->first('numero_orden') }}</small>
+                @endif
+            </div>
+        @else
+            <input type="hidden" name="numero_orden" value="1"/>
+        @endif
         <div class="form-group form-check">
             <input type="checkbox" class="form-check-input" id="modificarIMG" name="cambiarImagen" value="falso">
             <label class="form-check-label" for="modificarIMG">Cambiar imagen del Componente</label>
         </div>
         <div class="form-group text-center" id="imagenActual">
-            <a class="example-image-link" href="{{ asset('storage/imagenes/componentes/' . $componente->imagen) }}" data-lightbox="example-set" data-title="Imagen actual para {{ $componente->nombre }}"><img class="example-image mt-3 ml-1 mr-1" style="border-radius: 2%;" widht="100%;" height="300px;" src="{{ asset('storage/imagenes/componentes/' . $componente->imagen) }}"/></a>
+            <a class="example-image-link" href="{{ asset('storage/imagenes/componentes/' . $componente->imagen) }}" data-lightbox="example-set" data-title="Imagen actual para {{ $componente->nombre }}"><img class="example-image mt-3 ml-1 mr-1" style="border-radius: 2%;" widht="100%;" height="250px;" src="{{ asset('storage/imagenes/componentes/' . $componente->imagen) }}"/></a>
             <br/>
             <p class="form-text text-muted">Imagen Actual Para {{ $maquina->nombre_maquina }}</p>
         </div>
@@ -69,7 +101,7 @@
             @if($errors->has('foto_up'))
                 <small class="text-danger ml-2" style="font-size:14px;"><i class="fas fa-exclamation-circle" style="font-size:12px !important;"></i> {{ $errors->first('foto_up') }}</small>
             @else
-            <small for="foto" class="form-text text-muted">Ingrese un archivo con formato: jpg, jpeg o png y que no sobrepase los 2500 kilobytes.</small>
+            <small for="foto" class="form-text text-muted">Ingrese un archivo con formato: jpg, jpeg o png y que no sobrepase los 4000 kilobytes.</small>
             @endif
         </div>
         <br/>
@@ -77,6 +109,8 @@
             <button type="submit" class="btn btn-primary">Modificar</button>
         </div>
     </form>
+    <div class="mt-4">
+        <a href="{{ Request::root() }}/maquinas/{{$maquina->id}}/componente"><i class="fas fa-chevron-left"></i>&nbsp; Regresar</a>
+    </div>
 </div>
-
 @endsection

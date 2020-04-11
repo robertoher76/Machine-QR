@@ -2,18 +2,18 @@
 
 @section('cabecera')
     <div class="container mt-5">
-        @if($errors->has('error'))
-            @include('..layouts.toastDanger', ['title' => 'Advertencia', 'error' => $errors->first('error')])
-        @elseif($errors->has('success'))
-            @include('..layouts.toastSuccess', ['title' => 'Exitosamente', 'success' => $errors->first('success')])
-        @endif
-        <h2 style="color: black;">Modificar Instrucción</h2>
-        <p class="lead">Ingrese los siguientes datos para modificar {{ $instruccion->titulo }}.</p>
+        <h2 style="color: black;">Modificar {{ $instruccion->titulo }} <small style="font-size:18px;" class="text-muted">&nbsp; Última modificación {{ $instruccion->updated_at->format('d-m-Y') }}.</small></h2>
+        <p class="lead">Modifique los siguientes campos para realizar cambios en la Instrucción.</p>
     </div>
 @endsection
 
 @section('contenido')
 <div class="container mt-4">
+    @if($errors->has('error'))
+        @include('..layouts.toastDanger', ['title' => 'Advertencia', 'error' => $errors->first('error')])
+    @elseif($errors->has('success'))
+        @include('..layouts.toastSuccess', ['title' => 'Exitosamente', 'success' => $errors->first('success')])
+    @endif
     <form autocomplete="off" id="form-general" method="POST" action="{{url('/maquinas/'.$maquina->id.'/instrucciones/'.$instruccion->id)}}">
         @method('PUT')
         @csrf
@@ -85,5 +85,8 @@
             <button type="submit" class="btn btn-primary">Modificar</button>
         </div>
     </form>
+    <div class="mt-5">
+        <a href="{{ Request::root() }}/maquinas/{{$maquina->id}}/instrucciones/{{$instruccion->id}}"><i class="fas fa-chevron-left"></i>&nbsp; Regresar</a>
+    </div>
 </div>
 @endsection

@@ -1,26 +1,27 @@
 
 <!-- Modal -->
 <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-    <div class="modal-dialog " role="document">
+    <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
             <div class="modal-body text-center">
-                <h5 class="modal-title text-center" id="exampleModalCenterTitle">¿Está seguro que desea eliminarlo?</h5>
-                <br/>
+
                 <form method="POST" action="{{url('/maquinas/'.$maquina->id.'/componente/'. $componente->id)}}">
                     @method('DELETE')
                     @csrf
-                    <button id="imgDrop" type="button" class="close mr-4" style="float:none !important;" data-dismiss="modal" aria-label="Close">
+                    <div class="container">
+                    <button id="imgDrop" type="button" class="close mr-1 pt-0" style="float:none !important;" data-dismiss="modal" aria-label="Close">
                         <div style="width:100%;">
-                            <span style="font-size: 75px;" class="far fa-times-circle"></span>
+                            <span style="font-size: 40px;" class="far fa-times-circle"></span>
                         </div>
-                        <p class="mt-2 text-center">Cancelar</p>
+                        <p class=" text-center">Cancelar</p>
                     </button>
-                    <button id="imgEdit" type="submit" class="close btn btn-default ml-4" style="float:none !important;">
+                    <button id="imgEdit" type="submit" class="close btn btn-default ml-1 mt-3" style="float:none !important;">
                         <div style="width:100%;">
-                            <span style="font-size: 75px;" class="far fa-check-circle"></span>
+                            <span style="font-size: 40px;" class="far fa-check-circle"></span>
                         </div>
-                        <p class="mt-2">Eliminar</p>
+                        <p class="">Eliminar</p>
                     </button>
+                    </div>
                 </form>
             </div>
         </div>

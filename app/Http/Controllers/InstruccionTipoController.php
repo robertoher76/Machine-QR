@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateTipoInstruccionRequest;
-use Illuminate\Http\Request;
 use App\Instrucciones_tipo;
 use App\Maquina;
 
@@ -16,7 +15,7 @@ class InstruccionTipoController extends Controller
      */
     public function index()
     {
-        $instruccionesTipo = Instrucciones_tipo::paginate(15);        
+        $instruccionesTipo = Instrucciones_tipo::paginate(15);
 
         return view('instrucciones.tipoInstrucciones.index', ['instruccionesTipo' => $instruccionesTipo]);
     }
@@ -34,7 +33,7 @@ class InstruccionTipoController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\CreateTipoInstruccionRequest  $request
+     * @param  \App\Http\Requests\CreateTipoInstruccionRequest  $request
      * @return \Illuminate\Http\Response
      */
     public function store(CreateTipoInstruccionRequest $request)
@@ -47,7 +46,7 @@ class InstruccionTipoController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Instrucciones_tipo  $tipo
      * @return \Illuminate\Http\Response
      */
     public function show(Instrucciones_tipo $tipo)
@@ -58,7 +57,7 @@ class InstruccionTipoController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Instrucciones_tipo  $tipo
      * @return \Illuminate\Http\Response
      */
     public function edit(Instrucciones_tipo $tipo)
@@ -69,24 +68,23 @@ class InstruccionTipoController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Http\Requests\CreateTipoInstruccionRequest  $request
+     * @param  \App\Instrucciones_tipo  $tipo
      * @return \Illuminate\Http\Response
      */
     public function update(CreateTipoInstruccionRequest $request, Instrucciones_tipo $tipo)
     {
         $tipo->update($request->all());
-
         return redirect('instrucciones/tipo');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Instrucciones_tipo  $tipo
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Instrucciones_tipo  $tipo)
     {
         //
     }

@@ -10,6 +10,7 @@ class ImagenController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param  \App\Maquina $maquina
      * @return \Illuminate\Http\Response
      */
     public function index(Maquina $maquina)
@@ -20,9 +21,10 @@ class ImagenController extends Controller
     /**
      * Show the form for creating a new resource.
      *
+     * @param  \App\Maquina $maquina
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Maquina $maquina)
     {
         //
     }
@@ -31,6 +33,7 @@ class ImagenController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Maquina $maquina
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -42,6 +45,7 @@ class ImagenController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
+     * @param  \App\Maquina $maquina
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -53,6 +57,7 @@ class ImagenController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
+     * @param  \App\Maquina $maquina
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -65,6 +70,7 @@ class ImagenController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
+     * @param  \App\Maquina $maquina
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -76,6 +82,7 @@ class ImagenController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
+     * @param  \App\Maquina $maquina
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)

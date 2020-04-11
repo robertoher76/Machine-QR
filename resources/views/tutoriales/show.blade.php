@@ -6,10 +6,20 @@
 
 @section('cabecera')
     <div class="container mt-5">
-
+        @if($errors->has('error'))
+            @include('..layouts.toastDanger', ['title' => 'Advertencia', 'error' => $errors->first('error')])
+        @elseif($errors->has('success'))
+            @include('..layouts.toastSuccess', ['title' => 'Exitosamente', 'success' => $errors->first('success')])
+        @endif
         <h1>{{ $tutoriale->titulo }} &nbsp;
-            <a href="{{ Request::url() }}/edit" class="btn btn-outline-success btn-sm"><i class="far fa-edit"></i> Modificar</a>
-            <a href="{{ Request::url() }}/edit" class="btn btn-outline-danger btn-sm"><i class="far fa-trash-alt"></i> Eliminar</a>
+            <td>
+                <form method="POST" action="{{url('/maquinas/'.$maquina->id.'/tutoriales/'.$tutoriale->id)}}">
+                    <a href="{{ Request::url() }}/edit" class="btn btn-outline-success btn-sm"><i class="far fa-edit"></i> Modificar</a>
+                    @method('DELETE')
+                    @csrf
+                    <button class="btn btn-outline-danger btn-sm" type="submit"><i class="far fa-trash-alt"></i> Eliminar</button>
+                </form>
+            </td>
         </h1>
         <small class="form-text text-muted">Tutorial de {{ $maquina->nombre_maquina }} | Última Modificación {{ $tutoriale->updated_at->format('d-m-Y') }}</small>
         <br/>

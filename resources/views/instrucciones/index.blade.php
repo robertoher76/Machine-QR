@@ -2,11 +2,6 @@
 
 @section('cabecera')
 <div class="container mt-5">
-    @if($errors->has('error'))
-        @include('..layouts.toastDanger', ['title' => 'Advertencia', 'error' => $errors->first('error')])
-    @elseif($errors->has('success'))
-        @include('..layouts.toastSuccess', ['title' => 'Exitosamente', 'success' => $errors->first('success')])
-    @endif
     <h2 style="color: black;">Instrucciones de {{ $maquina->nombre_maquina }} &nbsp;<a href="{{ Request::url() }}/create" class="btn btn-outline-success btn-sm"><i class="fas fa-plus"></i> Agregar Instrucción</a></h2>
     <p class="text-muted">Total Máquinas: <span class="font-weight-bold">{{ $instrucciones->total() }}</span></p>
 </div>
@@ -14,11 +9,17 @@
 
 @section('contenido')
     <div class="container">
+        @if($errors->has('error'))
+            @include('..layouts.toastDanger', ['title' => 'Advertencia', 'error' => $errors->first('error')])
+        @elseif($errors->has('success'))
+            @include('..layouts.toastSuccess', ['title' => 'Exitosamente', 'success' => $errors->first('success')])
+        @endif
         @foreach ($instrucciones as $instruccion)
             <div class="card mt-4 mb-4">
                 <div class="card-body">
-                    <h5 class="card-title"><a href="instrucciones/{{$instruccion->id}}">{{ $instruccion->titulo }}</a> <small> | Última Modificación {{ $instruccion->updated_at->format('d-m-Y') }}</small></h5>
+                    <h5 class="card-title">{{ $instruccion->titulo }} <small class="text-muted"> | Última Modificación {{ $instruccion->updated_at->format('d-m-Y') }}</small></h5>
                     <p class="card-text">{{ $instruccion->descripcion }}</p>
+                    <a href="{{Request::url()}}/{{$instruccion->id}}" class="btn btn-outline-primary btn-sm">Ver más</a>
                 </div>
                 <div class="card-footer">
                     Tipo de Instrucción: {{ $instruccion->nombre }}
@@ -52,12 +53,8 @@
                 </ul>
             </nav>
         @endif
-    </div>
-    <div class="container mt-5">
-        <div class="container mt-10 text-center">
-            <p>
-                <a href="{{ Request::root() }}/maquinas/{{ $maquina->id }}">Ir a {{ $maquina->nombre_maquina }}</a>
-            </p>
+        <div class="mt-5">
+            <a href="{{ Request::root() }}/maquinas/{{$maquina->id}}"><i class="fas fa-chevron-left"></i>&nbsp; Regresar</a>
         </div>
     </div>
 @endsection

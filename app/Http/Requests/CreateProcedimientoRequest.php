@@ -25,8 +25,8 @@ class CreateProcedimientoRequest extends FormRequest
     {
         return [
             'descripcion' => 'required|max:1500',
-            'foto_up' => 'required|mimes:jpg,jpeg,png|max:2500',
-            'numero_orden' => 'required|numeric'  
+            'foto_up' => 'required|mimes:jpg,jpeg,png|max:4000',
+            'numero_orden' => 'required|numeric'
         ];
     }
 
@@ -39,7 +39,7 @@ class CreateProcedimientoRequest extends FormRequest
             'descripcion.max' => 'La descripción no puede superar los 1500 caracteres.',
             'foto_up.required' => 'La imagen del procedimiento es requerido.',
             'foto_up.mimes' => 'La imagen debe ser un tipo de archivo: jpg, jpeg, png.',
-            'foto_up.max' => 'La imagen no debe ser mayor a 2500 kilobytes.',
+            'foto_up.max' => 'La imagen no debe ser mayor a 4000 kilobytes.',
         ];
     }
 }

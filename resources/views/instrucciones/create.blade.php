@@ -1,23 +1,28 @@
 @extends('..layouts.plantilla')
 
 @section('cabecera')
-<div class="container mt-5">
-  <h2 style="color: black;">Agregar Instrucción</h2>
-  <p class="lead">Ingrese los siguientes datos para registrar una nueva instrucción.</p>
-</div>
+    <div class="container mt-5">
+        <h2 style="color: black;">Agregar Instrucción</h2>
+        <p class="lead">Ingrese los siguientes datos para registrar una nueva instrucción.</p>
+    </div>
 @endsection
 
 @section('contenido')
 <div class="container mt-4">
+    @if($errors->has('error'))
+        @include('..layouts.toastDanger', ['title' => 'Advertencia', 'error' => $errors->first('error')])
+    @elseif($errors->has('success'))
+        @include('..layouts.toastSuccess', ['title' => 'Exitosamente', 'success' => $errors->first('success')])
+    @endif
     <form autocomplete="off" id="form-general" method="POST" action="{{url('/maquinas/'.$maquina->id.'/instrucciones')}}">
         @csrf
         <input type="hidden" name="maquina_id" value="{{ $maquina->id }}">
         <div class="form-group">
-          <label for="titulo" class="ml-1 {{ ($errors->has('titulo')) ? 'text-danger' : '' }}">Título de la Instrucción</label>
-          <input type="text" autocomplete="off" class="form-control {{ ($errors->has('titulo')) ? 'border border-danger' : '' }}" id="titulo" name="titulo" value="{{ old('titulo') }}">
-          @if($errors->has('titulo'))
-            <small class="text-danger ml-2" style="font-size:14px;"><i class="fas fa-exclamation-circle" style="font-size:12px !important;"></i> {{ $errors->first('titulo') }}</small>
-          @endif
+            <label for="titulo" class="ml-1 {{ ($errors->has('titulo')) ? 'text-danger' : '' }}">Título de la Instrucción</label>
+            <input type="text" autocomplete="off" class="form-control {{ ($errors->has('titulo')) ? 'border border-danger' : '' }}" id="titulo" name="titulo" value="{{ old('titulo') }}">
+            @if($errors->has('titulo'))
+                <small class="text-danger ml-2" style="font-size:14px;"><i class="fas fa-exclamation-circle" style="font-size:12px !important;"></i> {{ $errors->first('titulo') }}</small>
+            @endif
         </div>
         <div class="form-group">
             <label for="instrucciones_tipo_id " class="ml-1 {{ ($errors->has('instrucciones_tipo_id')) ? 'text-danger' : '' }}">Tipo de Instrucción</label>
@@ -27,9 +32,9 @@
                 @endforeach
             </select>
             @if($errors->has('instrucciones_tipo_id '))
-              <small class="text-danger ml-2" style="font-size:14px;"><i class="fas fa-exclamation-circle" style="font-size:12px !important;"></i> {{ $errors->first('instrucciones_tipo_id') }}</small>
+                <small class="text-danger ml-2" style="font-size:14px;"><i class="fas fa-exclamation-circle" style="font-size:12px !important;"></i> {{ $errors->first('instrucciones_tipo_id') }}</small>
             @endif
-          </div>
+        </div>
         <div class="form-group">
             <label for="descripcion" class="ml-1 {{ ($errors->has('descripcion')) ? 'text-danger' : '' }}">Descripción de la Instrucción</label>
             <textarea class="form-control {{ ($errors->has('descripcion')) ? 'border border-danger' : '' }}" id="descripcion" name="descripcion" rows="3">{{ old('descripcion') }}</textarea>
@@ -62,7 +67,9 @@
             <button type="submit" class="btn btn-primary">Agregar</button>
         </div>
     </form>
+    <div class="mt-5">
+        <a href="{{ Request::root() }}/maquinas/{{$maquina->id}}/instrucciones"><i class="fas fa-chevron-left"></i>&nbsp; Regresar</a>
+    </div>
 </div>
-
 @endsection
 

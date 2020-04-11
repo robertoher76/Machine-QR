@@ -10,7 +10,7 @@
     <!-- following theme script is needed to use the Font Awesome 5.x theme (`fas`) -->
     <script src="{{ asset('js/bootstrap-fileinput/themes/fas/theme.min.js') }}"></script>
     <!-- optionally if you need translation for your language then include the locale file as mentioned below (replace LANG.js with your language locale) -->
-    <script src="{{ asset('js/bootstrap-fileinput/js/locales/es.js') }}"></script>    
+    <script src="{{ asset('js/bootstrap-fileinput/js/locales/es.js') }}"></script>
     <script src="{{ asset('js/crear-video.js') }}"></script>
 @endpush
 
@@ -22,7 +22,7 @@
 @endsection
 
 @section('contenido')
-    <div class="container mt-3">    
+    <div class="container mt-3">
         <form autocomplete="off" id="form-general" method="POST" action="{{url('maquinas/' . $maquina->id . '/tutoriales')}}" enctype="multipart/form-data">
             @csrf
             <div class="form-group">
@@ -30,7 +30,7 @@
                 <input type="text" autocomplete="off" class="form-control {{ ($errors->has('titulo')) ? 'border border-danger' : '' }}" id="nombre" name="titulo" value="{{ old('titulo') }}">
                 @if($errors->has('titulo'))
                     <small class="text-danger ml-2" style="font-size:14px;"><i class="fas fa-exclamation-circle" style="font-size:12px !important;"></i> {{ $errors->first('titulo') }}</small>
-                @endif    
+                @endif
             </div>
             <div class="form-group">
                 <label for="descripcion" class="ml-1 {{ ($errors->has('descripcion')) ? 'text-danger' : '' }}">Descripción del video</label>
@@ -39,22 +39,40 @@
                     <small class="text-danger ml-2" style="font-size:14px;"><i class="fas fa-exclamation-circle" style="font-size:12px !important;"></i> {{ $errors->first('descripcion') }}</small>
                 @else
                     <small for="descripcion" class="form-text text-muted">Descripción completa del tutorial. Límite de caracteres: 1500.</small>
-                @endif          
+                @endif
             </div>
+            @if(count($lists) > 0)
+                <div class="form-group">
+                    <label for="orden" class="ml-1 {{ ($errors->has('numero_orden')) ? 'text-danger' : '' }}">Posición del Tutorial</label>
+                    <select class="form-control {{ ($errors->has('numero_orden')) ? 'border border-danger' : '' }}" id="orden" name="numero_orden">
+                        @foreach($lists as $list)
+                            @if($loop->first)
+                                <option value="{{ $list->numero_orden }}" selected>El Primer Tutorial</option>
+                            @endif
+                            <option value="{{ $list->numero_orden + 1 }}">Después de {{ $list->titulo }}</option>
+                        @endforeach
+                    </select>
+                    @if($errors->has('numero_orden'))
+                        <small class="text-danger ml-2" style="font-size:14px;"><i class="fas fa-exclamation-circle" style="font-size:12px !important;"></i> {{ $errors->first('numero_orden') }}</small>
+                    @endif
+                </div>
+            @else
+                <input type="hidden" name="numero_orden" value="1"/>
+            @endif
             <div class="form-group">
-                <label for="foto" class="ml-1 {{ ($errors->has('video_up')) ? 'text-danger' : '' }}">Video Tutorial</label>          
+                <label for="foto" class="ml-1 {{ ($errors->has('video_up')) ? 'text-danger' : '' }}">Video Tutorial</label>
                 <input id="foto" name="video_up" type="file" class="{{ ($errors->has('video_up')) ? 'border border-danger' : '' }}">
-          
+
                 @if($errors->has('video_up'))
                     <small class="text-danger ml-2" style="font-size:14px;"><i class="fas fa-exclamation-circle" style="font-size:12px !important;"></i> {{ $errors->first('video_up') }}</small>
                 @else
-                    <small for="foto" class="form-text text-muted">Ingrese un archivo con formato: mp4 y que no sobrepase los 100000 kilobytes.</small>        
+                    <small for="foto" class="form-text text-muted">Ingrese un archivo con formato: mp4 y que no sobrepase los 100000 kilobytes.</small>
                 @endif
             </div>
             <br/>
             <div class="text-center">
                 <button type="submit" class="btn btn-primary">Agregar</button>
-            </div> 
+            </div>
         </form>
     </div>
 @endsection

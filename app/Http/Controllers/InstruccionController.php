@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateInstruccionRequest;
 use App\Http\Requests\EditInstruccionRequest;
 use Illuminate\Support\MessageBag;
-use Illuminate\Http\Request;
 use App\Instrucciones_tipo;
 use App\Procedimiento;
 use App\Instruccione;
@@ -15,8 +14,9 @@ use App\Maquina;
 class InstruccionController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of the Instrucciones.
      *
+     * @param  \App\Maquina  $maquina
      * @return \Illuminate\Http\Response
      */
     public function index(Maquina $maquina)
@@ -25,8 +25,9 @@ class InstruccionController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show the form for creating a new Instrucción.
      *
+     * @param  \App\Maquina  $maquina
      * @return \Illuminate\Http\Response
      */
     public function create(Maquina $maquina)
@@ -36,9 +37,10 @@ class InstruccionController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created Instrucción in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\CreateInstruccionRequest  $request
+     * @param  \App\Maquina  $maquina
      * @return \Illuminate\Http\Response
      */
     public function store(CreateInstruccionRequest $request, Maquina $maquina)
@@ -47,17 +49,17 @@ class InstruccionController extends Controller
         if(Instrucciones_tipo::findOrFail($request->instrucciones_tipo_id)){
             if(Instruccione::setNumeroOrdenCreate($maquina->id, $request->numero_orden)){
                 $instruccione = Instruccione::create($request->all());
-                return redirect('maquinas/'.$maquina->id.'/instrucciones/'.$instruccione->id)
-                        ->withErrors($messageBag->add('success', 'La Instrucción ha sido registada en la aplicación con éxito'));
+                return redirect("maquinas/$maquina->id/instrucciones/$instruccione->id")->withErrors($messageBag->add('success', 'La Instrucción ha sido registada en la aplicación con éxito'));
             }
         }
-        return back()->withErrors($messageBag->add('error', 'Error al guardar la instrucción en la base de datos.'))->withInput();
+        return back()->withErrors($messageBag->add('error', 'Error al guardar la instrucción en la base de datos.'));
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified Instrucción.
      *
-     * @param  int  $id
+     * @param  \App\Maquina  $maquina
+     * @param  \App\Instruccione $instruccione
      * @return \Illuminate\Http\Response
      */
     public function show(Maquina $maquina, Instruccione $instruccione)
@@ -70,28 +72,32 @@ class InstruccionController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Show the form for editing the specified Instrucción.
      *
-     * @param  int  $id
+     * @param  \App\Maquina  $maquina
+     * @param  \App\Instruccione $instruccione
      * @return \Illuminate\Http\Response
      */
     public function edit(Maquina $maquina, Instruccione $instruccione)
     {
-        $lists = Instruccione::getIntrucciones($maquina->id);
-        return view('instrucciones.edit', ['maquina' => $maquina, 'instruccion' => $instruccione, 'instrucciones_tipo' => Instrucciones_tipo::all(), 'lists' => $lists]);
+        if($maquina->id == $instruccione->maquina_id){
+            $lists = Instruccione::getIntrucciones($maquina->id);
+            return view('instrucciones.edit', ['maquina' => $maquina, 'instruccion' => $instruccione, 'instrucciones_tipo' => Instrucciones_tipo::all(), 'lists' => $lists]);
+        }
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified Instrucción in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Http\Requests\EditInstruccionRequest  $request
+     * @param  \App\Maquina  $maquina
+     * @param  \App\Instruccione $instruccione
      * @return \Illuminate\Http\Response
      */
     public function update(EditInstruccionRequest $request, Maquina $maquina, Instruccione $instruccione)
     {
         $messageBag = new MessageBag;
-        if(Instrucciones_tipo::findOrFail($request->instrucciones_tipo_id)){
+        if($maquina->id == $instruccione->maquina_id && Instrucciones_tipo::findOrFail($request->instrucciones_tipo_id)){
             if(Instruccione::setNumeroOrdenEdit($maquina->id, $request->numero_orden, $instruccione->numero_orden))
                 $instruccione->update($request->all());
             return redirect('maquinas/'.$maquina->id.'/instrucciones/'.$instruccione->id)
@@ -102,9 +108,10 @@ class InstruccionController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified Instrucción from storage.
      *
-     * @param  int  $id
+     * @param  \App\Maquina  $maquina
+     * @param  \App\Instruccione $instruccione
      * @return \Illuminate\Http\Response
      */
     public function destroy(Maquina $maquina, Instruccione $instruccione)
