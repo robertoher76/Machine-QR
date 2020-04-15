@@ -15,7 +15,7 @@
 @endpush
 
 @section('cabecera')
-    <div class="container mt-5">
+    <div class="container mt-sm-3 mt-md-3 mt-lg-5 mt-xl-5">
         <h2 style="color: black;">Agregar Componente</h2>
         <p class="lead">Ingrese los siguientes datos para registrar un nuevo componente a la máquina {{ $maquina->nombre_maquina }}.</p>
     </div>

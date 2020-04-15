@@ -20,7 +20,7 @@
 @endpush
 
 @section('cabecera')
-<div class="container mt-5">
+<div class="container mt-sm-3 mt-md-3 mt-lg-5 mt-xl-5">
   <h2>Modificar {{ $tutoriale->titulo }}</h2>
   <p class="lead">Ingrese los siguientes datos para modificar el tutorial que pertenece {{ $maquina->nombre_maquina }}.</p>
 </div>
@@ -110,5 +110,9 @@
                 <button type="submit" class="btn btn-primary">Modificar</button>
             </div>
         </form>
+        
+        <div class="mt-5">
+            <a href="{{ Request::root() }}/maquinas/{{$maquina->id}}/tutoriales/{{$tutoriale->id}}"><i class="fas fa-chevron-left"></i>&nbsp; Regresar</a>
+        </div>
     </div>
 @endsection

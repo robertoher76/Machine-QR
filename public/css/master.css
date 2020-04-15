@@ -89,6 +89,10 @@
           margin-bottom: 10px;
     }
 
+    .nav-wrapper ul li form button{
+        margin-right: 25px;
+    }
+
     #varn ul li:not(:first-child) {
         margin-left: 0px;
     }

@@ -5,11 +5,13 @@
 @endpush
 
 @section('cabecera')
-<div class="container mt-5">
-    <h2 style="color: black;">Tutoriales {{ $maquina->nombre_maquina }} &nbsp;
-        <a href="{{ Request::url() }}/create" class="btn btn-outline-success btn-sm"><i class="fas fa-plus"></i> Agregar Tutorial</a>
-    </h2>
-    <p class="text-muted">Total Tutoriales: {{ $tutoriales->total() }}<span class="font-weight-bold"></span></p>
+<div class="container mt-sm-0 mt-md-3 mt-lg-5 mt-xl-5">
+    <h1 style="color: black;">Tutoriales {{ $maquina->nombre_maquina }} &nbsp;
+        <a href="{{ Request::url() }}/create" class="btn btn-outline-success btn-sm"><i class="fas fa-plus"></i> Agregar</a>
+    </h1>
+    @if($tutoriales->count() > 0)
+        <p class="text-dark">Total Tutoriales: {{ $tutoriales->count() }}<span class="font-weight-bold"></span></p>
+    @endif
 </div>
 @endsection
 
@@ -20,7 +22,7 @@
         @elseif($errors->has('success'))
             @include('..layouts.toastSuccess', ['title' => 'Exitosamente', 'success' => $errors->first('success')])
         @endif
-        @if($tutoriales->total() > 0)
+        @if($tutoriales->count() > 0)
             <div class="row">
                 @foreach ($tutoriales as $tutorial)
                     <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6 mt-1">
@@ -29,8 +31,8 @@
                                 <video  src="{{ asset('storage/tutoriales/' . $tutorial->video) }}" controls>
                                     Tu navegador no implementa el elemento <code>video</code>.
                                 </video>
-                                <h5 class="card-title mt-2">{{ $tutorial->titulo }}</h5>
-                                <p class="card-text"> {{ $tutorial->descripcion }} </p>
+                                <h5 class="card-title mt-2 p-1">{{ $tutorial->titulo }}</h5>
+                                <p class="card-text p-1"> {{ $tutorial->descripcion }} </p>
 
                             </div>
                             <div class="card-footer" style="background: white !important;border-top: 0 !important;">
@@ -75,14 +77,18 @@
                 </ul>
                 </nav>
             @endif
-
+            <div class="mt-5">
+                <a href="{{ Request::root() }}/maquinas/{{$maquina->id}}"><i class="fas fa-chevron-left"></i>&nbsp; Regresar</a>
+            </div>
         @else
-            <div class="display-1 mt-sm-1 mt-md-4 mt-lg-4 mt-xl-4">
-                <div class="display-1 text-center">
-                    <i class="far fa-folder-open"></i>
-                </div>
-                <div class="display-1 text-center">
-                    <h4>No posee Tutoriales</h4>
+            <div class="container mt-5">
+                <div class="display-1 mt-sm-1 mt-md-4 mt-lg-4 mt-xl-4">
+                    <div class="display-1 text-center">
+                        <i class="far fa-folder-open"></i>
+                    </div>
+                    <div class="display-1 text-center">
+                        <h4>No posee Tutoriales</h4>
+                    </div>
                 </div>
             </div>
         @endif

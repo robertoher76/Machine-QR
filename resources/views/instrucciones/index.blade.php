@@ -1,9 +1,11 @@
 @extends('..layouts.plantilla')
 
 @section('cabecera')
-<div class="container mt-5">
-    <h2 style="color: black;">Instrucciones de {{ $maquina->nombre_maquina }} &nbsp;<a href="{{ Request::url() }}/create" class="btn btn-outline-success btn-sm"><i class="fas fa-plus"></i> Agregar Instrucción</a></h2>
-    <p class="text-muted">Total Máquinas: <span class="font-weight-bold">{{ $instrucciones->total() }}</span></p>
+<div class="container mt-sm-0 mt-md-3 mt-lg-5 mt-xl-5">
+    <h1 style="color: black;">Instrucciones de {{ $maquina->nombre_maquina }} &nbsp;<a href="{{ Request::url() }}/create" class="btn btn-outline-success btn-sm"><i class="fas fa-plus"></i> Agregar</a></h1>
+    @if($instrucciones->count() > 0)
+        <p class="text-dark">Total Máquinas: <span class="font-weight-bold">{{ $instrucciones->count() }}</span></p>
+    @endif
 </div>
 @endsection
 
@@ -14,18 +16,32 @@
         @elseif($errors->has('success'))
             @include('..layouts.toastSuccess', ['title' => 'Exitosamente', 'success' => $errors->first('success')])
         @endif
-        @foreach ($instrucciones as $instruccion)
-            <div class="card mt-4 mb-4">
-                <div class="card-body">
-                    <h5 class="card-title">{{ $instruccion->titulo }} <small class="text-muted"> | Última Modificación {{ $instruccion->updated_at->format('d-m-Y') }}</small></h5>
-                    <p class="card-text">{{ $instruccion->descripcion }}</p>
-                    <a href="{{Request::url()}}/{{$instruccion->id}}" class="btn btn-outline-primary btn-sm">Ver más</a>
+        
+        @if($instrucciones->count() > 0)
+            @foreach ($instrucciones as $instruccion)
+                <div class="card mt-4 mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ $instruccion->titulo }} &nbsp; <small class="text-muted"> | &nbsp;&nbsp; Última Modificación {{ $instruccion->updated_at->format('d-m-Y') }}</small></h5>
+                        <p class="card-text">{{ $instruccion->descripcion }}</p>
+                        <a href="{{Request::url()}}/{{$instruccion->id}}" class="btn btn-primary btn-sm">Ver más</a>
+                    </div>
+                    <div class="card-footer">
+                        Tipo de Instrucción: {{ $instruccion->nombre }}
+                    </div>
                 </div>
-                <div class="card-footer">
-                    Tipo de Instrucción: {{ $instruccion->nombre }}
+            @endforeach
+        @else
+            <div class="container mt-5 mb-7 text-center">
+                <div class="display-1 mt-sm-1 mt-md-4 mt-lg-4 mt-xl-4">
+                    <div class="display-1 text-center">
+                        <i class="far fa-folder-open"></i>
+                    </div>
+                    <div class="display-1 text-center">
+                        <h4>No posee Instrucciones</h4>
+                    </div>
                 </div>
             </div>
-        @endforeach
+        @endif
 
         @if($instrucciones->lastPage() > 1)
             <nav aria-label="Page navigation example">

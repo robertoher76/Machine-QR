@@ -10,9 +10,11 @@
 @endpush
 
 @section('cabecera')
-<div class="container mt-5">
-    <h2 style="color: black;">Componentes de {{ $maquina->nombre_maquina }} &nbsp;<a href="{{ Request::url() }}/create" class="btn btn-outline-success btn-sm"><i class="fas fa-plus"></i> Agregar Componente</a></h2>
-    <p class="text-muted">Total Componentes: <span class="font-weight-bold">{{ $componentes->total() }}</span></p>
+<div class="container mt-sm-0 mt-md-3 mt-lg-5 mt-xl-5">
+    <h1 style="color: black;">Componentes de {{ $maquina->nombre_maquina }} &nbsp;<a href="{{ Request::url() }}/create" class="btn btn-outline-success btn-sm"><i class="fas fa-plus"></i> Agregar</a></h1>
+    @if($componentes->count() > 0)
+        <p class="text-dark">Total Componentes: <span class="font-weight-bold">{{ $componentes->count() }}</span></p>
+    @endif
 </div>
 @endsection
 
@@ -26,28 +28,41 @@
             @include('..layouts.toastSuccess', ['title' => 'Exitosamente', 'success' => $errors->first('success')])
         @endif
         <div class="row mt-4">
-            @foreach ($componentes as $componente)
-                <div class="col-sm-12 col-md-6 col-lg-6 col-xl-4 d-flex align-items-stretch">
-                    <div class="card mb-4 shadow-sm">
-                        <div>
-                            <a class="example-image-link" data-title="{{ $componente->nombre }}" href="{{ asset('storage/imagenes/componentes/'. $componente->imagen) }}" data-lightbox="example-{{ $componente->id }}"><img class="example-image" style="border-radius: 2%;width:100%;" widht="100%" height="225" src="{{ asset('storage/imagenes/componentes/'. $componente->imagen) }}"/></a>
-                        </div>
-                        <div class="card-body">
-                            <h4 class="card-title">{{ $componente->nombre }}</h4>
-                            <p class="card-text">{{ $componente->descripcion }}</p>
-                        </div>
-                        <div class="card-footer" style="background: white !important;border-top: 0 !important;">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div class="btn-group">
-                                    <a href="{{ Request::url() }}/{{ $componente->id }}" class="btn btn-sm btn-outline-secondary">Ver más</a>
-                                    <a href="componente/{{ $componente->id }}/edit" class="btn btn-sm btn-outline-secondary">Modificar</a>
+            @if($componentes->count() > 0)
+                @foreach ($componentes as $componente)
+                    <div class="col-sm-12 col-md-6 col-lg-6 col-xl-4 d-flex align-items-stretch">
+                        <div class="card mb-4 shadow-sm">
+                            <div>
+                                <a class="example-image-link" data-title="{{ $componente->nombre }}" href="{{ asset('storage/imagenes/componentes/'. $componente->imagen) }}" data-lightbox="example-{{ $componente->id }}"><img class="example-image" style="border-radius: 1%;width:100%;" widht="100%" height="255" src="{{ asset('storage/imagenes/componentes/'. $componente->imagen) }}"/></a>
+                            </div>
+                            <div class="card-body">
+                                <h4 class="card-title">{{ $componente->nombre }}</h4>
+                                <p class="card-text">{{ $componente->descripcion }}</p>
+                            </div>
+                            <div class="card-footer" style="background: white !important;border-top: 0 !important;">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="btn-group">
+                                        <a href="{{ Request::url() }}/{{ $componente->id }}" class="btn btn-sm btn-outline-secondary">Ver más</a>
+                                        <a href="componente/{{ $componente->id }}/edit" class="btn btn-sm btn-outline-secondary">Modificar</a>
+                                    </div>
+                                    <small class="text-muted ml-3">Modificado {{ $componente->updated_at->format('d-m-Y') }}</small>
                                 </div>
-                                <small class="text-muted ml-3">Modificado {{ $componente->updated_at->format('d-m-Y') }}</small>
                             </div>
                         </div>
                     </div>
+                @endforeach
+            @else
+                <div class="container mt-3 mb-5 text-center">
+                    <div class="display-1 mt-sm-1 mt-md-4 mt-lg-4 mt-xl-4">
+                        <div class="display-1 text-center">
+                            <i class="far fa-folder-open"></i>
+                        </div>
+                        <div class="display-1 text-center">
+                            <h4>No posee Componentes</h4>
+                        </div>
+                    </div>
                 </div>
-            @endforeach
+            @endif
         </div>
         <br/><br/>
         @if($componentes->lastPage() > 1)

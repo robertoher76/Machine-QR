@@ -16,5 +16,7 @@
 @endpush
 
 @section('contenido')
+    <div class="container mt-sm-3 mt-md-3 mt-lg-5 mt-xl-5">
 
+    </div>
 @endsection

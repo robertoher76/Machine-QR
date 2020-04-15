@@ -10,9 +10,9 @@
 @endpush
 
 @section('cabecera')
-<div class="container mt-5">
-    <h2 style="color: black;">Lista de Máquinas &nbsp;<a href="{{ Request::url() }}/create" class="btn btn-outline-success btn-sm"><i class="fas fa-plus"></i> Agregar Máquina</a></h2>
-    <p class="text-muted">Total Máquinas: <span class="font-weight-bold">{{ $maquinas->total() }}</span></p>
+<div class="container mt-sm-3 mt-md-3 mt-lg-5 mt-xl-5">
+    <h1 style="color: black;">Máquinas &nbsp;<a href="{{ Request::url() }}/create" class="btn btn-outline-success btn-sm"><i class="fas fa-plus"></i> Agregar</a></h1>
+    <p class="text-dark">Total Máquinas: <span class="font-weight-bold">{{ $maquinas->count() }}</span></p>
 </div>
 @endsection
 
@@ -25,12 +25,11 @@
 <div class="album">
     <div class="container">
       <div class="row">
-
         @foreach ($maquinas as $maquina)
         <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4 d-flex align-items-stretch">
           <div class="card mb-4 shadow-sm">
             <div>
-            <a class="example-image-link" data-title="{{ $maquina->nombre_maquina }}" href="{{ asset('storage/imagenes/maquinas/'. $maquina->imagen) }}" data-lightbox="example-1"><img class="example-image" style="border-radius: 2%;width:100%;" widht="100%" height="225" src="{{ asset('storage/imagenes/maquinas/'. $maquina->imagen) }}"/></a>
+              <a class="example-image-link" data-title="{{ $maquina->nombre_maquina }}" href="{{ asset('storage/imagenes/maquinas/'. $maquina->imagen) }}" data-lightbox="example-1"><img  class="example-image" style="border-radius: 1%;width:100%;" widht="100%" height="255" src="{{ asset('storage/imagenes/maquinas/'. $maquina->imagen) }}"/></a>
             </div>
             <div class="card-body">
               <h4 class="card-title">{{ $maquina->nombre_maquina }}</h4>

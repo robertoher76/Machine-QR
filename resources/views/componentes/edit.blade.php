@@ -21,7 +21,7 @@
 @endpush
 
 @section('cabecera')
-<div class="container mt-5">
+<div class="container mt-sm-3 mt-md-3 mt-lg-5 mt-xl-5">
     <h2 style="color: black;" class="text-justify">Modificar {{ $componente->nombre }}
         <small style="font-size:18px;" class="text-muted">&nbsp; Última modificación {{ $componente->updated_at->format('d-m-Y') }}.</small>
     </h2>

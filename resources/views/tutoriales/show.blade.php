@@ -5,7 +5,7 @@
 @endpush
 
 @section('cabecera')
-    <div class="container mt-5">
+    <div class="container mt-sm-3 mt-md-3 mt-lg-5 mt-xl-5">
         @if($errors->has('error'))
             @include('..layouts.toastDanger', ['title' => 'Advertencia', 'error' => $errors->first('error')])
         @elseif($errors->has('success'))
@@ -21,7 +21,7 @@
                 </form>
             </td>
         </h1>
-        <small class="form-text text-muted">Tutorial de {{ $maquina->nombre_maquina }} | Última Modificación {{ $tutoriale->updated_at->format('d-m-Y') }}</small>
+        <small class="form-text text-muted">Tutorial de <a href="/maquinas/{{ $maquina->id }}">{{ $maquina->nombre_maquina }}</a> | Última Modificación {{ $tutoriale->updated_at->format('d-m-Y') }}</small>
         <br/>
         <p style="font-size: 18px;" class="lead">{{ $tutoriale->descripcion}}</p>
         <br/>
@@ -36,9 +36,9 @@
             </video>
         </div>
     </div>
-    <div class="container mt-5 text-center">
-        <p>
-            <a href="{{ Request::root() }}/maquinas/{{$maquina->id}}">Regresar a {{ $maquina->nombre_maquina}}</a>
-        </p>
+    <div class="container mt-2">
+        <div class="mt-5">
+            <a href="{{ Request::root() }}/maquinas/{{$maquina->id}}/tutoriales"><i class="fas fa-chevron-left"></i>&nbsp; Regresar</a>
+        </div>
     </div>
 @endsection

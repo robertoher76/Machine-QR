@@ -10,7 +10,7 @@
 @endpush
 
 @section('cabecera')
-    <div class="container mt-5">
+    <div class="container mt-sm-3 mt-md-3 mt-lg-5 mt-xl-5">
         <div class="row">
             <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
                 <h2>Procedimiento #{{ $procedimiento->numero_orden }} &nbsp;

@@ -15,7 +15,7 @@
 @endpush
 
 @section('cabecera')
-<div class="container mt-5">
+<div class="container mt-sm-3 mt-md-3 mt-lg-5 mt-xl-5">
   <h2>Agregar Tutorial</h2>
   <p class="lead">Ingrese los siguientes datos para agregar un nuevo tutorial a {{ $maquina->nombre_maquina }}.</p>
 </div>
@@ -74,5 +74,8 @@
                 <button type="submit" class="btn btn-primary">Agregar</button>
             </div>
         </form>
+        <div class="mt-5">
+            <a href="{{ Request::root() }}/maquinas/{{$maquina->id}}/tutoriales"><i class="fas fa-chevron-left"></i>&nbsp; Regresar</a>
+        </div>
     </div>
 @endsection

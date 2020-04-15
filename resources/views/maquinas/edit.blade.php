@@ -21,7 +21,7 @@
 @endpush
 
 @section('cabecera')
-    <div class="container mt-5">
+    <div class="container mt-sm-3 mt-md-3 mt-lg-5 mt-xl-5">
         <h2 style="color: black;" class="text-justify">Modificar {{ $maquina->nombre_maquina }} <small style="font-size:18px;" class="text-muted">&nbsp; Última modificación {{ $maquina->updated_at->format('d-m-Y') }}.</small></h2>
         <p class="lead">Modifique los siguientes campos para realizar cambios en la máquina.</p>
     </div>

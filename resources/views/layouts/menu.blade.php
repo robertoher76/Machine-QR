@@ -6,7 +6,7 @@
                 <i></i>
             </label>
             <div class="logo">
-                <a href="#">MACHINE QR</a>
+                <a href="/inicio">MACHINE QR &nbsp;</a><a href="/inicio"><i class="fas fa-qrcode text-dark"></i></a>
             </div>
             <div class="nav-wrapper">
                 <ul>

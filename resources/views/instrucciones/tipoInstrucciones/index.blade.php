@@ -1,7 +1,7 @@
 @extends('..layouts.plantilla')
 
 @section('cabecera')
-<div class="container mt-5">
+<div class="container mt-sm-3 mt-md-3 mt-lg-5 mt-xl-5">
     <h2 style="color: black;">Tipo de Instrucciones &nbsp;<a href="{{ Request::url() }}/create" class="btn btn-outline-success btn-sm"><i class="fas fa-plus"></i> Agregar Tipo de Instrucción</a></h2>
     <p class="text-muted">Total Componentes: <span class="font-weight-bold">{{ $instruccionesTipo->total() }}</span></p>
 </div>

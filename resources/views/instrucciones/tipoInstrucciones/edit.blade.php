@@ -1,7 +1,7 @@
 @extends('..layouts.plantilla')
 
 @section('cabecera')
-<div class="container mt-5">
+<div class="container mt-sm-3 mt-md-3 mt-lg-5 mt-xl-5">
   <h2>Agregar Tipo de Instrucción</h2>
   <p class="lead">Ingrese los siguientes datos para registrar un nuevo tipo de instrucción a la aplicación.</p>
 </div>
