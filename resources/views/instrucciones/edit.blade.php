@@ -1,14 +1,14 @@
 @extends('..layouts.plantilla')
 
 @section('cabecera')
-    <div class="container mt-5">
+    <div class="container mt-sm-3 mt-md-3 mt-lg-5 mt-xl-5">
         <h2 style="color: black;">Modificar {{ $instruccion->titulo }} <small style="font-size:18px;" class="text-muted">&nbsp; Última modificación {{ $instruccion->updated_at->format('d-m-Y') }}.</small></h2>
         <p class="lead">Modifique los siguientes campos para realizar cambios en la Instrucción.</p>
     </div>
 @endsection
 
 @section('contenido')
-<div class="container mt-sm-3 mt-md-3 mt-lg-5 mt-xl-5">
+<div class="container mt-2">
     @if($errors->has('error'))
         @include('..layouts.toastDanger', ['title' => 'Advertencia', 'error' => $errors->first('error')])
     @elseif($errors->has('success'))

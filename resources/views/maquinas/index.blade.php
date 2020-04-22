@@ -12,7 +12,9 @@
 @section('cabecera')
 <div class="container mt-sm-3 mt-md-3 mt-lg-5 mt-xl-5">
     <h1 style="color: black;">Máquinas &nbsp;<a href="{{ Request::url() }}/create" class="btn btn-outline-success btn-sm"><i class="fas fa-plus"></i> Agregar</a></h1>
-    <p class="text-dark">Total Máquinas: <span class="font-weight-bold">{{ $maquinas->count() }}</span></p>
+    @if($maquinas->count() > 0)
+      <p class="text-dark">Total Máquinas: <span class="font-weight-bold">{{ $maquinas->count() }}</span></p>
+    @endif
 </div>
 @endsection
 

@@ -14,7 +14,11 @@ use App\Componente;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('index');
+});
+
+Route::get('/login', function () {
+    return view('login');
 });
 
 Route::get('qrcode', function () {
@@ -30,7 +34,7 @@ Route::get('qrcode', function () {
 
 Route::resource('/maquinas','MaquinaController');
 
-Route::resource('/maquinas/{maquina}/imagenes','ImagenController');
+Route::resource('/maquinas/{maquina}/galeria','ImagenController');
 
 Route::resource('/maquinas/{maquina}/tutoriales','TutorialController');
 

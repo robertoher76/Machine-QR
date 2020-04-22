@@ -61,6 +61,14 @@
           padding: 0;
     }
 
+    .logo a{
+        display: none;
+    }
+
+    .logo #machineLogo{
+        display: block;
+    }
+
     .nav-wrapper {
           position: fixed;
           top: 0;

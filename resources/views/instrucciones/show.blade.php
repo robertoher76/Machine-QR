@@ -13,7 +13,7 @@
     <div class="container mt-sm-0 mt-md-3 mt-lg-5 mt-xl-5">
         <div class="row">
             <div class="col-12">
-                <h1  style="margin-bottom: -2% !important;" class="mb-0">{{ $instruccion->titulo }}
+                <h1  style="margin-bottom: -2% !important;display:flex;flex-wrap: wrap;" class="mb-0">{{ $instruccion->titulo }} &nbsp;
                     <td style="margin-bottom: 0% !important;">
                         <form method="POST" action="{{url('maquinas/'.$maquina->id.'/instrucciones/'. $instruccion->id)}}">
                             <a href="{{ Request::url() }}/edit" class="btn btn-outline-success btn-sm"><i class="far fa-edit"></i> Modificar</a>
@@ -24,7 +24,7 @@
                     </td>
                 </h1>
                 <small class="form-text text-muted mt-0">Tipo de Instrucción: <a href="/instrucciones/tipo/{{ $tipo->id }}">{{ $tipo->nombre }}</a>  |  Modificado {{ $instruccion->updated_at->format('d-m-Y') }}</small>
-                <p class="lead">{{ $instruccion->descripcion}}</p>
+                <p class="lead mt-2">{{ $instruccion->descripcion}}</p>
             </div>
         </div>
     </div>

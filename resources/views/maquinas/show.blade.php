@@ -19,11 +19,11 @@
             @include('..layouts.toastSuccess', ['title' => 'Exitosamente', 'success' => $errors->first('success')])
         @endif
         <div class="row">
-            <div class="col-sm-12 col-md-12 col-lg-8 col-xl-8">
+            <div class="col-sm-12 col-md-12 col-lg-9 col-xl-9">
                 <div class="mb-2" style="width:100% !important;">
-                    <h1 style="color:black;">{{ $maquina->nombre_maquina }} &nbsp;
+                    <h1 style="color:black;display:flex;flex-wrap: wrap;">{{ $maquina->nombre_maquina }} &nbsp;
                     <td>
-                        <form method="POST" action="{{url('/maquinas/'.$maquina->id)}}">
+                        <form method="POST" action="{{url('maquinas/'.$maquina->id)}}">
                             <a href="{{ Request::url() }}/edit" class="btn btn-outline-success btn-sm"><i class="far fa-edit"></i> Modificar</a>
                             @method('DELETE')
                             @csrf
@@ -33,13 +33,13 @@
                     </h1>
                 </div>
                 <div style="width:100% !important;">
-                    <p style="font-size: 18px;" class="lead text-justify mt-3">{{ $maquina->descripcion}}</p>
+                    <p class="lead text-justify mt-3">{{ $maquina->descripcion}}</p>
                 </div>
                 <br/>
             </div>
-            <div class="col-sm-12 col-md-12 col-lg-4 col-xl-4 align-self-center text-center pr-0 pt-0">
+            <div class="col-sm-12 col-md-12 col-lg-3 col-xl-3 align-self-center text-center pr-0 pt-0">
                 <a class="example-image-link" data-title="QR Actual para {{ $maquina->nombre_maquina }}" href="{{ asset('storage/imagenes/QR/' . $maquina->codigo_qr . '.png') }}" data-lightbox="example-1"><img class="example-image ml-1 mr-1" style="border-radius: 2%;" widht="100%;" height="200px;" src="{{ asset('storage/imagenes/QR/' . $maquina->codigo_qr . '.png') }}"/></a>
-                <small class="form-text text-muted">Click sobre el QR para ampliarla.</small>
+                <small class="text-muted form-text">Click sobre el QR para ampliarla.</small>
             </div>
 
         </div>
@@ -79,7 +79,7 @@
                                 </div>
                             @endforeach
                         </div>
-                        @if($componentes->total() > 6)
+                        @if($componentes->count() > 6)
                             <div class="container mt-5 text-center">
                                 <a href="{{ Request::url() }}/componente" class="btn btn-outline-info rounded-pill">Ver más componentes ...</i></a>
                             </div>
@@ -115,7 +115,7 @@
                                 </div>
                             </div>
                         @endforeach
-                        @if($instrucciones->total() > 6)
+                        @if($instrucciones->count() > 6)
                             <div class="container mt-5 text-center">
                                 <a href="{{ Request::url() }}/instruccion" class="btn btn-outline-info rounded-pill">Ver más instrucciones ...</i></a>
                             </div>
@@ -159,7 +159,7 @@
                             </div>
                             @endforeach
                         </div>
-                        @if($tutoriales->total() > 6)
+                        @if($tutoriales->count() > 6)
                             <div class="container mt-5 text-center">
                                 <a href="{{ Request::url() }}/tutorial" class="btn btn-outline-info rounded-pill">Ver más tutoriales ...</i></a>
                             </div>
@@ -185,16 +185,14 @@
                         <a href="{{ Request::url() }}/edit" class="btn btn-outline-success btn-sm"><i class="far fa-plus-square"></i> Agregar</a>
                     </h5>
                 </div>
-                @if($galerias->total()>0)
+                @if($galerias->count()>0)
                     <div class="">
                         @foreach ($galerias as $imagen)
                             <a class="example-image-link" href="{{ asset('storage/imagenes/galeria/' . $imagen->imagen) }}" data-lightbox="example-set" data-title="{{ $imagen->descripcion }}"><img class="example-image mt-3 ml-1 mr-1" style="border-radius: 2%;" widht="100%;" height="200px;" src="{{ asset('storage/imagenes/galeria/' . $imagen->imagen) }}"/></a>
-                        @endforeach
-                        @if($galerias->total()>15)
-                            <div class="container mt-5 text-center">
-                                <a href="{{ Request::url() }}/galeria" class="btn btn-outline-info rounded-pill">Ver más imagenes ...</i></a>
-                            </div>
-                        @endif
+                        @endforeach                        
+                        <div class="container mt-5 text-center">
+                            <a href="{{ Request::url() }}/galeria"><i class="far fa-images"></i> Ver Galería</a>
+                        </div>
                     </div>
                 @else
                     <div class="display-1 mt-sm-1 mt-md-4 mt-lg-4 mt-xl-4">

@@ -1,100 +1,58 @@
-@extends('..layouts.plantilla')
-    
-@section('cabecera')
-<div id="myCarousel" class="carousel slide" data-ride="carousel">
-    <ol class="carousel-indicators">
-      <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-      <li data-target="#myCarousel" data-slide-to="1"></li>
-      <li data-target="#myCarousel" data-slide-to="2"></li>
-    </ol>
-    <div class="carousel-inner">
-      <div class="carousel-item active">
-        <svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img"><rect width="100%" height="100%" fill="#777"/></svg>
-        <div class="container">
-          <div class="carousel-caption text-left">
-            <h1>Example headline.</h1>
-            <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
-            <p><a class="btn btn-lg btn-primary" href="#" role="button">Sign up today</a></p>
-          </div>
-        </div>
-      </div>
-      <div class="carousel-item">
-        <svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img"><rect width="100%" height="100%" fill="#777"/></svg>
-        <div class="container">
-          <div class="carousel-caption">
-            <h1>Another example headline.</h1>
-            <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
-            <p><a class="btn btn-lg btn-primary" href="#" role="button">Learn more</a></p>
-          </div>
-        </div>
-      </div>
-      <div class="carousel-item">
-        <svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img"><rect width="100%" height="100%" fill="#777"/></svg>
-        <div class="container">
-          <div class="carousel-caption text-right">
-            <h1>One more for good measure.</h1>
-            <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
-            <p><a class="btn btn-lg btn-primary" href="#" role="button">Browse gallery</a></p>
-          </div>
-        </div>
-      </div>
-    </div>
-    <a class="carousel-control-prev" href="#myCarousel" role="button" data-slide="prev">
-      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-      <span class="sr-only">Previous</span>
-    </a>
-    <a class="carousel-control-next" href="#myCarousel" role="button" data-slide="next">
-      <span class="carousel-control-next-icon" aria-hidden="true"></span>
-      <span class="sr-only">Next</span>
-    </a>
-  </div>
-@endsection
+@extends('layouts.plantillaInicio')
 
 @section('contenido')
-    <!-- Marketing messaging and featurettes
-  ================================================== -->
-  <!-- Wrap the rest of the page in another container to center all the content. -->
 
-    <div class="container marketing">   
-        <!-- START THE FEATURETTES -->
-
-    <hr class="featurette-divider">
-
-<div class="row featurette">
-  <div class="col-md-7">
-    <h2 class="featurette-heading">First featurette heading. <span class="text-muted">It’ll blow your mind.</span></h2>
-    <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
-  </div>
-  <div class="col-md-5">
-    <svg class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="500" height="500" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: 500x500"><title>Placeholder</title><rect width="100%" height="100%" fill="#eee"/><text x="50%" y="50%" fill="#aaa" dy=".3em">500x500</text></svg>
-  </div>
-</div>
-
-<hr class="featurette-divider">
-
-<div class="row featurette">
-  <div class="col-md-7 order-md-2">
-    <h2 class="featurette-heading">Oh yeah, it’s that good. <span class="text-muted">See for yourself.</span></h2>
-    <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
-  </div>
-  <div class="col-md-5 order-md-1">
-    <svg class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="500" height="500" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: 500x500"><title>Placeholder</title><rect width="100%" height="100%" fill="#eee"/><text x="50%" y="50%" fill="#aaa" dy=".3em">500x500</text></svg>
-  </div>
-</div>
-
-<hr class="featurette-divider">
-
-<div class="row featurette">
-  <div class="col-md-7">
-    <h2 class="featurette-heading">And lastly, this one. <span class="text-muted">Checkmate.</span></h2>
-    <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
-  </div>
-  <div class="col-md-5">
-    <svg class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="500" height="500" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: 500x500"><title>Placeholder</title><rect width="100%" height="100%" fill="#eee"/><text x="50%" y="50%" fill="#aaa" dy=".3em">500x500</text></svg>
-  </div>
-</div>
-
-<hr class="featurette-divider">
+  <div class="overflow-hidden vh-100 position-absolute" style="top: 0;">
+    
+    <div class="pt-3 px-3 pt-md-5 col-sm-12 col-md-12 col-lg-7 px-md-5 text-center overflow-hidden position-relative" style="top: 10%;z-index: 10;">
+      <div class="my-3 p-3 ml-lg-6 mr-lg-5">
+        <h1 class="display-5" style="color: #2977c9;">MACHINE QR</h1>
+        <p class="lead mt-4 text-justify">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a purus non odio tincidunt interdum. Ut dapibus, nisl sed tempor gravida, augue erat cursus mi, id cursus est diam non lorem.</p>
+        <p class="lead text-justify">Integer maximus turpis ut quam blandit, vitae vulputate dui interdum. Sed eleifend nec magna et mattis.</p>        
+      </div>      
     </div>
-@endsection
+    
+    <div class="position-absolute" style="right: 5%;bottom: 5%;z-index: 1;">
+      <img src="{{ asset('imagenes/machine-icon-png-6.png') }}" height="475px"/>
+    </div>
 
+  </div>
+
+  <div class="container d-md-flex flex-md-equal w-100 my-md-3 pl-md-3" style="width: 100%;margin-top: 100vh!important;">
+
+    <div class="mr-md-3 px-3 px-md-5 w-50 text-center overflow-hidden" style="margin:auto!important;">
+      <div class="my-3 p-3">
+        <h1 class="display-5">MACHINE QR</h1>
+        <p class="lead">La ingenieria desde tu smartphone.</p>
+      </div>
+      <div class="bg-dark shadow-sm mx-auto" style="width: 80%; height: 300px; border-radius: 21px 21px 0 0;">      
+        <img src="{{ asset('imagenes/qrcode3.gif') }}" class="w-100 p-3 pt-5" style="border-radius: 10% 10% 0 0;" alt="Flowers in Chania">
+      </div>
+    </div>
+
+  </div>
+
+
+  <div class="row d-md-flex flex-md-equal w-100">    
+    <div class="pt-3 px-3 pt-md-5 col-sm-12 col-md-12 col-lg-7 px-md-5 text-center overflow-hidden">
+      <div class="my-3 p-3 ml-lg-5 mr-lg-5">
+        <h2 class="display-5" style="color: #2977c9;">¿Qué es MACHINE QR?</h2>
+        <p class="lead mt-4 text-justify">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a purus non odio tincidunt interdum. Ut dapibus, nisl sed tempor gravida, augue erat cursus mi, id cursus est diam non lorem.</p>
+        <p class="lead text-justify">Integer maximus turpis ut quam blandit, vitae vulputate dui interdum. Sed eleifend nec magna et mattis.</p>
+      </div>      
+    </div>
+    <div class="pt-3 px-3 pt-md-3 col-sm-12 col-md-12 col-lg-5 px-md-5 text-center overflow-hidden">
+      <div class="my-3 py-3 align-self-center text-center">
+        <img src="{{ asset('imagenes/machine-icon-png-6.png') }}" style="height: 300px;"/>
+      </div>      
+    </div>
+  </div>
+
+  <div class="position-relative overflow-hidden p-3 p-md-5 text-center">
+    <div class="col-md-6 mx-auto my-5">
+      <h1 class="display-4 font-weight-normal">Mejorar Machine QR</h1>
+      <p class="lead font-weight-normal">And an even wittier subheading to boot. Jumpstart your marketing efforts with this example based on Apple’s marketing pages.</p>
+      <a class="btn btn-outline-secondary" href="#">Iniciar Sesión</a>
+    </div>   
+  </div>
+@endsection

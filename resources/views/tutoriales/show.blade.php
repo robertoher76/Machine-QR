@@ -11,7 +11,7 @@
         @elseif($errors->has('success'))
             @include('..layouts.toastSuccess', ['title' => 'Exitosamente', 'success' => $errors->first('success')])
         @endif
-        <h1>{{ $tutoriale->titulo }} &nbsp;
+        <h1 style="display:flex;flex-wrap: wrap;">{{ $tutoriale->titulo }} &nbsp;
             <td>
                 <form method="POST" action="{{url('/maquinas/'.$maquina->id.'/tutoriales/'.$tutoriale->id)}}">
                     <a href="{{ Request::url() }}/edit" class="btn btn-outline-success btn-sm"><i class="far fa-edit"></i> Modificar</a>
@@ -22,8 +22,7 @@
             </td>
         </h1>
         <small class="form-text text-muted">Tutorial de <a href="/maquinas/{{ $maquina->id }}">{{ $maquina->nombre_maquina }}</a> | Última Modificación {{ $tutoriale->updated_at->format('d-m-Y') }}</small>
-        <br/>
-        <p style="font-size: 18px;" class="lead">{{ $tutoriale->descripcion}}</p>
+        <p style="font-size: 19px;" class="lead mt-2">{{ $tutoriale->descripcion}}</p>
         <br/>
     </div>
 @endsection

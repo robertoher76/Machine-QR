@@ -27,8 +27,24 @@
     </div>
 
     <div id="cuerpo" style="display:none;">
-        <header>
-            @include('..layouts.menu')
+        <header style="z-index:100 !important;">
+            <nav id="varn">
+                <input type="checkbox" id="nav" class="hidden">
+                <label for="nav" class="nav-btn">
+                    <i></i>
+                    <i></i>
+                    <i></i>
+                </label>
+                <div class="logo">
+                    <a id="machineLogo" href="/inicio">MACHINE QR &nbsp;</a><a href="/inicio"><i class="fas fa-qrcode text-dark"></i></a>
+                </div>
+                <div class="nav-wrapper">
+                    <ul>
+                        <li><a href="#">Inicio</a></li>                        
+                        <li><a href="#">Iniciar Sesión</a></li>
+                    </ul>
+                </div>
+            </nav>
         </header>
 
         <main role="main">
@@ -36,7 +52,7 @@
                 @yield("cabecera")
             </div>
 
-            <div class="contenido">
+            <div class="contenido" style="z-index:1 !important;">
                 @yield("contenido")
             </div>
 

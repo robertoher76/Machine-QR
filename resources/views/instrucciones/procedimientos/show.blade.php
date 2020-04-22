@@ -13,7 +13,7 @@
     <div class="container mt-sm-3 mt-md-3 mt-lg-5 mt-xl-5">
         <div class="row">
             <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
-                <h2>Procedimiento #{{ $procedimiento->numero_orden }} &nbsp;
+                <h2 style="display:flex;flex-wrap: wrap;" class="mb-3">Procedimiento #{{ $procedimiento->numero_orden }} &nbsp;
                     <td>
                         <form method="POST" action="{{url('maquinas/instrucciones/'. $instruccione->id.'/procedimientos/'.$procedimiento->id)}}">
                             <a href="{{ Request::url() }}/edit" class="btn btn-outline-success btn-sm"><i class="far fa-edit"></i> Modificar</a>
@@ -23,7 +23,7 @@
                         </form>
                     </td>
                 </h2>
-                <small class="form-text text-muted">Procedimiento de <a href="{{ Request::root() }}/maquinas/{{$instruccione->maquina_id}}/instrucciones/{{$instruccione->id}}">{{$instruccione->titulo}}</a> | Última Modificación {{ $procedimiento->updated_at->format('d-m-Y') }}</small>
+                <small class="form-text text-muted mb-2">Procedimiento de <a href="{{ Request::root() }}/maquinas/{{$instruccione->maquina_id}}/instrucciones/{{$instruccione->id}}">{{$instruccione->titulo}}</a> | Última Modificación {{ $procedimiento->updated_at->format('d-m-Y') }}</small>
                 <p class="lead">{{ $procedimiento->descripcion }}</p>
             </div>
 

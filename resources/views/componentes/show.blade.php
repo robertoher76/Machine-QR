@@ -19,7 +19,7 @@
         <br/>
         <div class="row">
             <div class="col-sm-12 col-md-12 col-lg-8 col-xl-8">
-                <h2>{{ $componente->nombre }} &nbsp;
+                <h2 style="display:flex;flex-wrap: wrap;">{{ $componente->nombre }} &nbsp;
                     <td>
                         <form method="POST" action="{{url('maquinas/'.$maquina->id.'/componente/'.$componente->id)}}">
                             <a href="{{ Request::url() }}/edit" class="btn btn-outline-success btn-sm"><i class="far fa-edit"></i> Modificar</a>
@@ -30,7 +30,7 @@
                     </td>
                 </h2>
                 <small class="form-text text-muted">Componente de <a href="{{ Request::root() }}/maquinas/{{$maquina->id}}">{{$maquina->nombre_maquina}}</a> | Modificado {{ $componente->updated_at->format('d-m-Y') }}</small>
-                <p style="font-size: 18px;" class="lead text-justify mt-2">{{ $componente->descripcion}}</p>
+                <p style="font-size: 19px;" class="lead text-justify mt-3">{{ $componente->descripcion}}</p>
                 <br/>
             </div>
             <div class="col-sm-12 col-md-12 col-lg-4 col-xl-4 align-self-center text-center pr-0">

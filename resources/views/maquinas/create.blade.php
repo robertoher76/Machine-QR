@@ -32,14 +32,14 @@
             @csrf
             <div class="form-group">
                 <label for="nombre" class="ml-1 {{ ($errors->has('nombre_maquina')) ? 'text-danger' : '' }}">Nombre de la Máquina</label>
-                <input type="text" autocomplete="off" class="form-control {{ ($errors->has('nombre_maquina')) ? 'border border-danger' : '' }}" id="nombre" name="nombre_maquina" value="{{ old('nombre_maquina') }}">
+                <input type="text" autocomplete="off" class="form-control {{ ($errors->has('nombre_maquina')) ? 'is-invalid' : '' }}" id="nombre" name="nombre_maquina" value="{{ old('nombre_maquina') }}">
                 @if($errors->has('nombre_maquina'))
                     <small class="text-danger ml-2" style="font-size:14px;"><i class="fas fa-exclamation-circle" style="font-size:12px !important;"></i> {{ $errors->first('nombre_maquina') }}</small>
                 @endif
             </div>
             <div class="form-group">
                 <label for="descripcion" class="ml-1 {{ ($errors->has('descripcion')) ? 'text-danger' : '' }}">Funcionamiento de la Máquina</label>
-                <textarea class="form-control {{ ($errors->has('descripcion')) ? 'border border-danger' : '' }}" id="descripcion" name="descripcion" rows="3">{{ old('descripcion') }}</textarea>
+                <textarea class="form-control {{ ($errors->has('descripcion')) ? 'is-invalid' : '' }}" id="descripcion" name="descripcion" rows="3">{{ old('descripcion') }}</textarea>
                 @if($errors->has('descripcion'))
                     <small class="text-danger ml-2" style="font-size:14px;"><i class="fas fa-exclamation-circle" style="font-size:12px !important;"></i> {{ $errors->first('descripcion') }}</small>
                 @else
@@ -48,7 +48,7 @@
             </div>
             <div class="form-group">
                 <label for="foto" class="ml-1 {{ ($errors->has('foto_up')) ? 'text-danger' : '' }}">Imagen de la máquina</label>
-                <input id="foto" name="foto_up" type="file" class="{{ ($errors->has('foto_up')) ? 'border border-danger' : '' }}">
+                <input id="foto" name="foto_up" type="file" class="{{ ($errors->has('foto_up')) ? 'is-invalid' : '' }}">
                 @if($errors->has('foto_up'))
                     <small class="text-danger ml-2" style="font-size:14px;"><i class="fas fa-exclamation-circle" style="font-size:12px !important;"></i> {{ $errors->first('foto_up') }}</small>
                 @else
