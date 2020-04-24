@@ -15,7 +15,7 @@
         <input type="email" id="inputEmail" class="form-control" placeholder="Nombre de Usuario" required autofocus>
         <label for="inputPassword" class="sr-only">Contraseña</label>
         <input type="password" id="inputPassword" class="form-control" placeholder="Contraseña" required>
-        <button class="btn btn-lg btn-outline-primary btn-block" type="submit">Ingresar</button>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Ingresar</button>
         <p class="mt-3 text-center mb-3 text-muted"><a href="">¿Has olvidado tu contraseña?</a></p>
     </form>
 @endsection

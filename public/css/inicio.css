@@ -1,0 +1,44 @@
+#imgCover{
+    right: 3%;
+    bottom: 15%;
+}
+
+#imgCover img{        
+    height:475px;  
+}
+
+@media screen and (max-width: 1024px) {
+    #imgCover{
+        right: 3%;
+        bottom: 30%;
+    }
+    #imgCover img{
+        height: 350px;           
+    }
+    #tituloCover p{
+        font-size: 19px;
+    }
+    #scannImg{
+        margin-top: -10% !important;
+    }
+}
+
+@media screen and (max-width: 991px) {
+    #imgCover{
+        position: static !important;
+        width: 100%;
+        text-align: center;
+    }    
+    #scannImg{
+        margin-top: 5% !important;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    #imgCover img{
+        height: 300px;  
+    }
+    #tituloCover p{
+        font-size: 18px;
+    }
+}
