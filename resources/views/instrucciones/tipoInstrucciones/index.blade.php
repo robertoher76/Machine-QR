@@ -2,7 +2,7 @@
 
 @section('cabecera')
 <div class="container mt-sm-3 mt-md-3 mt-lg-5 mt-xl-5">
-    <h2 style="color: black;">Tipo de Instrucciones &nbsp;<a href="{{ Request::url() }}/create" class="btn btn-outline-success btn-sm"><i class="fas fa-plus"></i> Agregar Tipo de Instrucción</a></h2>
+    <h2 class="text-body">Tipo de Instrucciones &nbsp;<a href="{{ route('tipo.create') }}" class="btn btn-outline-success btn-sm"><i class="fas fa-plus"></i> Agregar Tipo de Instrucción</a></h2>
     <p class="text-muted">Total Componentes: <span class="font-weight-bold">{{ $instruccionesTipo->total() }}</span></p>
 </div>
 @endsection
@@ -19,8 +19,7 @@
     </div>
     @endforeach
 
-    <br/><br/>
-      @if($instruccionesTipo->lastPage() > 1)                 
+    <br/><br/>             
         <nav aria-label="Page navigation example">
           <ul class="pagination justify-content-center">
             <li class="page-item {{ ($instruccionesTipo->onFirstPage()) ? ' disabled' : '' }}">
@@ -41,7 +40,5 @@
           </ul>
         </nav>
         <br/>
-      @endif
-
 </div>
 @endsection

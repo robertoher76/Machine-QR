@@ -8,6 +8,12 @@ use App\Maquina;
 
 class InstruccionTipoController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -16,7 +22,6 @@ class InstruccionTipoController extends Controller
     public function index()
     {
         $instruccionesTipo = Instrucciones_tipo::paginate(15);
-
         return view('instrucciones.tipoInstrucciones.index', ['instruccionesTipo' => $instruccionesTipo]);
     }
 
@@ -40,7 +45,7 @@ class InstruccionTipoController extends Controller
     {
         Instrucciones_tipo::create($request->all());
 
-        return redirect('/maquinas/instrucciones/tipo');
+        return redirect('instrucciones/tipo');
     }
 
     /**

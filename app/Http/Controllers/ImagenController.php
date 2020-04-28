@@ -10,6 +10,12 @@ use App\Maquina;
 
 class ImagenController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -58,28 +64,22 @@ class ImagenController extends Controller
      * Display the specified resource.
      *
      * @param  Maquina_imagene  $galerium
-     * @param  \App\Maquina $maquina
      * @return \Illuminate\Http\Response
      */
-    public function show(Maquina $maquina, Maquina_imagene  $galerium)
+    public function show(Maquina_imagene  $galerium)
     {
-        if($maquina->id == $galerium->maquina_id){
-            return view('galerias.show', ['maquina' => $maquina, 'galeria' => $galerium]);
-        }
+        return view('galerias.show', ['maquina' => Maquina::find($galerium->maquina_id), 'galeria' => $galerium]);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
      * @param  Maquina_imagene  $galerium
-     * @param  \App\Maquina $maquina
      * @return \Illuminate\Http\Response
      */
-    public function edit(Maquina $maquina, Maquina_imagene  $galerium)
-    {
-        if($maquina->id == $galerium->maquina_id){
-            return view('galerias.edit', ['maquina' => $maquina, 'imagen' => $galerium]);
-        }
+    public function edit(Maquina_imagene  $galerium)
+    {        
+        return view('galerias.edit', ['maquina' => Maquina::find($galerium->maquina_id), 'imagen' => $galerium]);
     }
 
     /**
@@ -87,49 +87,42 @@ class ImagenController extends Controller
      *
      * @param  \App\Http\Requests\EditImagenRequest  $request
      * @param  Maquina_imagene  $galerium
-     * @param  \App\Maquina $maquina
      * @return \Illuminate\Http\Response
      */
-    public function update(EditImagenRequest $request, Maquina $maquina, Maquina_imagene  $galerium)
+    public function update(EditImagenRequest $request, Maquina_imagene  $galerium)
     {
-        $messageBag = new MessageBag;
-        if($maquina->id == $galerium->maquina_id){
-            if($request->cambiarImagen){
-                $request->validate([
-                    'foto_up' => 'required|mimes:jpg,jpeg,png|max:4000'], [
-                    'foto_up.required' => 'La imagen es requerido.',
-                    'foto_up.mimes' => 'La imagen debe ser un tipo de archivo: jpg, jpeg, png.',
-                    'foto_up.max' => 'La imagen no debe ser mayor a 4000 kilobytes.'
-                ]);
-                if($imagenName = Maquina_imagene::setImagenGaleria($request->foto_up, $galerium->imagen)){
-                    $request->request->add(['imagen' => $imagenName]);
-                    $galerium->update($request->all());
-                    return redirect("maquinas/$maquina->id/galeria/$galerium->id")->withErrors($messageBag->add('success', 'La imagen fue modificada exitosamente.'));
-                }
-                return back()->withErrors($messageBag->add('error', 'Error al subir la imagen a la base de datos, intente de nuevo'));
+        $messageBag = new MessageBag;        
+        if($request->cambiarImagn){
+            $request->validate([
+                'foto_up' => 'required|mimes:jpg,jpeg,png|max:4000'], [
+                'foto_up.required' => 'La imagen es requerido.',
+                'foto_up.mimes' => 'La imagen debe ser un tipo de archivo: jpg, jpeg, png.',
+                'foto_up.max' => 'La imagen no debe ser mayor a 4000 kilobytes.'
+            ]);
+            if($imagenName = Maquina_imagene::setImagenGaleria($request->foto_up, $galerium->imagen)){
+                $request->request->add(['imagen' => $imagenName]);
             }
-            $galerium->update($request->all());
-            return redirect("maquinas/$maquina->id/galeria/$galerium->id")->withErrors($messageBag->add('success', 'La imagen fue modificada exitosamente.'));
+            return back()->withErrors($messageBag->add('error', 'Error al subir la imagen a la base de datos, intente de nuevo'));
         }
+        $galerium->update($request->all());
+        return redirect("galeria/$galerium->id")->withErrors($messageBag->add('success', 'La imagen fue modificada en la aplicación con éxito.'));
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param  Maquina_imagene  $galerium
-     * @param  \App\Maquina $maquina
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Maquina $maquina, Maquina_imagene  $galerium)
+    public function destroy(Maquina_imagene  $galerium)
     {
         $messageBag = new MessageBag;
         try{
-        if($maquina->id == $galerium->maquina_id){
-            if(Maquina_imagene::deleteImagenGaleria($galerium->imagen) && Maquina_imagene::updateOrdenDecrease($maquina->id, $galerium->numero_orden)){
+            if(Maquina_imagene::deleteImagenGaleria($galerium->imagen) && Maquina_imagene::updateOrdenDecrease($galerium->maquina_id, $galerium->numero_orden)){
+                $id = $galerium->maquina_id;
                 $galerium->delete();
-                return redirect("maquinas/$maquina->id/galeria")->withErrors($messageBag->add('success', 'La imagen fue eliminada de la galería.'));
+                return redirect("maquinas/$id/galeria")->withErrors($messageBag->add('success', 'La imagen fue eliminada de la galería.'));
             }
-        }
         }catch(\Exception $ex){
             return back()->withErrors($messageBag->add('error', 'Error al elminiar la imagen en la base de datos, intente de nuevo'));
         }

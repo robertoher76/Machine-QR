@@ -13,18 +13,18 @@
     <div class="container mt-sm-0 mt-md-3 mt-lg-5 mt-xl-5">
         <div class="row">
             <div class="col-12">
-                <h1  style="margin-bottom: -2% !important;display:flex;flex-wrap: wrap;" class="mb-0">{{ $instruccion->titulo }} &nbsp;
-                    <td style="margin-bottom: 0% !important;">
-                        <form method="POST" action="{{url('maquinas/'.$maquina->id.'/instrucciones/'. $instruccion->id)}}">
-                            <a href="{{ Request::url() }}/edit" class="btn btn-outline-success btn-sm"><i class="far fa-edit"></i> Modificar</a>
+                <h2  style="margin-bottom: -2% !important;" class="mb-0 d-flex flex-wrap">{{ $instruccion->titulo }} &nbsp;
+                    <td>
+                        <form method="POST" action="{{ route('instrucciones.destroy', $instruccion) }}">
+                            <a href="{{ route('instrucciones.edit', $instruccion) }}" class="btn btn-outline-success btn-sm"><i class="far fa-edit"></i> Modificar</a>
                             @method('DELETE')
                             @csrf
                             <button class="btn btn-outline-danger btn-sm" type="submit"><i class="far fa-trash-alt"></i> Eliminar</button>
                         </form>
                     </td>
-                </h1>
-                <small class="form-text text-muted mt-0">Tipo de Instrucción: <a href="/instrucciones/tipo/{{ $tipo->id }}">{{ $tipo->nombre }}</a>  |  Modificado {{ $instruccion->updated_at->format('d-m-Y') }}</small>
-                <p class="lead mt-2">{{ $instruccion->descripcion}}</p>
+                </h2>
+                <small class="form-text text-muted mt-0">Tipo de Instrucción: <a href="{{ route('tipo.show', $tipo->id) }}">{{ $tipo->nombre }}</a> | Modificado {{ $instruccion->updated_at->format('d-m-Y') }}</small>
+                <p style="font-size: 19px;" class="lead mt-2">{{ $instruccion->descripcion}}</p>
             </div>
         </div>
     </div>
@@ -46,7 +46,7 @@
                 @foreach($procedimientos as $procedimiento)
                     <a class="list-group-item list-group-item-action {{ ($procedimiento->numero_orden == 1) ? 'active' : '' }}" id="list-{{ $procedimiento->numero_orden }}-list" data-toggle="list" href="#list-{{ $procedimiento->numero_orden }}" role="tab" aria-controls="{{ $procedimiento->numero_orden }}">Procedimiento #{{ $procedimiento->numero_orden }}</a>
                 @endforeach
-                <a id="addProcedimiento" class="list-group-item list-group-item-action " href="{{ Request::root() }}/maquinas/instrucciones/{{ $instruccion->id }}/procedimientos/create"><i id="iconProcedimiento" class="fas fa-plus"></i> Agregar Procedimiento</a>
+                <a id="addProcedimiento" class="list-group-item list-group-item-action " href="{{ route('instrucciones.procedimientos.create', $instruccion) }}"><i id="iconProcedimiento" class="fas fa-plus"></i> Agregar Procedimiento</a>
                 <br/>
             </div>
         </div>
@@ -70,11 +70,11 @@
                     <div class="tab-pane fade {{ ($procedimiento->numero_orden == 1) ? 'show active' : '' }}" id="list-{{ $procedimiento->numero_orden }}" role="tabpanel" aria-labelledby="list-{{ $procedimiento->numero_orden }}-list">
                         <div class="row">
                             <div class="col-12">
-                                <h4>{{ $procedimiento->descripcion }}</h4>
+                                <h5>{{ $procedimiento->descripcion }}</h5>
                                 <p>Modificado {{ $procedimiento->updated_at->format('d-m-Y') }}</p>
                                 <td>
-                                    <form method="POST" action="{{url('maquinas/instrucciones/'. $instruccion->id .'/procedimientos/'.$procedimiento->id )}}">
-                                        <a href="{{ Request::root() }}/maquinas/instrucciones/{{ $instruccion->id }}/procedimientos/{{ $procedimiento->id }}/edit" class="btn btn-outline-success btn-sm"><i class="far fa-edit"></i> Modificar</a>
+                                    <form method="POST" action="{{ route('procedimientos.destroy', $procedimiento) }}">
+                                        <a href="{{ route('procedimientos.edit', $procedimiento) }}" class="btn btn-outline-success btn-sm"><i class="far fa-edit"></i> Modificar</a>
                                         @method('DELETE')
                                         @csrf
                                         <button class="btn btn-outline-danger btn-sm" type="submit"><i class="far fa-trash-alt"></i> Eliminar</button>
@@ -83,7 +83,7 @@
                             </div>
                             <div class="col-12 mt-4">
                                 <div class="text-center">
-                                    <a class="example-image-link" data-title="Procedimiento #{{ $procedimiento->numero_orden }}" href="{{ asset('storage/imagenes/procedimientos/' . $procedimiento->imagen) }}" data-lightbox="example-1"><img class="example-image ml-1 mr-1" style="border-radius: 2%;widht 100% !important;" widht="100%;" height="200px;" src="{{ asset('storage/imagenes/procedimientos/' . $procedimiento->imagen) }}"/></a>
+                                    <a class="example-image-link" data-title="Procedimiento #{{ $procedimiento->numero_orden }}" href="{{ asset('storage/imagenes/procedimientos/' . $procedimiento->imagen) }}" data-lightbox="example-1"><img class="example-image ml-1 mr-1 rounded" height="200px;" src="{{ asset('storage/imagenes/procedimientos/' . $procedimiento->imagen) }}"/></a>
                                     <small class="form-text text-muted">Click sobre la imagen para ampliarla.</small>
                                 </div>
                             </div>
@@ -94,7 +94,7 @@
         </div>
     </div>
     <div class="mt-5">
-        <a href="{{ Request::root() }}/maquinas/{{$maquina->id}}/instrucciones"><i class="fas fa-chevron-left"></i>&nbsp; Regresar</a>
+        <a href="{{ route('maquinas.instrucciones.index', $maquina) }}"><i class="fas fa-chevron-left"></i>&nbsp; Regresar</a>
     </div>
 </div>
 @endsection

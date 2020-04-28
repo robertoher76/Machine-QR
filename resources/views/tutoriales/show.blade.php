@@ -11,18 +11,18 @@
         @elseif($errors->has('success'))
             @include('..layouts.toastSuccess', ['title' => 'Exitosamente', 'success' => $errors->first('success')])
         @endif
-        <h1 style="display:flex;flex-wrap: wrap;">{{ $tutoriale->titulo }} &nbsp;
+        <h1 class="d-flex flex-wrap">{{ $tutoriale->titulo }} &nbsp;
             <td>
-                <form method="POST" action="{{url('/maquinas/'.$maquina->id.'/tutoriales/'.$tutoriale->id)}}">
-                    <a href="{{ Request::url() }}/edit" class="btn btn-outline-success btn-sm"><i class="far fa-edit"></i> Modificar</a>
+                <form method="POST" action="{{ route('tutoriales.destroy', $tutoriale) }}">
+                    <a href="{{ route('tutoriales.edit', $tutoriale) }}" class="btn btn-outline-success btn-sm"><i class="far fa-edit"></i> Modificar</a>
                     @method('DELETE')
                     @csrf
                     <button class="btn btn-outline-danger btn-sm" type="submit"><i class="far fa-trash-alt"></i> Eliminar</button>
                 </form>
             </td>
         </h1>
-        <small class="form-text text-muted">Tutorial de <a href="/maquinas/{{ $maquina->id }}">{{ $maquina->nombre_maquina }}</a> | Última Modificación {{ $tutoriale->updated_at->format('d-m-Y') }}</small>
-        <p style="font-size: 19px;" class="lead mt-2">{{ $tutoriale->descripcion}}</p>
+        <small class="form-text text-muted">Tutorial de <a href="{{ route('maquinas.show', $maquina) }}">{{ $maquina->nombre_maquina }}</a> | Última Modificación {{ $tutoriale->updated_at->format('d-m-Y') }}</small>
+        <p style="font-size: 19px;" class="lead mt-1">{{ $tutoriale->descripcion}}</p>
         <br/>
     </div>
 @endsection
@@ -34,10 +34,8 @@
                 Tu navegador no implementa el elemento <code>video</code>.
             </video>
         </div>
-    </div>
-    <div class="container mt-2">
         <div class="mt-5">
-            <a href="{{ Request::root() }}/maquinas/{{$maquina->id}}/tutoriales"><i class="fas fa-chevron-left"></i>&nbsp; Regresar</a>
+            <a href="{{ route('maquinas.tutoriales.index', $maquina) }}"><i class="fas fa-chevron-left"></i>&nbsp; Regresar</a>
         </div>
-    </div>
+    </div>    
 @endsection

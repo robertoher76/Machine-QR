@@ -10,6 +10,12 @@ use App\Maquina;
 
 class ComponenteController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the Componentes.
      *
@@ -46,7 +52,7 @@ class ComponenteController extends Controller
             if(Componente::setNumeroOrdenCreate($maquina->id, $request->numero_orden)){
                 $request->request->add(['imagen' => $imagenName, 'maquina_id' => $maquina->id]);
                 $componente = Componente::create($request->all());
-                return redirect("/maquinas/$maquina->id/componente/$componente->id")->withErrors($messageBag->add('success', 'El componente ha sido registrado en la aplicación con exito.'));
+                return redirect("componentes/$componente->id")->withErrors($messageBag->add('success', "$componente->nombre fue registrado en la aplicación con exito."));
             }
         }
         return back()->withErrors($messageBag->add('error', 'Error al subir la imagen a la base de datos, intente de nuevo'));
@@ -55,43 +61,37 @@ class ComponenteController extends Controller
     /**
      * Display the specified Componente.
      *
-     * @param  \App\Maquina  $maquina
      * @param  \App\Componente  $componente
      * @return \Illuminate\Http\Response
      */
-    public function show(Maquina $maquina, Componente $componente)
+    public function show(Componente $componente)
     {
-        if($componente->maquina_id == $maquina->id){
-            return view('componentes.show', compact('maquina'), compact('componente'));
-        }
+        
+        return view('componentes.show', ['componente' => $componente, 'maquina' => Maquina::find($componente->maquina_id)]);
     }
 
     /**
      * Show the form for editing the specified Componente.
      *
-     * @param  \App\Maquina  $maquina
      * @param  \App\Componente  $componente
      * @return \Illuminate\Http\Response
      */
-    public function edit(Maquina $maquina, Componente $componente)
+    public function edit(Componente $componente)
     {
-        if($componente->maquina_id == $maquina->id){
-            return view('componentes.edit', ['maquina' => $maquina, 'componente' => $componente,'lists' => Componente::getComponentes($maquina->id)]);
-        }
+        return view('componentes.edit', ['componente' => $componente, 'maquina' => Maquina::find($componente->maquina_id),'lists' => Componente::getComponentes($componente->maquina_id)]);
     }
 
     /**
      * Update the specified Componente in storage.
      *
      * @param  \App\Http\Requests\EditComponenteRequest  $request
-     * @param  \App\Maquina  $maquina
      * @param  \App\Componente  $componente
      * @return \Illuminate\Http\Response
      */
-    public function update(EditComponenteRequest $request, Maquina $maquina, Componente $componente)
+    public function update(EditComponenteRequest $request, Componente $componente)
     {
         $messageBag = new MessageBag;
-        if($componente->maquina_id == $maquina->id && Componente::setNumeroOrdenEdit($maquina->id, $request->numero_orden, $componente->numero_orden)){
+        if(Componente::setNumeroOrdenEdit($componente->maquina_id, $request->numero_orden, $componente->numero_orden)){
             if($request->cambiarImagen){
                 $request->validate([
                     'foto_up' => 'required|mimes:jpg,jpeg,png|max:4000'], [
@@ -100,33 +100,29 @@ class ComponenteController extends Controller
                     'foto_up.max' => 'La imagen no debe ser mayor a 4000 kilobytes.'
                 ]);
                 if($imagenName = Componente::setImagenComponente($request->foto_up, $componente->imagen)){
-                    $request->request->add(['imagen' => $imagenName, 'maquina_id' => $maquina->id]);
-                    $componente->update($request->all());
-                    return redirect("maquinas/$maquina->id/componente/$componente->id")->withErrors($messageBag->add('success', 'El componente fue modificado exitosamente.'));
+                    $request->request->add(['imagen' => $imagenName]);                    
+                }else{
+                    return back()->withErrors($messageBag->add('error', 'Error al subir la imagen a la base de datos, intente de nuevo'));
                 }
-                return back()->withErrors($messageBag->add('error', 'Error al subir la imagen a la base de datos, intente de nuevo'));
-            }
-            $request->request->add(['imagen' => $componente->imagen, 'maquina_id' => $maquina->id]);
+            }            
             $componente->update($request->all());
-            return redirect("maquinas/$maquina->id/componente/$componente->id")->withErrors($messageBag->add('success', 'El componente fue modificado exitosamente'));
+            return redirect("componentes/$componente->id")->withErrors($messageBag->add('success', "$componente->nombre fue modificado en la aplicación con exito."));
         }
     }
 
     /**
      * Remove the specified Componente from storage.
      *
-     * @param  \App\Maquina  $maquina
      * @param  \App\Componente  $componente
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Maquina $maquina, Componente $componente)
+    public function destroy(Componente $componente)
     {
         $messageBag = new MessageBag;
-        if($maquina->id == $componente->maquina_id){
-            if(Componente::deleteImagenComponente($componente->imagen) && Componente::updateOrdenDecrease($maquina->id,false,$componente->numero_orden)){
-                $componente->delete();
-                return redirect("maquinas/$maquina->id/componente")->withErrors($messageBag->add('success', 'El componente fue eliminado de la aplicación exitosamente'));
-            }
+        if(Componente::deleteImagenComponente($componente->imagen) && Componente::updateOrdenDecrease($componente->maquina_id,false,$componente->numero_orden)){
+            $id = $componente->maquina_id;
+            $componente->delete();
+            return redirect("maquinas/$id/componentes")->withErrors($messageBag->add('success', 'El Componente fue eliminado de la aplicación con exito.'));
         }
         return back()->withErrors($messageBag->add('error', 'No se puede eliminar este componente de la aplicación'));
     }

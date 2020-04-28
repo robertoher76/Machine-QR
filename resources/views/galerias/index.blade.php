@@ -19,10 +19,10 @@
         @include('..layouts.toastSuccess', ['title' => 'Exitosamente', 'success' => $errors->first('success')])
     @endif
     <section class="jumbotron bg-transparent text-center">        
-        <h1>Galería de {{ $maquina->nombre_maquina }}</h1>
+        <h1 class="text-body">Galería de {{ $maquina->nombre_maquina }}</h1>
         <p class="lead text-muted">Something short and leading about the collection below—its contents, the creator, etc. Make it short and sweet, but not too short so folks don’t simply skip over it entirely.</p>        
         <p>
-            <a href="{{ Request::url() }}/create" class="btn btn-outline-success my-2"><i class="far fa-plus-square"></i> Añadir imagen</a>            
+            <a href="{{ route('maquinas.galeria.create', $maquina) }}" class="btn btn-outline-success my-2"><i class="far fa-plus-square"></i> Añadir Imagen</a>            
         </p>
   </section>
 </div>
@@ -35,13 +35,13 @@
                 @foreach($imagenes as $imagen)
                 <div class="col-md-4">
                     <div class="card mb-4 shadow-sm">                    
-                        <a class="example-image-link" data-title="{{ $maquina->nombre_maquina }}" href="{{ asset('storage/imagenes/galeria/' . $imagen->imagen) }}" data-lightbox="example-1"><img  class="example-image" style="border-radius: 1%;width:100%;" widht="100%" height="100%" src="{{ asset('storage/imagenes/galeria/' . $imagen->imagen) }}"/></a>
+                        <a class="example-image-link" data-title="{{ $maquina->nombre_maquina }}" href="{{ asset('storage/imagenes/galeria/' . $imagen->imagen) }}" data-lightbox="example-1"><img  class="example-image rounded-top w-100 h-100" src="{{ asset('storage/imagenes/galeria/' . $imagen->imagen) }}"/></a>
                         <div class="card-body">
                             <p class="card-text text-justify">{{ $imagen->descripcion }}</p>
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="btn-group">
-                                    <a href="{{ Request::url() }}/{{ $imagen->id }}" class="btn btn-sm btn-outline-secondary">Ver más</a>
-                                    <a href="{{ Request::url() }}/{{ $imagen->id }}/edit" class="btn btn-sm btn-outline-secondary">Modificar</a>
+                                    <a href="{{ route('galeria.show', $imagen) }}" class="btn btn-sm btn-outline-secondary">Ver más</a>
+                                    <a href="{{ route('galeria.edit', $imagen) }}" class="btn btn-sm btn-outline-secondary">Modificar</a>
                                 </div>   
                                 <small class="text-muted">Modificado {{ $imagen->updated_at->format('d-m-Y') }}</small>                         
                             </div>
@@ -50,7 +50,6 @@
                 </div> 
                 @endforeach
             </div>
-            @if($imagenes->lastPage() > 1)
                 <nav aria-label="Page navigation example">
                     <ul class="pagination justify-content-center">
                         <li class="page-item {{ ($imagenes->onFirstPage()) ? ' disabled' : '' }}">
@@ -76,9 +75,6 @@
                     </ul>
                 </nav>
                 <br/>
-
-            @endif
-
         @else
             <div class="text-center" style="margin-top: -8% !important;margin-bottom: 5% !important;">
                 <div class="display-1" style="margin-right: -1%;">
@@ -91,8 +87,8 @@
                 </div>
             </div>
         @endif
-        <div class="container mt-4">
-            <a href="{{ Request::root() }}/maquinas/{{ $maquina->id }}"><i class="fas fa-chevron-left"></i>&nbsp; Regresar</a>
+        <div class="mt-3">
+            <a href="{{ route('maquinas.show', $maquina) }}"><i class="fas fa-chevron-left"></i>&nbsp; Regresar</a>
         </div>        
     </div>
 @endsection

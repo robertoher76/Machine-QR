@@ -11,9 +11,9 @@
 
 @section('cabecera')
 <div class="container mt-sm-3 mt-md-3 mt-lg-5 mt-xl-5">
-    <h1 style="color: black;">Máquinas &nbsp;<a href="{{ Request::url() }}/create" class="btn btn-outline-success btn-sm"><i class="fas fa-plus"></i> Agregar</a></h1>
-    @if($maquinas->count() > 0)
-      <p class="text-dark">Total Máquinas: <span class="font-weight-bold">{{ $maquinas->count() }}</span></p>
+    <h1 class="text-body">Máquinas &nbsp;<a href="{{ route('maquinas.create') }}" class="btn btn-outline-success btn-sm"><i class="far fa-plus-square"></i> Agregar</a></h1>
+    @if($maquinas->total() > 0)
+      <p class="text-body">Total Máquinas: <span class="font-weight-bold">{{ $maquinas->total() }}</span></p>
     @endif
 </div>
 @endsection
@@ -30,18 +30,16 @@
         @foreach ($maquinas as $maquina)
         <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4 d-flex align-items-stretch">
           <div class="card mb-4 shadow-sm">
-            <div>
-              <a class="example-image-link" data-title="{{ $maquina->nombre_maquina }}" href="{{ asset('storage/imagenes/maquinas/'. $maquina->imagen) }}" data-lightbox="example-1"><img  class="example-image" style="border-radius: 1%;width:100%;" widht="100%" height="255" src="{{ asset('storage/imagenes/maquinas/'. $maquina->imagen) }}"/></a>
-            </div>
+            <a class="example-image-link" data-title="{{ $maquina->nombre_maquina }}" href="{{ asset('storage/imagenes/maquinas/'. $maquina->imagen) }}" data-lightbox="example-1"><img  class="example-image rounded w-100" height="250" src="{{ asset('storage/imagenes/maquinas/'. $maquina->imagen) }}"/></a>
             <div class="card-body">
               <h4 class="card-title">{{ $maquina->nombre_maquina }}</h4>
-              <p class="card-text">{{ $maquina->descripcion }}</p>
+              <p class="card-text text-justify">{{ $maquina->descripcion }}</p>
             </div>
-            <div class="card-footer" style="background: white !important;border-top: 0 !important;">
+            <div class="card-footer bg-white border-top-0">
               <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">
-                  <a href="{{ Request::url() }}/{{ $maquina->id }}" class="btn btn-sm btn-outline-secondary">Ver más</a>
-                  <a href="maquinas/{{ $maquina->id }}/edit" class="btn btn-sm btn-outline-secondary">Modificar</a>
+                  <a href="{{ route('maquinas.show', $maquina) }}" class="btn btn-sm btn-outline-secondary">Ver más</a>
+                  <a href="{{ route('maquinas.edit', $maquina) }}" class="btn btn-sm btn-outline-secondary">Modificar</a>
                 </div>
                 <small class="text-muted">Modificado {{ $maquina->updated_at->format('d-m-Y') }}</small>
               </div>
@@ -49,16 +47,10 @@
           </div>
         </div>
         @endforeach
-
-
       </div>
 
       <br/><br/>
-      @if($maquinas->lastPage() > 1)
-        <!--<div class="text-center">
-          <small class="text-muted">Máquina {{ $maquinas->firstItem() }} a la {{ $maquinas->lastItem() }}</small>
-        </div>-->
-        <nav aria-label="Page navigation example">
+      <nav aria-label="Page navigation example">
           <ul class="pagination justify-content-center">
             <li class="page-item {{ ($maquinas->onFirstPage()) ? ' disabled' : '' }}">
               <a class="page-link" href="{{ $maquinas->previousPageUrl() }}" tabindex="-1" aria-disabled="true">Anterior</a>
@@ -82,10 +74,6 @@
             </li>
           </ul>
         </nav>
-      @endif
-      <br/><br/>
     </div>
   </div>
-
-
 @endsection

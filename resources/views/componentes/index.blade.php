@@ -11,13 +11,12 @@
 
 @section('cabecera')
 <div class="container mt-sm-0 mt-md-3 mt-lg-5 mt-xl-5">
-    <h1 style="color: black;">Componentes de {{ $maquina->nombre_maquina }} &nbsp;<a href="{{ Request::url() }}/create" class="btn btn-outline-success btn-sm"><i class="fas fa-plus"></i> Agregar</a></h1>
-    @if($componentes->count() > 0)
-        <p class="text-dark">Total Componentes: <span class="font-weight-bold">{{ $componentes->count() }}</span></p>
+    <h2 class="text-body">Componentes de {{ $maquina->nombre_maquina }} &nbsp;<a href="{{ route('maquinas.componentes.create', $maquina) }}" class="btn btn-outline-success btn-sm"><i class="far fa-plus-square"></i> Agregar</a></h2>
+    @if($componentes->total() > 0)
+        <p class="text-body">Total Componentes: <span class="font-weight-bold">{{ $componentes->total() }}</span></p>
     @endif
 </div>
 @endsection
-
 
 @section('contenido')
 <div class="album">
@@ -28,22 +27,20 @@
             @include('..layouts.toastSuccess', ['title' => 'Exitosamente', 'success' => $errors->first('success')])
         @endif
         <div class="row mt-4">
-            @if($componentes->count() > 0)
+            @if($componentes->total() > 0)
                 @foreach ($componentes as $componente)
                     <div class="col-sm-12 col-md-6 col-lg-6 col-xl-4 d-flex align-items-stretch">
                         <div class="card mb-4 shadow-sm">
-                            <div>
-                                <a class="example-image-link" data-title="{{ $componente->nombre }}" href="{{ asset('storage/imagenes/componentes/'. $componente->imagen) }}" data-lightbox="example-{{ $componente->id }}"><img class="example-image" style="border-radius: 1%;width:100%;" widht="100%" height="255" src="{{ asset('storage/imagenes/componentes/'. $componente->imagen) }}"/></a>
-                            </div>
+                            <a class="example-image-link" data-title="{{ $componente->nombre }}" href="{{ asset('storage/imagenes/componentes/'. $componente->imagen) }}" data-lightbox="example-{{ $componente->id }}"><img class="example-image rounded-top w-100" height="250" src="{{ asset('storage/imagenes/componentes/'. $componente->imagen) }}"/></a>
                             <div class="card-body">
                                 <h4 class="card-title">{{ $componente->nombre }}</h4>
-                                <p class="card-text">{{ $componente->descripcion }}</p>
+                                <p class="card-text text-justify">{{ $componente->descripcion }}</p>
                             </div>
-                            <div class="card-footer" style="background: white !important;border-top: 0 !important;">
+                            <div class="card-footer bg-white border-top-0">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="btn-group">
-                                        <a href="{{ Request::url() }}/{{ $componente->id }}" class="btn btn-sm btn-outline-secondary">Ver más</a>
-                                        <a href="componente/{{ $componente->id }}/edit" class="btn btn-sm btn-outline-secondary">Modificar</a>
+                                        <a href="{{ route('componentes.show', $componente) }}" class="btn btn-sm btn-outline-secondary">Ver más</a>
+                                        <a href="{{ route('componentes.edit', $componente) }}" class="btn btn-sm btn-outline-secondary">Modificar</a>
                                     </div>
                                     <small class="text-muted ml-3">Modificado {{ $componente->updated_at->format('d-m-Y') }}</small>
                                 </div>
@@ -65,7 +62,6 @@
             @endif
         </div>
         <br/><br/>
-        @if($componentes->lastPage() > 1)
             <nav aria-label="Page navigation example">
                 <ul class="pagination justify-content-center">
                     <li class="page-item {{ ($componentes->onFirstPage()) ? ' disabled' : '' }}">
@@ -90,10 +86,8 @@
                     </li>
                 </ul>
             </nav>
-            <br/>
-        @endif
         <div class="mt-2">
-            <a href="{{ Request::root() }}/maquinas/{{$maquina->id}}"><i class="fas fa-chevron-left"></i>&nbsp; Regresar</a>
+            <a href="{{ route('maquinas.show', $maquina) }}"><i class="fas fa-chevron-left"></i>&nbsp; Regresar</a>
         </div>
     </div>
 </div>

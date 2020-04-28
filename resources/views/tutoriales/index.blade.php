@@ -6,11 +6,11 @@
 
 @section('cabecera')
 <div class="container mt-sm-0 mt-md-3 mt-lg-5 mt-xl-5">
-    <h1 style="color: black;">Tutoriales {{ $maquina->nombre_maquina }} &nbsp;
-        <a href="{{ Request::url() }}/create" class="btn btn-outline-success btn-sm"><i class="fas fa-plus"></i> Agregar</a>
-    </h1>
-    @if($tutoriales->count() > 0)
-        <p class="text-dark">Total Tutoriales: {{ $tutoriales->count() }}<span class="font-weight-bold"></span></p>
+    <h2 class="text-body">Tutoriales {{ $maquina->nombre_maquina }} &nbsp;
+        <a href="{{ route('maquinas.tutoriales.create', $maquina) }}" class="btn btn-outline-success btn-sm"><i class="fas fa-plus-square"></i> Agregar</a>
+    </h2>
+    @if($tutoriales->total() > 0)
+        <p class="text-body">Total Tutoriales: {{ $tutoriales->total() }}<span class="font-weight-bold"></span></p>
     @endif
 </div>
 @endsection
@@ -22,7 +22,7 @@
         @elseif($errors->has('success'))
             @include('..layouts.toastSuccess', ['title' => 'Exitosamente', 'success' => $errors->first('success')])
         @endif
-        @if($tutoriales->count() > 0)
+        @if($tutoriales->total() > 0)
             <div class="row">
                 @foreach ($tutoriales as $tutorial)
                     <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6 mt-1">
@@ -33,13 +33,12 @@
                                 </video>
                                 <h5 class="card-title mt-2 p-1">{{ $tutorial->titulo }}</h5>
                                 <p class="card-text p-1"> {{ $tutorial->descripcion }} </p>
-
                             </div>
-                            <div class="card-footer" style="background: white !important;border-top: 0 !important;">
+                            <div class="card-footer bg-white border-top-0">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="btn-group">
-                                        <a href="{{ Request::url() }}/{{ $tutorial->id }}" class="btn btn-sm btn-outline-secondary">Ver más</a>
-                                        <a href="{{ Request::url() }}/{{ $tutorial->id }}/edit" class="btn btn-sm btn-outline-secondary">Modificar</a>
+                                        <a href="{{ route('tutoriales.show', $tutorial) }}" class="btn btn-sm btn-outline-secondary">Ver más</a>
+                                        <a href="{{ route('tutoriales.edit', $tutorial) }}" class="btn btn-sm btn-outline-secondary">Modificar</a>
                                     </div>
                                     <small class="text-muted">Última Modificación {{ $tutorial->updated_at->format('d-m-Y') }}</small>
                                 </div>
@@ -48,10 +47,7 @@
                     </div>
                 @endforeach
             </div>
-
             <br/><br/>
-            @if($tutoriales->lastPage() > 1)
-
                 <nav aria-label="Page navigation example">
                 <ul class="pagination justify-content-center">
                     <li class="page-item {{ ($tutoriales->onFirstPage()) ? ' disabled' : '' }}">
@@ -75,11 +71,7 @@
                     <a class="page-link" href="{{ $tutoriales->nextPageUrl() }}" aria-disabled="page-link">Siguiente</a>
                     </li>
                 </ul>
-                </nav>
-            @endif
-            <div class="mt-5">
-                <a href="{{ Request::root() }}/maquinas/{{$maquina->id}}"><i class="fas fa-chevron-left"></i>&nbsp; Regresar</a>
-            </div>
+                </nav>            
         @else
             <div class="container mt-5">
                 <div class="display-1 mt-sm-1 mt-md-4 mt-lg-4 mt-xl-4">
@@ -92,5 +84,8 @@
                 </div>
             </div>
         @endif
+        <div class="mt-5">
+            <a href="{{ route('maquinas.show', $maquina) }}"><i class="fas fa-chevron-left"></i>&nbsp; Regresar</a>
+        </div>
     </div>
 @endsection

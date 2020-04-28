@@ -10,6 +10,12 @@ use App\Maquina;
 
 class TutorialController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the Tutoriales.
      *
@@ -45,8 +51,8 @@ class TutorialController extends Controller
         if($videoName = Tutoriale::setTutorialMaquina($request->video_up)){
             if(Tutoriale::setNumeroOrdenCreate($maquina->id, $request->numero_orden)){
                 $request->request->add(['video' => $videoName, 'maquina_id' => $maquina->id]);
-                Tutoriale::create($request->all());
-                return redirect("maquinas/$maquina->id/tutoriales")->withErrors($messageBag->add('success', 'Tutorial añdadido con exito en la aplicación.'));
+                $tutorial = Tutoriale::create($request->all());
+                return redirect("tutoriales/$tutorial->id")->withErrors($messageBag->add('success', "$tutorial->titulo fue añdadido en la aplicación con éxito."));
             }
         }
         return back()->withErrors($messageBag->add('error', 'Error al subir el video a la base de datos, intente de nuevo'));
@@ -55,82 +61,65 @@ class TutorialController extends Controller
     /**
      * Display the specified Tutorial.
      *
-     * @param  \App\Maquina $maquina
+     * @param  \App\Tutoriale $tutoriale
      * @return \Illuminate\Http\Response
      */
-    public function show(Maquina $maquina, Tutoriale $tutoriale)
+    public function show(Tutoriale $tutoriale)
     {
-        if($maquina->id == $tutoriale->maquina_id){
-            return view('tutoriales.show', compact('maquina'), compact('tutoriale'));
-        }
+        return view('tutoriales.show', ['tutoriale' => $tutoriale, 'maquina' => Maquina::find($tutoriale->maquina_id)]);
     }
 
     /**
      * Show the form for editing the specified Tutorial.
      *
-     * @param  \App\Maquina $maquina
      * @param  \App\Tutoriale $tutoriale
      * @return \Illuminate\Http\Response
      */
-    public function edit(Maquina $maquina, Tutoriale $tutoriale)
+    public function edit(Tutoriale $tutoriale)
     {
-        if($maquina->id == $tutoriale->maquina_id){
-            return view('tutoriales.edit', ['tutoriale' => $tutoriale, 'maquina' => $maquina, 'lists' => Tutoriale::getTutoriales($maquina->id)]);
-        }
+        return view('tutoriales.edit', ['tutoriale' => $tutoriale, 'maquina' => Maquina::find($tutoriale->maquina_id), 'lists' => Tutoriale::getTutoriales($tutoriale->maquina_id)]);
     }
 
     /**
      * Update the specified Tutorial in storage.
      *
      * @param  \App\Http\Requests\EditTutorialRequest  $request
-     * @param  \App\Maquina $maquina
      * @param  \App\Tutoriale $tutoriale
      * @return \Illuminate\Http\Response
      */
-    public function update(EditTutorialRequest $request, Maquina $maquina, Tutoriale $tutoriale)
+    public function update(EditTutorialRequest $request, Tutoriale $tutoriale)
     {
-        $messageBag = new MessageBag;
-        if($maquina->id == $tutoriale->maquina_id){
-            if($request->cambiarImagen){
-                $request->validate([
-                    'video_up' => 'required|mimes:jpg,jpeg,png|max:100000'],[
-                    'video_up.required' => 'El video tutorial es requerido.',
-                    'video_up.mimes' => 'El video tutorial debe ser un tipo de archivo: mp4.',
-                    'video_up.max' => 'El video no debe ser mayor a 100000 kilobytes.'
-                ]);
-                if($videoName = Tutoriale::setTutorialMaquina($request->video_up, $tutoriale->video)){
-                    if(Tutoriale::setNumeroOrdenEdit($maquina->id, $request->numero_orden, $tutoriale->numero_orden)){
-                        $request->request->add(['video' => $videoName, 'maquina_id' => $maquina->id]);
-                        $tutoriale->update($request->all());
-                        return redirect("maquinas/$maquina->id/tutoriales/$tutoriale->id")->withErrors($messageBag->add('success','El tuturial ha sido modificado en la aplicación con exito.'));
-                    }
-                }
-            }else{
-                if(Tutoriale::setNumeroOrdenEdit($maquina->id, $request->numero_orden, $tutoriale->numero_orden)){
-                    $request->request->add(['video' => $tutoriale->video, 'maquina_id' => $maquina->id]);
-                    $tutoriale->update($request->all());
-                    return redirect("maquinas/$maquina->id/tutoriales/$tutoriale->id")->withErrors($messageBag->add('success','El tuturial ha sido modificado en la aplicación con exito.'));
-                }
-            }
+        $messageBag = new MessageBag;        
+        if($request->cambiarImagen){
+            $request->validate([
+                'video_up' => 'required|mimes:jpg,jpeg,png|max:500000'],[
+                'video_up.required' => 'El video tutorial es requerido.',
+                'video_up.mimes' => 'El video tutorial debe ser un tipo de archivo: mp4.',
+                'video_up.max' => 'El video no debe ser mayor a 500000 kilobytes.'
+            ]);
+            if($videoName = Tutoriale::setTutorialMaquina($request->video_up, $tutoriale->video))              
+                $request->request->add(['video' => $videoName]);                                    
         }
+        if(Tutoriale::setNumeroOrdenEdit($tutoriale->maquina_id, $request->numero_orden, $tutoriale->numero_orden)){            
+            $tutoriale->update($request->all());
+            return redirect("tutoriales/$tutoriale->id")->withErrors($messageBag->add('success', "$tutoriale->titulo ha sido modificado en la aplicación con éxito."));
+        }        
         return back()->withErrors($messageBag->add('error', 'No se puede modificar este tutorial en la BD, intente de nuevo.'));
     }
 
     /**
      * Remove the specified Tutorial from storage.
      *
-     * @param  \App\Maquina $maquina
      * @param  \App\Tutoriale $tutoriale
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Maquina $maquina, Tutoriale $tutoriale)
+    public function destroy(Tutoriale $tutoriale)
     {
         $messageBag = new MessageBag;
-        if($maquina->id == $tutoriale->maquina_id){
-            if(Tutoriale::deleteTutorial($tutoriale->video) && Tutoriale::updateOrdenDecrease($maquina->id,false,$tutoriale->numero_orden)){
-                $tutoriale->delete();
-                return redirect("maquinas/$maquina->id/tutoriales")->withErrors($messageBag->add('success', 'El tutorial fue eliminado exitosamente de la aplicación.'));
-            }
+        if(Tutoriale::deleteTutorial($tutoriale->video) && Tutoriale::updateOrdenDecrease($tutoriale->maquina_id,false,$tutoriale->numero_orden)){
+            $id = $tutoriale->maquina_id;
+            $tutoriale->delete();
+            return redirect("maquinas/$id/tutoriales")->withErrors($messageBag->add('success', 'El tutorial fue eliminado de la aplicación con éxito.'));
         }
         return back()->withErrors($messageBag->add('error', 'No se puede eliminar este tutorial de la aplicación.'));
     }

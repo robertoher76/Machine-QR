@@ -2,9 +2,9 @@
 
 @section('cabecera')
 <div class="container mt-sm-0 mt-md-3 mt-lg-5 mt-xl-5">
-    <h1 style="color: black;">Instrucciones de {{ $maquina->nombre_maquina }} &nbsp;<a href="{{ Request::url() }}/create" class="btn btn-outline-success btn-sm"><i class="fas fa-plus"></i> Agregar</a></h1>
-    @if($instrucciones->count() > 0)
-        <p class="text-dark">Total Máquinas: <span class="font-weight-bold">{{ $instrucciones->count() }}</span></p>
+    <h2 class="text-body">Instrucciones de {{ $maquina->nombre_maquina }} &nbsp;<a href="{{ route('maquinas.instrucciones.create', $maquina) }}" class="btn btn-outline-success btn-sm"><i class="far fa-plus-square"></i> Agregar</a></h2>
+    @if($instrucciones->total() > 0)
+        <p class="text-body">Total Máquinas: <span class="font-weight-bold">{{ $instrucciones->total() }}</span></p>
     @endif
 </div>
 @endsection
@@ -17,16 +17,16 @@
             @include('..layouts.toastSuccess', ['title' => 'Exitosamente', 'success' => $errors->first('success')])
         @endif
         
-        @if($instrucciones->count() > 0)
+        @if($instrucciones->total() > 0)
             @foreach ($instrucciones as $instruccion)
                 <div class="card mt-4 mb-4">
                     <div class="card-body">
-                        <h5 class="card-title">{{ $instruccion->titulo }} &nbsp; <small class="text-muted"> | &nbsp;&nbsp; Última Modificación {{ $instruccion->updated_at->format('d-m-Y') }}</small></h5>
+                        <h5 class="card-title text-dark">{{ $instruccion->titulo }} <small class="text-muted">&nbsp; Última Modificación {{ $instruccion->updated_at->format('d-m-Y') }}</small></h5>
                         <p class="card-text">{{ $instruccion->descripcion }}</p>
-                        <a href="{{Request::url()}}/{{$instruccion->id}}" class="btn btn-primary btn-sm">Ver más</a>
+                        <a href="{{ route('instrucciones.show', $instruccion) }}" class="btn btn-primary btn-sm">Ver más</a>
                     </div>
                     <div class="card-footer">
-                        Tipo de Instrucción: {{ $instruccion->nombre }}
+                        Tipo de Instrucción: <a href="{{ route('tipo.show', $instruccion->instrucciones_tipo_id) }}">{{ $instruccion->nombre }}</a>
                     </div>
                 </div>
             @endforeach
@@ -43,7 +43,6 @@
             </div>
         @endif
 
-        @if($instrucciones->lastPage() > 1)
             <nav aria-label="Page navigation example">
                 <ul class="pagination justify-content-center">
                     <li class="page-item {{ ($instrucciones->onFirstPage()) ? ' disabled' : '' }}">
@@ -68,9 +67,8 @@
                     </li>
                 </ul>
             </nav>
-        @endif
         <div class="mt-5">
-            <a href="{{ Request::root() }}/maquinas/{{$maquina->id}}"><i class="fas fa-chevron-left"></i>&nbsp; Regresar</a>
+            <a href="{{ route('maquinas.show', $maquina) }}"><i class="fas fa-chevron-left"></i>&nbsp; Regresar</a>
         </div>
     </div>
 @endsection
