@@ -12,13 +12,18 @@
                 <ul>
                     <li><a href="/">Inicio</a></li>
                     <li><a href="{{ Request::root() }}/maquinas">Máquinas</a></li>
-                    <li><a href="#">{{ Auth::user()->name }}</a></li>
-                    <li>
-                        <form method="POST" action="{{ route('logout') }}">
-                            @csrf
-                            <button class="btn btn-outline-danger btn-sm" type="submit">Cerrar Sesion</button>
-                        </form>
-                    </li>
+                    @auth
+                        <li><a href="#">{{ Auth::user()->name }}</a></li>
+                        <li>
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+                                <button class="btn btn-outline-danger btn-sm" type="submit">Cerrar Sesion</button>
+                            </form>
+                        </li>
+                    @endauth
+                    @guest
+                        <li><a href="/login">Iniciar Sesión</a></li>
+                    @endguest
                 </ul>
             </div>
         </nav>

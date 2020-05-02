@@ -13,6 +13,10 @@ class UserController extends Controller
 {
     public $loginAfterSignUp = true;
 
+    public function index(){
+        return view('user.show', ['users' => User::getUsuarios()]);
+    }
+
     public function login(Request $request)
     {
         $input = $request->only('email', 'password');

@@ -27,7 +27,7 @@
     <div class="mr-md-3 px-3 px-md-5 w-md-100 w-lg-50 text-center overflow-hidden" style="margin:auto!important;">
       <div class="my-3 p-3">
         <h1 class="display-5">MACHINE QR</h1>
-        <p class="lead">La ingenieria desde tu smartphone.</p>
+        <p class="lead">La ingenieria desde tu smartphone, descarga la App ¡YA!.</p>
       </div>
       <div class="bg-dark shadow-sm mx-auto" style="width: 80%; height: 300px; border-radius: 21px 21px 0 0;">      
         <img src="{{ asset('imagenes/qrcode3.gif') }}" class="w-100 p-3 pt-5" style="border-radius: 10% 10% 0 0;" alt="Flowers in Chania">

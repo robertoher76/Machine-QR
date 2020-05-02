@@ -22,14 +22,16 @@
             <div class="col-sm-12 col-md-12 col-lg-9 col-xl-9 mt-lg-1 mt-xl-1">
                 <div class="w-100 mb-2">
                     <h2 class="text-body d-flex flex-wrap">{{ $maquina->nombre_maquina }} &nbsp;
-                    <td>
-                        <form method="POST" action="{{ route('maquinas.destroy', $maquina) }}">
-                            <a href="{{ route('maquinas.edit', $maquina) }}" class="btn btn-outline-success btn-sm"><i class="far fa-edit"></i> Modificar</a>
-                            @method('DELETE')
-                            @csrf
-                            <button class="btn btn-outline-danger btn-sm" type="submit"><i class="far fa-trash-alt"></i> Eliminar</button>
-                        </form>
-                    </td>
+                        @auth
+                            <td>
+                                <form method="POST" action="{{ route('maquinas.destroy', $maquina) }}">
+                                    <a href="{{ route('maquinas.edit', $maquina) }}" class="btn btn-outline-success btn-sm"><i class="far fa-edit"></i> Modificar</a>
+                                    @method('DELETE')
+                                    @csrf
+                                    <button class="btn btn-outline-danger btn-sm" type="submit"><i class="far fa-trash-alt"></i> Eliminar</button>
+                                </form>
+                            </td>
+                        @endauth
                     </h2>
                 </div>
                 <div class="w-100">
@@ -53,14 +55,20 @@
             <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Instructivos</a>
             <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Tutoriales</a>
             <a class="nav-item nav-link" id="nav-video-tab" data-toggle="tab" href="#nav-video" role="tab" aria-controls="nav-video" aria-selected="false">Galería</a>
-            <a class="nav-item nav-link" id="nav-perfil-tab" data-toggle="tab" href="#nav-perfil" role="tab" aria-controls="nav-perfil" aria-selected="false">Foto Principal</a>
+            @auth
+                <a class="nav-item nav-link" id="nav-perfil-tab" data-toggle="tab" href="#nav-perfil" role="tab" aria-controls="nav-perfil" aria-selected="false">Foto Principal</a>
+            @endauth
         </div>
     </nav>
     <div class="tab-content" id="nav-tabContent">
         <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
             <div class="container">
                 <div class="mt-4">
-                    <h5 class="text-body">Componentes de {{ $maquina->nombre_maquina }} &nbsp;<a href="{{ route('maquinas.componentes.create', $maquina) }}" class="btn btn-outline-success btn-sm"><i class="far fa-plus-square"></i> Agregar</a></h5>
+                    <h5 class="text-body">Componentes de {{ $maquina->nombre_maquina }} &nbsp;
+                        @auth    
+                            <a href="{{ route('maquinas.componentes.create', $maquina) }}" class="btn btn-outline-success btn-sm"><i class="far fa-plus-square"></i> Agregar</a>
+                        @endauth
+                    </h5>
                     @if($componentes->total() > 0)
                         <div class="row mt-4">
                             @foreach ($componentes as $componente)
@@ -70,8 +78,10 @@
                                         <h5 class="card-title">{{ $componente->nombre }}</h5>
                                         <p class="card-text mb-5 text-justify"> {{ $componente->descripcion }} </p>
                                         <div class="btn-group mb-3 position-absolute" style="bottom:0;">
-                                            <a href="{{ route('componentes.edit', $componente) }}" class="btn btn-sm btn-outline-secondary">Ver más</a>
-                                            <a href="{{ route('componentes.show', $componente) }}" class="btn btn-sm btn-outline-secondary">Editar</a>
+                                            <a href="{{ route('componentes.show', $componente) }}" class="btn btn-sm btn-outline-secondary">Ver más</a>
+                                            @auth
+                                                <a href="{{ route('componentes.edit', $componente) }}" class="btn btn-sm btn-outline-secondary">Editar</a>
+                                            @endauth
                                         </div>
                                     </div>
                                 </div>
@@ -98,7 +108,11 @@
         <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
             <div class="container">
                 <div class="mt-4">
-                    <h5 class="text-body">Instrucciones de {{ $maquina->nombre_maquina }} &nbsp;<a href="{{ route('maquinas.instrucciones.create', $maquina) }}" class="btn btn-outline-success btn-sm"><i class="far fa-plus-square"></i> Agregar</a></h5>
+                    <h5 class="text-body">Instrucciones de {{ $maquina->nombre_maquina }} &nbsp;
+                        @auth    
+                            <a href="{{ route('maquinas.instrucciones.create', $maquina) }}" class="btn btn-outline-success btn-sm"><i class="far fa-plus-square"></i> Agregar</a>
+                        @endauth
+                    </h5>
                     @if($instrucciones->total() > 0)
                         @foreach ($instrucciones as $instruccion)
                             <div class="card mt-4">
@@ -134,7 +148,9 @@
             <div class="container">
                 <div class="mt-4">
                     <h5 class="text-body">Tutoriales de {{ $maquina->nombre_maquina }} &nbsp;
-                        <a href="{{ route('maquinas.tutoriales.create', $maquina) }}" class="btn btn-outline-success btn-sm"><i class="far fa-plus-square"></i> Agregar</a>
+                        @auth
+                            <a href="{{ route('maquinas.tutoriales.create', $maquina) }}" class="btn btn-outline-success btn-sm"><i class="far fa-plus-square"></i> Agregar</a>
+                        @endauth
                     </h5>
                     @if($tutoriales->total() > 0)
                         <div class="row">
@@ -149,7 +165,9 @@
                                         <p class="card-text mb-5"> {{ $tutorial->descripcion }} </p>
                                         <div class="btn-group mb-3 position-absolute" style="bottom:0;">
                                             <a href="{{ route('tutoriales.show', $tutorial->id) }}" class="btn btn-sm btn-outline-secondary">Ver más</a>
-                                            <a href="{{ route('tutoriales.edit', $tutorial->id) }}" class="btn btn-sm btn-outline-secondary">Editar</a>
+                                            @auth
+                                                <a href="{{ route('tutoriales.edit', $tutorial->id) }}" class="btn btn-sm btn-outline-secondary">Editar</a>
+                                            @endauth
                                         </div>
                                     </div>
                                 </div>
@@ -179,7 +197,9 @@
                 <div class="mt-4">
                     <h5 class="text-body">Galería de {{ $maquina->nombre_maquina }}
                         &nbsp;
-                        <a href="{{ route('maquinas.galeria.create', $maquina) }}" class="btn btn-outline-success btn-sm"><i class="far fa-plus-square"></i> Agregar</a>
+                        @auth
+                            <a href="{{ route('maquinas.galeria.create', $maquina) }}" class="btn btn-outline-success btn-sm"><i class="far fa-plus-square"></i> Agregar</a>
+                        @endauth
                     </h5>
                 </div>
                 @if($galerias->total()>0)
@@ -203,22 +223,24 @@
                 @endif
             </div>
         </div>
-        <div class="tab-pane fade" id="nav-perfil" role="tabpanel" aria-labelledby="nav-perfil-tab">
-            <div class="container mt-4">
-                <div>
-                    <h5>Imagen Actual para {{ $maquina->nombre_maquina }} &nbsp;
-                        <button type="button" class="btn btn-outline-success btn-sm" data-toggle="modal" data-target="#exampleModalCenter"><i class="far fa-edit"></i>
-                            Modificar Imagen
-                        </button>
-                    </h5>
-                    @include('..layouts.modal', ['title' => 'Cambiar Imagen de '.$maquina->nombre_maquina, 'icon1' => 'fas fa-upload', 'icon2' => 'far fa-images', 'title2' => 'Subir Imagen', 'title3' => 'Escoger de Galería'])
-                </div>
-                <div class="col-12 mt-3 text-center">
-                    <a class="example-image-link" data-title="Imagen Actual para {{ $maquina->nombre_maquina }}" href="{{ asset('storage/imagenes/maquinas/' . $maquina->imagen) }}" data-lightbox="example-2"><img class="example-image mt-4 ml-1 mr-1 rounded" widht="100%;" height="250px;" src="{{ asset('storage/imagenes/maquinas/' . $maquina->imagen) }}"/></a>
-                    <small class="form-text text-muted">Click sobre la imagen para ampliarla.</small>
+        @auth
+            <div class="tab-pane fade" id="nav-perfil" role="tabpanel" aria-labelledby="nav-perfil-tab">
+                <div class="container mt-4">
+                    <div>
+                        <h5 class="text-body">Imagen Actual para {{ $maquina->nombre_maquina }} &nbsp;
+                            <button type="button" class="btn btn-outline-success btn-sm" data-toggle="modal" data-target="#exampleModalCenter"><i class="far fa-edit"></i>
+                                Modificar Imagen
+                            </button>
+                        </h5>
+                        @include('..layouts.modal', ['title' => 'Cambiar Imagen de '.$maquina->nombre_maquina, 'icon1' => 'fas fa-upload', 'icon2' => 'far fa-images', 'title2' => 'Subir Imagen', 'title3' => 'Escoger de Galería'])
+                    </div>
+                    <div class="col-12 mt-3 text-center">
+                        <a class="example-image-link" data-title="Imagen Actual para {{ $maquina->nombre_maquina }}" href="{{ asset('storage/imagenes/maquinas/' . $maquina->imagen) }}" data-lightbox="example-2"><img class="example-image mt-4 ml-1 mr-1 rounded" widht="100%;" height="250px;" src="{{ asset('storage/imagenes/maquinas/' . $maquina->imagen) }}"/></a>
+                        <small class="form-text text-muted">Click sobre la imagen para ampliarla.</small>
+                    </div>
                 </div>
             </div>
-        </div>
+        @endauth
     </div>
     <br/>
     <div class="container mt-4">

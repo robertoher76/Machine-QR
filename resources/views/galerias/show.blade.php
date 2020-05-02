@@ -19,14 +19,16 @@
             @include('..layouts.toastSuccess', ['title' => 'Exitosamente', 'success' => $errors->first('success')])
         @endif
         <h2 class="text-body d-flex flex-wrap">Imagen de {{ $maquina->nombre_maquina }} &nbsp;
-            <td>
-                <form method="POST" action="{{ route('galeria.destroy', $galeria) }}">
-                    <a href="{{ route('galeria.edit', $galeria) }}" class="btn btn-outline-success btn-sm"><i class="far fa-edit"></i> Modificar</a>
-                    @method('DELETE')
-                    @csrf
-                    <button class="btn btn-outline-danger btn-sm" type="submit"><i class="far fa-trash-alt"></i> Eliminar</button>
-                </form>
-            </td>
+            @auth
+                <td>
+                    <form method="POST" action="{{ route('galeria.destroy', $galeria) }}">
+                        <a href="{{ route('galeria.edit', $galeria) }}" class="btn btn-outline-success btn-sm"><i class="far fa-edit"></i> Modificar</a>
+                        @method('DELETE')
+                        @csrf
+                        <button class="btn btn-outline-danger btn-sm" type="submit"><i class="far fa-trash-alt"></i> Eliminar</button>
+                    </form>
+                </td>
+            @endauth
         </h2>
         <p style="font-size: 19px;" class="lead text-justify mt-1">{{ $galeria->descripcion}}</p>
     </div>

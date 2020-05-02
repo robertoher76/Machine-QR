@@ -11,7 +11,11 @@
 
 @section('cabecera')
 <div class="container mt-sm-3 mt-md-3 mt-lg-5 mt-xl-5">
-    <h1 class="text-body">Máquinas &nbsp;<a href="{{ route('maquinas.create') }}" class="btn btn-outline-success btn-sm"><i class="far fa-plus-square"></i> Agregar</a></h1>
+    <h1 class="text-body">Máquinas 
+      @auth 
+        &nbsp;<a href="{{ route('maquinas.create') }}" class="btn btn-outline-success btn-sm"><i class="far fa-plus-square"></i> Agregar</a>
+      @endauth
+    </h1>
     @if($maquinas->total() > 0)
       <p class="text-body">Total Máquinas: <span class="font-weight-bold">{{ $maquinas->total() }}</span></p>
     @endif
@@ -39,9 +43,13 @@
               <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">
                   <a href="{{ route('maquinas.show', $maquina) }}" class="btn btn-sm btn-outline-secondary">Ver más</a>
-                  <a href="{{ route('maquinas.edit', $maquina) }}" class="btn btn-sm btn-outline-secondary">Modificar</a>
+                  @auth
+                    <a href="{{ route('maquinas.edit', $maquina) }}" class="btn btn-sm btn-outline-secondary">Modificar</a>
+                  @endauth
                 </div>
-                <small class="text-muted">Modificado {{ $maquina->updated_at->format('d-m-Y') }}</small>
+                @auth
+                  <small class="text-muted">Modificado {{ $maquina->updated_at->format('d-m-Y') }}</small>
+                @endauth
               </div>
             </div>
           </div>

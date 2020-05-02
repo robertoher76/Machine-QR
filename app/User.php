@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
@@ -46,5 +47,32 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [];
+    }
+
+    /**
+     * Get the role associated with the user.
+     */
+    public function role(){
+
+        return $this->belongsTo('App\Role');
+
+    }
+
+    public function isSuperAdmin(){
+
+        if($this->role->nombre_role == 'SuperAdmin')
+            return true;
+        return false;            
+    }
+
+    public function isAdmin(){
+
+        if($this->role->nombre_role == 'Admin')
+            return true;
+        return false;            
+    }
+
+    public static function getUsuarios(){
+        return User::where('id','!=',Auth::id())->get();
     }
 }

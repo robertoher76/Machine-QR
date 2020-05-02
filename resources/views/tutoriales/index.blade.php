@@ -7,7 +7,9 @@
 @section('cabecera')
 <div class="container mt-sm-0 mt-md-3 mt-lg-5 mt-xl-5">
     <h2 class="text-body">Tutoriales {{ $maquina->nombre_maquina }} &nbsp;
-        <a href="{{ route('maquinas.tutoriales.create', $maquina) }}" class="btn btn-outline-success btn-sm"><i class="fas fa-plus-square"></i> Agregar</a>
+        @auth
+            <a href="{{ route('maquinas.tutoriales.create', $maquina) }}" class="btn btn-outline-success btn-sm"><i class="far fa-plus-square"></i> Agregar</a>
+        @endauth
     </h2>
     @if($tutoriales->total() > 0)
         <p class="text-body">Total Tutoriales: {{ $tutoriales->total() }}<span class="font-weight-bold"></span></p>
@@ -38,9 +40,13 @@
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="btn-group">
                                         <a href="{{ route('tutoriales.show', $tutorial) }}" class="btn btn-sm btn-outline-secondary">Ver más</a>
-                                        <a href="{{ route('tutoriales.edit', $tutorial) }}" class="btn btn-sm btn-outline-secondary">Modificar</a>
+                                        @auth
+                                            <a href="{{ route('tutoriales.edit', $tutorial) }}" class="btn btn-sm btn-outline-secondary">Modificar</a>
+                                        @endauth
                                     </div>
-                                    <small class="text-muted">Última Modificación {{ $tutorial->updated_at->format('d-m-Y') }}</small>
+                                    @auth
+                                        <small class="text-muted">Última Modificación {{ $tutorial->updated_at->format('d-m-Y') }}</small>
+                                    @endauth
                                 </div>
                             </div>
                         </div>

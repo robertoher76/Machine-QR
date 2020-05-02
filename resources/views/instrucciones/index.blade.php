@@ -2,7 +2,11 @@
 
 @section('cabecera')
 <div class="container mt-sm-0 mt-md-3 mt-lg-5 mt-xl-5">
-    <h2 class="text-body">Instrucciones de {{ $maquina->nombre_maquina }} &nbsp;<a href="{{ route('maquinas.instrucciones.create', $maquina) }}" class="btn btn-outline-success btn-sm"><i class="far fa-plus-square"></i> Agregar</a></h2>
+    <h2 class="text-body">Instrucciones de {{ $maquina->nombre_maquina }} &nbsp;
+        @auth
+            <a href="{{ route('maquinas.instrucciones.create', $maquina) }}" class="btn btn-outline-success btn-sm"><i class="far fa-plus-square"></i> Agregar</a>
+        @endauth
+    </h2>
     @if($instrucciones->total() > 0)
         <p class="text-body">Total Máquinas: <span class="font-weight-bold">{{ $instrucciones->total() }}</span></p>
     @endif
@@ -30,19 +34,7 @@
                     </div>
                 </div>
             @endforeach
-        @else
-            <div class="container mt-5 mb-7 text-center">
-                <div class="display-1 mt-sm-1 mt-md-4 mt-lg-4 mt-xl-4">
-                    <div class="display-1 text-center">
-                        <i class="far fa-folder-open"></i>
-                    </div>
-                    <div class="display-1 text-center">
-                        <h4>No posee Instrucciones</h4>
-                    </div>
-                </div>
-            </div>
-        @endif
-
+            <br/>
             <nav aria-label="Page navigation example">
                 <ul class="pagination justify-content-center">
                     <li class="page-item {{ ($instrucciones->onFirstPage()) ? ' disabled' : '' }}">
@@ -67,6 +59,18 @@
                     </li>
                 </ul>
             </nav>
+        @else
+            <div class="container mt-5 mb-7 text-center">
+                <div class="display-1 mt-sm-1 mt-md-4 mt-lg-4 mt-xl-4">
+                    <div class="display-1 text-center">
+                        <i class="far fa-folder-open"></i>
+                    </div>
+                    <div class="display-1 text-center">
+                        <h4>No posee Instrucciones</h4>
+                    </div>
+                </div>
+            </div>
+        @endif            
         <div class="mt-5">
             <a href="{{ route('maquinas.show', $maquina) }}"><i class="fas fa-chevron-left"></i>&nbsp; Regresar</a>
         </div>

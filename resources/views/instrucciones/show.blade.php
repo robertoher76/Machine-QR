@@ -13,17 +13,19 @@
     <div class="container mt-sm-0 mt-md-3 mt-lg-5 mt-xl-5">
         <div class="row">
             <div class="col-12">
-                <h2  style="margin-bottom: -2% !important;" class="mb-0 d-flex flex-wrap">{{ $instruccion->titulo }} &nbsp;
-                    <td>
-                        <form method="POST" action="{{ route('instrucciones.destroy', $instruccion) }}">
-                            <a href="{{ route('instrucciones.edit', $instruccion) }}" class="btn btn-outline-success btn-sm"><i class="far fa-edit"></i> Modificar</a>
-                            @method('DELETE')
-                            @csrf
-                            <button class="btn btn-outline-danger btn-sm" type="submit"><i class="far fa-trash-alt"></i> Eliminar</button>
-                        </form>
-                    </td>
+                <h2 @auth style="margin-bottom: -2% !important;" class="mb-0 d-flex flex-wrap" @endauth>{{ $instruccion->titulo }} &nbsp;
+                    @auth
+                        <td>
+                            <form method="POST" action="{{ route('instrucciones.destroy', $instruccion) }}">
+                                <a href="{{ route('instrucciones.edit', $instruccion) }}" class="btn btn-outline-success btn-sm"><i class="far fa-edit"></i> Modificar</a>
+                                @method('DELETE')
+                                @csrf
+                                <button class="btn btn-outline-danger btn-sm" type="submit"><i class="far fa-trash-alt"></i> Eliminar</button>
+                            </form>
+                        </td>
+                    @endauth
                 </h2>
-                <small class="form-text text-muted mt-0">Tipo de Instrucción: <a href="{{ route('tipo.show', $tipo->id) }}">{{ $tipo->nombre }}</a> | Modificado {{ $instruccion->updated_at->format('d-m-Y') }}</small>
+                <small class="form-text text-muted mt-0">Tipo de Instrucción: <a href="{{ route('tipo.show', $tipo->id) }}">{{ $tipo->nombre }}</a> @auth | Modificado {{ $instruccion->updated_at->format('d-m-Y') }} @endauth</small>
                 <p style="font-size: 19px;" class="lead mt-2">{{ $instruccion->descripcion}}</p>
             </div>
         </div>
@@ -46,7 +48,9 @@
                 @foreach($procedimientos as $procedimiento)
                     <a class="list-group-item list-group-item-action {{ ($procedimiento->numero_orden == 1) ? 'active' : '' }}" id="list-{{ $procedimiento->numero_orden }}-list" data-toggle="list" href="#list-{{ $procedimiento->numero_orden }}" role="tab" aria-controls="{{ $procedimiento->numero_orden }}">Procedimiento #{{ $procedimiento->numero_orden }}</a>
                 @endforeach
-                <a id="addProcedimiento" class="list-group-item list-group-item-action " href="{{ route('instrucciones.procedimientos.create', $instruccion) }}"><i id="iconProcedimiento" class="fas fa-plus"></i> Agregar Procedimiento</a>
+                @auth
+                    <a id="addProcedimiento" class="list-group-item list-group-item-action " href="{{ route('instrucciones.procedimientos.create', $instruccion) }}"><i id="iconProcedimiento" class="fas fa-plus"></i> Agregar Procedimiento</a>
+                @endauth
                 <br/>
             </div>
         </div>
@@ -71,15 +75,17 @@
                         <div class="row">
                             <div class="col-12">
                                 <h5>{{ $procedimiento->descripcion }}</h5>
-                                <p>Modificado {{ $procedimiento->updated_at->format('d-m-Y') }}</p>
-                                <td>
-                                    <form method="POST" action="{{ route('procedimientos.destroy', $procedimiento) }}">
-                                        <a href="{{ route('procedimientos.edit', $procedimiento) }}" class="btn btn-outline-success btn-sm"><i class="far fa-edit"></i> Modificar</a>
-                                        @method('DELETE')
-                                        @csrf
-                                        <button class="btn btn-outline-danger btn-sm" type="submit"><i class="far fa-trash-alt"></i> Eliminar</button>
-                                    </form>
-                                </td>
+                                @auth
+                                    <p>Modificado {{ $procedimiento->updated_at->format('d-m-Y') }}</p>
+                                    <td>
+                                        <form method="POST" action="{{ route('procedimientos.destroy', $procedimiento) }}">
+                                            <a href="{{ route('procedimientos.edit', $procedimiento) }}" class="btn btn-outline-success btn-sm"><i class="far fa-edit"></i> Modificar</a>
+                                            @method('DELETE')
+                                            @csrf
+                                            <button class="btn btn-outline-danger btn-sm" type="submit"><i class="far fa-trash-alt"></i> Eliminar</button>
+                                        </form>
+                                    </td>
+                                @endauth
                             </div>
                             <div class="col-12 mt-4">
                                 <div class="text-center">

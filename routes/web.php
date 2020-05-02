@@ -15,7 +15,9 @@ use App\Componente;
 
 Route::get('/', 'HomeController@index');
 
-Auth::routes(['register' => false, 'password' => false]);
+Auth::routes(['register' => false]);
+
+Route::get('usuario', 'UserController@index')->middleware('auth');
 
 Route::resource('maquinas','MaquinaController');
 
@@ -30,3 +32,6 @@ Route::resource('instrucciones/tipo','InstruccionTipoController');
 Route::resource('maquinas.componentes', 'ComponenteController')->shallow();
 
 Route::resource('instrucciones.procedimientos', 'ProcedimientoController')->shallow();
+
+Route::get('maquinas/{maquina}/cambiar-imagen-maquina','MaquinaController@uploadImagen')->name('maquina.imagen');
+Route::post('maquinas/{maquina}/subir-imagen-maquina','MaquinaController@saveImagen')->name('maquina.save');

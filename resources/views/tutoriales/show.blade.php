@@ -11,17 +11,19 @@
         @elseif($errors->has('success'))
             @include('..layouts.toastSuccess', ['title' => 'Exitosamente', 'success' => $errors->first('success')])
         @endif
-        <h1 class="d-flex flex-wrap">{{ $tutoriale->titulo }} &nbsp;
-            <td>
-                <form method="POST" action="{{ route('tutoriales.destroy', $tutoriale) }}">
-                    <a href="{{ route('tutoriales.edit', $tutoriale) }}" class="btn btn-outline-success btn-sm"><i class="far fa-edit"></i> Modificar</a>
-                    @method('DELETE')
-                    @csrf
-                    <button class="btn btn-outline-danger btn-sm" type="submit"><i class="far fa-trash-alt"></i> Eliminar</button>
-                </form>
-            </td>
-        </h1>
-        <small class="form-text text-muted">Tutorial de <a href="{{ route('maquinas.show', $maquina) }}">{{ $maquina->nombre_maquina }}</a> | Última Modificación {{ $tutoriale->updated_at->format('d-m-Y') }}</small>
+        <h2 class="d-flex flex-wrap">{{ $tutoriale->titulo }} &nbsp;
+            @auth
+                <td>
+                    <form method="POST" action="{{ route('tutoriales.destroy', $tutoriale) }}">
+                        <a href="{{ route('tutoriales.edit', $tutoriale) }}" class="btn btn-outline-success btn-sm"><i class="far fa-edit"></i> Modificar</a>
+                        @method('DELETE')
+                        @csrf
+                        <button class="btn btn-outline-danger btn-sm" type="submit"><i class="far fa-trash-alt"></i> Eliminar</button>
+                    </form>
+                </td>
+            @endauth
+        </h2>
+        <small class="form-text text-muted">Tutorial de <a href="{{ route('maquinas.show', $maquina) }}">{{ $maquina->nombre_maquina }}</a> @auth| Última Modificación {{ $tutoriale->updated_at->format('d-m-Y') }} @endauth</small>
         <p style="font-size: 19px;" class="lead mt-1">{{ $tutoriale->descripcion}}</p>
         <br/>
     </div>
