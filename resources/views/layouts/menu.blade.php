@@ -5,12 +5,17 @@
                 <i></i>
                 <i></i>
             </label>
-            <div class="logo">
-                <a id="machineLogo" href="/">MACHINE QR &nbsp;</a><a href="/"><i class="fas fa-qrcode text-dark"></i></a>
+            <div class="logo">                
+                <a id="machineLogo" href="{{ route('index') }}">MACHINE QR &nbsp;</a><a href="/"><i class="fas fa-qrcode text-dark"></i></a>
             </div>
             <div class="nav-wrapper">
                 <ul>
-                    <li><a href="/">Inicio</a></li>
+                    @auth
+                        <li><a href="{{ route('inicio') }}">Inicio</a></li>
+                    @endauth
+                    @guest
+                        <li><a href="{{ route('index') }}">Inicio</a></li>
+                    @endguest
                     <li><a href="{{ Request::root() }}/maquinas">Máquinas</a></li>
                     @auth
                         <li><a href="#">{{ Auth::user()->name }}</a></li>

@@ -96,4 +96,15 @@ class Maquina extends Model
         return $maquinas;
     }
 
+    public static function copyImagenGaleria($filename, $imagenMaquina){
+        try{
+            if($imagenMaquina){
+                Storage::disk('public')->delete("imagenes/maquinas/$imagenMaquina");
+            }
+            Storage::disk('public')->copy("imagenes/galeria/$filename","imagenes/maquinas/$filename");
+            return true;
+        }catch(\Exception $ex){
+            return false;
+        }
+    }
 }

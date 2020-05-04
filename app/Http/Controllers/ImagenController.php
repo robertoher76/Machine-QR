@@ -53,7 +53,7 @@ class ImagenController extends Controller
             if($imagenName = Maquina_imagene::setImagenGaleria($request->foto_up)){
                 $request->request->add(['imagen' => $imagenName, 'maquina_id' => $maquina->id, 'numero_orden' => Maquina_imagene::setNumeroOrden($maquina->id)]);
                 $imagen = Maquina_imagene::create($request->all());
-                return redirect("maquinas/$maquina->id/galeria/$imagen->id")->withErrors($messageBag->add('success', 'La imagen fue añadida a la galería exitosamente.'));
+                return redirect("galeria/$imagen->id")->withErrors($messageBag->add('success', 'La imagen fue añadida a la galería exitosamente.'));
             }
         }catch(\Exception $ex){
             return back()->withErrors($messageBag->add('error', 'Error al subir la imagen a la base de datos, intente de nuevo'));

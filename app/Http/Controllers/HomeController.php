@@ -15,8 +15,21 @@ class HomeController extends Controller
     public function index()
     {
         if(Auth::check())
-            return redirect('maquinas');
+            return redirect('inicio');
 
         return view('index');
+    }
+
+    /**
+     * Show the home page.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function home()
+    {
+        if(Auth::check())
+            return view('home');
+
+        return redirect('index');
     }
 }

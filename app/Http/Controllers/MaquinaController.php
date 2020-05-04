@@ -6,6 +6,7 @@ use App\Http\Requests\CreateMaquinaRequest;
 use App\Http\Requests\ImagenMaquinaRequest;
 use App\Http\Requests\EditMaquinaRequest;
 use Illuminate\Support\MessageBag;
+use Illuminate\Http\Request;
 use App\Maquina_imagene;
 use App\Componente;
 use App\Tutoriale;
@@ -97,25 +98,9 @@ class MaquinaController extends Controller
      */
     public function update(EditMaquinaRequest $request, Maquina $maquina)
     {
-        $messageBag = new MessageBag;
-        if($request->cambiarImagen){
-            $request->validate([
-                'foto_up' => 'required|mimes:jpg,jpeg,png|max:4000'],[
-                'foto_up.required' => 'La imagen de la máquina es requerido',
-                'foto_up.mimes' => 'La imagen debe ser un tipo de archivo: jpg, jpeg, png.',
-                'foto_up.max' => 'La imagen no debe ser mayor a 4000 kilobytes.',
-            ]);
-            if($imagenName = Maquina::setImagenMaquina($request->foto_up, $maquina->imagen)){
-                $request->request->add(['imagen' => $imagenName, 'codigo_qr' => $maquina->codigo_qr]);
-                $maquina->update($request->all());
-                return redirect("maquinas/$maquina->id")->withErrors($messageBag->add('success', $maquina->nombre_maquina.' ha sido modificado con exito'));
-            }
-            return back()->withErrors($messageBag->add('error', 'Error al subir la imagen a la base de datos, intente de nuevo'));
-        }else{
-            $request->request->add(['imagen' => $maquina->imagen, 'codigo_qr' => $maquina->codigo_qr]);
-            $maquina->update($request->all());
-            return redirect("maquinas/$maquina->id")->withErrors($messageBag->add('success', $maquina->nombre_maquina.' ha sido modificado con exito'));
-        }
+        $messageBag = new MessageBag;        
+        $maquina->update($request->all());
+        return redirect("maquinas/$maquina->id")->withErrors($messageBag->add('success', $maquina->nombre_maquina.' ha sido modificado con exito'));
     }
 
     /**
@@ -131,7 +116,7 @@ class MaquinaController extends Controller
     }
 
     /**
-     * Upload new imagen Máquina for perfil.
+     * Show the form for update a Imagen Perfil Máquina.
      *
      * @param  \App\Maquina  $maquina
      * @return \Illuminate\Http\Response
@@ -158,5 +143,36 @@ class MaquinaController extends Controller
         }catch(\Exception $ex){
             return back()->withErrors($messageBag->add('error', 'Error al subir la imagen a la base de datos, intente de nuevo'));
         }
+    }
+
+    /**
+     * Show the galería for update a Imagen Perfil Máquina.
+     *
+     * @param  \App\Maquina  $maquina
+     * @return \Illuminate\Http\Response
+     */
+    public function showGaleria(Maquina $maquina){
+        $galeria = Maquina_imagene::getGaleria($maquina->id, 10);
+        return view('galerias.select', ['maquina' => $maquina, 'imagenes' => $galeria]);
+    }
+
+    /**
+     * Update imagen Máquina in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Maquina  $maquina
+     * @return \Illuminate\Http\Response
+     */
+    public function updateImagen(Request $request, Maquina $maquina){
+        $messageBag = new MessageBag;
+        if($request->id && Maquina_imagene::verificarImagenMaquina($maquina->id, $request->id)){
+            $imagen = Maquina_imagene::findOrFail($request->id);
+            if(Maquina::copyImagenGaleria($imagen->imagen, $maquina->imagen)){
+                $maquina->imagen = $imagen->imagen;
+                $maquina->update();
+                return redirect("maquinas/$maquina->id")->withErrors($messageBag->add('success', "La imagen de perfil de $maquina->maquina_nombre ha sido modificado con éxtio."));             
+            }
+        }
+        return back()->withErrors($messageBag->add('error', 'Error al subir la imagen a la base de datos, intente de nuevo'));
     }
 }

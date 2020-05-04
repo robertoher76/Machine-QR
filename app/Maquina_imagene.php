@@ -75,4 +75,17 @@ class Maquina_imagene extends Model
             return false;
         }
     }
+
+    public static function verificarImagenMaquina($maquina_id, $id){
+        try{
+            $count = Maquina_imagene::where('maquina_id','=',$maquina_id)
+                           ->where('id','=',$id)
+                           ->count();
+            if($count == 1)
+                return true;
+            return false;
+        }catch(\Exception $ex){
+            return false;
+        }
+    }
 }

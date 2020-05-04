@@ -20,7 +20,7 @@
                         </a>            
                     </div>
                     <div class="col-6 text-center">    
-                        <a id="imgOrden" href="{{ route('maquina.imagen', $maquina) }}" class="btn btn-default text-center">
+                        <a id="imgOrden" href="{{ route('maquina.galeria', $maquina) }}" class="btn btn-default text-center">
                             <div style="width:100%;">
                                 <span style="font-size: 75px;" class="{{ $icon2 }}"></span>
                             </div>

@@ -28,23 +28,7 @@
 
     <div id="cuerpo" style="display:none;">
         <header style="z-index:100 !important;">
-            <nav id="varn">
-                <input type="checkbox" id="nav" class="hidden">
-                <label for="nav" class="nav-btn">
-                    <i></i>
-                    <i></i>
-                    <i></i>
-                </label>
-                <div class="logo">
-                    <a id="machineLogo" href="/">MACHINE QR &nbsp;</a><a href="/"><i class="fas fa-qrcode text-dark"></i></a>
-                </div>
-                <div class="nav-wrapper">
-                    <ul>
-                        <li><a href="/">Inicio</a></li>                        
-                        <li><a href="login">Iniciar Sesión</a></li>
-                    </ul>
-                </div>
-            </nav>
+            @include('..layouts.menu')
         </header>
 
         <main role="main">
