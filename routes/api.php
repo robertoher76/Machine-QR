@@ -1,7 +1,9 @@
 <?php
 
 use Illuminate\Http\Request;
-
+use App\Maquina;
+use App\Componente;
+use App\instruccione;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -13,6 +15,21 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::get('/maquina/{request}', 'API\MaquinaController@showMaquina');
+Route::get('/componente/{maquina}', 'API\ComponenteController@showComponente');
+Route::get('/instruccione/{maquina}/{request}', 'API\InstruccioneController@showinstruccione');
+//Route::apiResource("maquinas","MaquinaController");
+
+
+//*********************************************** */
+
+//Route::post('register', 'UserController@register');
+//Route::post('login', 'UserController@authenticate');
+
+/*Route::group(['middleware' => ['jwt.verify']], function() {
+    Route::get('user', 'UserController@getAuthenticatedUser');
+    Route::post('logout', 'UserController@logout');
+
+    Route::get('/maquina', 'API\MaquinaController@index');
+    Route::get('/maquina/{maquina}', 'API\MaquinaController@show');
+});*/

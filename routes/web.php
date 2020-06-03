@@ -14,30 +14,34 @@ use App\Componente;
 */
 
 Route::get('/', function () {
-    return view('maquinas.create');
+    return view('index');
+});
+
+Route::get('/login', function () {
+    return view('login');
 });
 
 Route::get('qrcode', function () {
 
-    $image = \QrCode::format('png')                
-                 ->size(200)->errorCorrection('H')
+    $image = \QrCode::format('png')
+                 ->size(1000)->errorCorrection('H')
                  ->generate('A simple example of QR code!');
     $output_file = '/imagenes/QR/img-' . time() . '.png';
     Storage::disk('local')->put($output_file, $image); //storage/app/public/img/qr-code/img-1557309130.png
-    
+
     return "Hola";
 });
 
 Route::resource('/maquinas','MaquinaController');
 
-Route::resource('/maquinas/imagenes','ImagenController');
+Route::resource('/maquinas/{maquina}/galeria','ImagenController');
 
-Route::resource('/maquinas/tutoriales','TutorialController');
+Route::resource('/maquinas/{maquina}/tutoriales','TutorialController');
 
-Route::resource('/maquinas/instrucciones','InstruccionController');
+Route::resource('/maquinas/{maquina}/instrucciones','InstruccionController');
 
-Route::resource('/maquinas/instrucciones/tipo','InstruccionTipoController');
+Route::resource('/instrucciones/tipo','InstruccionTipoController');
 
-Route::resource('/maquinas/componentes','ComponenteController');
+Route::resource('/maquinas/{maquina}/componente', 'ComponenteController');
 
-Route::resource('/maquinas/procedimientos', 'ProcedimientoController');
+Route::resource('/maquinas/instrucciones/{instruccione}/procedimientos', 'ProcedimientoController');
